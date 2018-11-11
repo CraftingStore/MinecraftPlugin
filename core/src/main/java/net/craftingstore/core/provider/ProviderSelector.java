@@ -34,6 +34,7 @@ public class ProviderSelector {
     public void selectProvider() {
         if (currentProvider != null && currentProvider.isConnected()) {
             currentProvider.disconnect();
+            return;
         }
         currentProvider = getAvailableProvider();
     }

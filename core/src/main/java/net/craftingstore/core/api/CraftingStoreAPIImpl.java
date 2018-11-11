@@ -3,7 +3,6 @@ package net.craftingstore.core.api;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mashape.unirest.http.HttpMethod;
-import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
@@ -15,10 +14,9 @@ import net.craftingstore.core.api.util.GenericOf;
 import net.craftingstore.core.api.util.InformationAdapter;
 import net.craftingstore.core.api.util.InventoryAdapter;
 import net.craftingstore.core.exceptions.CraftingStoreApiException;
-import net.craftingstore.core.models.api.inventory.CraftingStoreInventory;
 import net.craftingstore.core.models.api.*;
+import net.craftingstore.core.models.api.inventory.CraftingStoreInventory;
 import net.craftingstore.core.models.api.inventory.InventoryItem;
-import net.craftingstore.core.models.api.misc.ApiKeyResult;
 import net.craftingstore.core.models.api.misc.CraftingStoreInformation;
 import net.craftingstore.core.models.api.provider.ProviderInformation;
 import net.craftingstore.core.models.donation.Donation;
@@ -100,7 +98,7 @@ public class CraftingStoreAPIImpl extends CraftingStoreAPI {
 
     public CraftingStoreInventory getGUI() throws CraftingStoreApiException {
         try {
-            return getHttpRequest("plugin/gui").asObject(CraftingStoreInventory.class).getBody();
+            return getHttpRequest("plugin/gui").asObject(CraftingStoreInventory[].class).getBody()[0];
         } catch (UnirestException e) {
             throw new CraftingStoreApiException("Inventory call failed", e);
         }

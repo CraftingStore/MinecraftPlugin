@@ -44,7 +44,7 @@ public class CraftingStoreBukkitImpl implements CraftingStorePlugin {
     }
 
     public void disable() {
-
+        bukkitPlugin.getPluginLoader().disablePlugin(bukkitPlugin);
     }
 
     public void registerRunnable(Runnable runnable, int delay, int interval) {

@@ -15,7 +15,10 @@ public class DonationChecker implements Runnable {
         this.instance = instance;
     }
 
-    public void run(){
+    public void run() {
+        if (!instance.isEnabled()) {
+            return;
+        }
         try {
             Donation[] donationQueue = instance.getApi().getDonationQueue();
             int[] completedIds = Arrays.stream(donationQueue)

@@ -1,7 +1,11 @@
 package net.craftingstore.bukkit;
 
+import net.craftingstore.bukkit.commands.BuyCommand;
+import net.craftingstore.bukkit.commands.CraftingStoreCommand;
 import net.craftingstore.bukkit.config.Config;
+import net.craftingstore.bukkit.listeners.InventoryListener;
 import net.craftingstore.core.CraftingStore;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -9,11 +13,15 @@ public class CraftingStoreBukkit extends JavaPlugin {
 
     private CraftingStore craftingStore;
     private Config config;
+    private String prefix = ChatColor.GRAY + "[" + ChatColor.RED + "CraftingStore" + ChatColor.GRAY + "] ";
 
     @Override
     public void onEnable() {
         config = new Config("config.yml", this);
         this.craftingStore = new CraftingStore(new CraftingStoreBukkitImpl(this));
+        this.getCommand("craftingstore").setExecutor(new CraftingStoreCommand(this));
+        this.getCommand("buy").setExecutor(new BuyCommand(this));
+        this.getServer().getPluginManager().registerEvents(new InventoryListener(this), this);
     }
 
     public CraftingStore getCraftingStore() {
@@ -23,5 +31,13 @@ public class CraftingStoreBukkit extends JavaPlugin {
     @Override
     public FileConfiguration getConfig() {
         return this.config.getConfig();
+    }
+
+    public Config getConfigWrapper() {
+        return this.config;
+    }
+
+    public String getPrefix() {
+        return prefix;
     }
 }

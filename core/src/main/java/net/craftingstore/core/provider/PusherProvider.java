@@ -7,7 +7,6 @@ import com.pusher.client.connection.ConnectionEventListener;
 import com.pusher.client.connection.ConnectionState;
 import com.pusher.client.connection.ConnectionStateChange;
 import net.craftingstore.core.CraftingStore;
-import net.craftingstore.core.models.api.provider.ProviderInformation;
 import net.craftingstore.core.models.api.provider.PusherProviderInformation;
 
 public class PusherProvider extends CraftingStoreProvider {

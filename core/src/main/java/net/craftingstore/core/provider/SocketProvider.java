@@ -2,7 +2,6 @@ package net.craftingstore.core.provider;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
-import io.socket.emitter.Emitter;
 import net.craftingstore.core.CraftingStore;
 import net.craftingstore.core.models.api.provider.SocketProviderInformation;
 

@@ -12,6 +12,9 @@ public class ProviderChecker implements Runnable {
 
     @Override
     public void run() {
+        if (!instance.isEnabled()) {
+            return;
+        }
         if (instance.getProviderSelector().getCurrentProvider() == null ||
                 !instance.getProviderSelector().getCurrentProvider().isConnected()) {
             instance.getProviderSelector().selectProvider();

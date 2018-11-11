@@ -16,6 +16,7 @@ public abstract class CraftingStoreProvider {
     }
 
     public abstract boolean isConnected();
+
     public abstract void disconnect();
 
     public void disconnected() {
