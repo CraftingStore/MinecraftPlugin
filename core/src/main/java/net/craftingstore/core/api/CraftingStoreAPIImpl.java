@@ -27,8 +27,8 @@ import java.util.Arrays;
 
 public class CraftingStoreAPIImpl extends CraftingStoreAPI {
 
-    private final String BASE_URL = "http://localhost/craftingstore.php?action=";
-    //private final String BASE_URL = "https://api.craftingstore.net/v4/";
+    //private final String BASE_URL = "http://localhost/craftingstore.php?action=";
+    private final String BASE_URL = "https://api.craftingstore.net/v4/";
     private CraftingStore instance;
     private Gson gson;
 
@@ -39,7 +39,7 @@ public class CraftingStoreAPIImpl extends CraftingStoreAPI {
 
     public CraftingStoreInformation getInformation() throws CraftingStoreApiException {
         try {
-            HttpRequestWithBody request = getHttpRequestWithBody(BASE_URL + "info");
+            HttpRequestWithBody request = getHttpRequestWithBody("info");
             request.field("version", instance.getImplementation().getVersion());
             request.field("platform", instance.getImplementation().getPlatform());
             return request.asObject(CraftingStoreInformation.class).getBody();
@@ -98,7 +98,7 @@ public class CraftingStoreAPIImpl extends CraftingStoreAPI {
 
     public CraftingStoreInventory getGUI() throws CraftingStoreApiException {
         try {
-            return getHttpRequest("plugin/gui").asObject(CraftingStoreInventory[].class).getBody()[0];
+            return getHttpRequest("plugin/gui").asObject(CraftingStoreInventory.class).getBody();
         } catch (UnirestException e) {
             throw new CraftingStoreApiException("Inventory call failed", e);
         }

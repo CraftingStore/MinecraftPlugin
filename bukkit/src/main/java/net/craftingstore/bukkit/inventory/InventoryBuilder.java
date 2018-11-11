@@ -28,12 +28,16 @@ public class InventoryBuilder {
         Inventory inventory = Bukkit.createInventory(new CraftingStoreInventoryHolder(csInventory, parent), csInventory.getSize(), title);
 
         for (InventoryItem inventoryItem : csInventory.getContent()) {
-            XMaterial xMaterial = XMaterial.fromString(inventoryItem.getIcon().getMaterial());
-            if (xMaterial == null) {
+            XMaterial xMaterial;
+            if (inventoryItem.getIcon().getMaterial() == null) {
                 xMaterial = XMaterial.CHEST;
+            } else {
+                xMaterial = XMaterial.fromString(inventoryItem.getIcon().getMaterial());
+                if (xMaterial == null) {
+                    xMaterial = XMaterial.CHEST;
+                }
             }
-            Material m = xMaterial.parseMaterial();
-            ItemStack itemStack = new ItemStack(m, inventoryItem.getIcon().getAmount());
+            ItemStack itemStack = xMaterial.parseItem(inventoryItem.getIcon().getAmount());
             ItemMeta meta = itemStack.getItemMeta();
             meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', inventoryItem.getName()));
             if (inventoryItem.getDescription() != null && inventoryItem.getDescription().length != 0) {

@@ -888,13 +888,14 @@ public enum XMaterial {
         this.data = data;
     }
 
-    public ItemStack parseItem(){
+    public ItemStack parseItem(int amount){
         Material mat = parseMaterial();
         if(isNewVersion()){
             return new ItemStack(mat);
         }
-        return new ItemStack(mat,1,(byte) data);
+        return new ItemStack(mat, amount,(byte) data);
     }
+
     static int newV = -1;
     public static boolean isNewVersion(){
         if(newV == 0) return false;

@@ -20,7 +20,6 @@ public class InventoryRenewer implements Runnable {
         if (!(instance.getApi() instanceof CraftingStoreCachedAPI)) {
             return;
         }
-        instance.getLogger().info("Refreshing GUI cache");
         CraftingStoreCachedAPI api = (CraftingStoreCachedAPI) instance.getApi();
         try {
             api.refreshGUICache();
