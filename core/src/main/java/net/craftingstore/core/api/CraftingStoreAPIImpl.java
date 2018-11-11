@@ -39,7 +39,7 @@ public class CraftingStoreAPIImpl extends CraftingStoreAPI {
 
     public CraftingStoreInformation getInformation() throws CraftingStoreApiException {
         try {
-            HttpRequestWithBody request = Unirest.post(BASE_URL + "info");
+            HttpRequestWithBody request = getHttpRequestWithBody(BASE_URL + "info");
             request.field("version", instance.getImplementation().getVersion());
             request.field("platform", instance.getImplementation().getPlatform());
             return request.asObject(CraftingStoreInformation.class).getBody();
