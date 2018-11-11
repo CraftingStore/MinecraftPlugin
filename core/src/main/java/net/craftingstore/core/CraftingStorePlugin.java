@@ -18,4 +18,8 @@ public interface CraftingStorePlugin {
     void registerRunnable(Runnable runnable, int delay, int interval);
 
     String getToken();
+
+    String getVersion();
+
+    String getPlatform();
 }

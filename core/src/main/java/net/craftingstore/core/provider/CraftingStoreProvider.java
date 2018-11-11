@@ -7,15 +7,21 @@ public abstract class CraftingStoreProvider {
 
     CraftingStore craftingStore;
     ProviderInformation information;
+    ProviderStatus status;
 
-    public CraftingStoreProvider(CraftingStore craftingStore, ProviderInformation information) {
+    public CraftingStoreProvider(CraftingStore craftingStore, ProviderStatus status) {
         this.craftingStore = craftingStore;
-        this.information = information;
+        this.status = status;
+        this.information = status.getInformation();
     }
 
     public abstract boolean isConnected();
+    public abstract void disconnect();
 
-    public void disconnect() {
-
+    public void disconnected() {
+        craftingStore.getLogger().info("Disconnected from provider " + information.getType());
+        this.status.setRetries(this.status.getRetries() + 1);
+        this.status.setLastFailed(System.currentTimeMillis());
+        this.craftingStore.getProviderSelector().selectProvider();
     }
 }

@@ -3,6 +3,7 @@ package net.craftingstore.core.api;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mashape.unirest.http.HttpMethod;
+import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
@@ -28,8 +29,8 @@ import java.util.Arrays;
 
 public class CraftingStoreAPIImpl extends CraftingStoreAPI {
 
-    //private final String BASE_URL = "http://localhost/craftingstore.php?action=";
-    private final String BASE_URL = "https://api.craftingstore.net/v4/";
+    private final String BASE_URL = "http://localhost/craftingstore.php?action=";
+    //private final String BASE_URL = "https://api.craftingstore.net/v4/";
     private CraftingStore instance;
     private Gson gson;
 
@@ -40,7 +41,10 @@ public class CraftingStoreAPIImpl extends CraftingStoreAPI {
 
     public CraftingStoreInformation getInformation() throws CraftingStoreApiException {
         try {
-            return Unirest.get(BASE_URL + "info").asObject(CraftingStoreInformation.class).getBody();
+            HttpRequestWithBody request = Unirest.post(BASE_URL + "info");
+            request.field("version", instance.getImplementation().getVersion());
+            request.field("platform", instance.getImplementation().getPlatform());
+            return request.asObject(CraftingStoreInformation.class).getBody();
         } catch (UnirestException e) {
             throw new CraftingStoreApiException("Info call failed", e);
         }

@@ -54,4 +54,14 @@ public class CraftingStoreBukkitImpl implements CraftingStorePlugin {
     public String getToken() {
         return bukkitPlugin.getConfig().getString("api-key");
     }
+
+    @Override
+    public String getVersion() {
+        return bukkitPlugin.getDescription().getVersion();
+    }
+
+    @Override
+    public String getPlatform() {
+        return bukkitPlugin.getServer().getBukkitVersion();
+    }
 }

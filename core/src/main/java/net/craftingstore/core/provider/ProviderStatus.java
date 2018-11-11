@@ -1,27 +1,14 @@
 package net.craftingstore.core.provider;
 
-import net.craftingstore.core.models.api.provider.ProviderType;
+import net.craftingstore.core.models.api.provider.ProviderInformation;
 
 public class ProviderStatus {
-    private ProviderType type;
-    private long lastSuccessful;
+    private ProviderInformation information;
     private long lastFailed;
     private int retries;
 
-    public ProviderStatus(ProviderType type) {
-        this.type = type;
-    }
-
-    public ProviderType getType() {
-        return type;
-    }
-
-    public long getLastSuccessful() {
-        return lastSuccessful;
-    }
-
-    public void setLastSuccessful(long lastSuccessful) {
-        this.lastSuccessful = lastSuccessful;
+    public ProviderStatus(ProviderInformation information) {
+        this.information = information;
     }
 
     public long getLastFailed() {
@@ -38,5 +25,9 @@ public class ProviderStatus {
 
     public void setRetries(int retries) {
         this.retries = retries;
+    }
+
+    public ProviderInformation getInformation() {
+        return information;
     }
 }
