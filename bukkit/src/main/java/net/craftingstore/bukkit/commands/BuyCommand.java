@@ -24,7 +24,7 @@ public class BuyCommand implements CommandExecutor {
             return false;
         }
         if (!instance.getCraftingStore().isEnabled()) {
-            sender.sendMessage(instance.getPrefix() + "The plugin has not been setup correctly.");
+            sender.sendMessage(instance.getPrefix() + "The plugin has not been set-up correctly. Please contact an administrator.");
             return false;
         }
         Player p = (Player) sender;

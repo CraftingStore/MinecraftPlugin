@@ -8,10 +8,7 @@ import net.craftingstore.core.models.api.misc.CraftingStoreInformation;
 import net.craftingstore.core.models.api.misc.UpdateInformation;
 import net.craftingstore.core.models.donation.Donation;
 import net.craftingstore.core.provider.ProviderSelector;
-import net.craftingstore.core.scheduler.APICacheRenewer;
-import net.craftingstore.core.scheduler.DonationChecker;
-import net.craftingstore.core.scheduler.InventoryRenewer;
-import net.craftingstore.core.scheduler.ProviderChecker;
+import net.craftingstore.core.scheduler.*;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,10 +26,16 @@ public class CraftingStore {
         this.api = new CraftingStoreCachedAPI(this);
         this.selector = new ProviderSelector(this);
         if (this.reload()) {
-            this.plugin.registerRunnable(new DonationChecker(this), 10, 300);
+            // Every 5 minutes
+            this.plugin.registerRunnable(new DonationChecker(this), 10, 5 * 60);
+            // Every minute
             this.plugin.registerRunnable(new ProviderChecker(this), 60, 60);
-            this.plugin.registerRunnable(new InventoryRenewer(this), 60 * 20, 60 * 20);
+            // Every 20 minutes
+            this.plugin.registerRunnable(new InventoryRenewer(this), 20 * 60, 20 * 60);
+            // Every 25 minutes
             this.plugin.registerRunnable(new APICacheRenewer(this), 10, 60 * 25);
+            // Every 24 hours
+            this.plugin.registerRunnable(new InformationUpdater(this), 24 * 60 * 60, 24 * 60 * 60);
         }
     }
 
@@ -69,7 +72,6 @@ public class CraftingStore {
                 if (update.shouldDisable()) {
                     getLogger().log(Level.SEVERE, "Plugin will be disabled until you install the latest update.");
                     setEnabled(false);
-                    this.getImplementation().disable();
                     return false;
                 }
             }

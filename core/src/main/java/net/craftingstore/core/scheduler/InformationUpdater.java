@@ -11,7 +11,6 @@ public class InformationUpdater implements Runnable {
     }
 
     public void run() {
-
-
+        instance.reload();
     }
 }

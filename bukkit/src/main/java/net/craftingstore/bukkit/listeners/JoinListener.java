@@ -22,9 +22,17 @@ public class JoinListener implements Listener {
             return;
         }
         UpdateInformation update = instance.getCraftingStore().getInformation().getUpdateInformation();
-        if (update == null) {
-            return;
+        // Update notification
+        if (update != null) {
+            p.sendMessage(instance.getPrefix() + update.getMessage());
         }
-        p.sendMessage(instance.getPrefix() + update.getMessage());
+
+        if (!instance.getCraftingStore().isEnabled()) {
+            if (update != null && update.shouldDisable()) {
+                p.sendMessage(instance.getPrefix() + "The CraftingStore plugin has been disabled because this is an outdated version. Please update the plugin.");
+            } else {
+                p.sendMessage(instance.getPrefix() + "The CraftingStore plugin has not been set-up correctly. Please set your API key using /craftingstore key <your key>.");
+            }
+        }
     }
 }
