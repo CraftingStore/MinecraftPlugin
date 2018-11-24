@@ -35,10 +35,6 @@ public class CraftingStoreBukkitImpl implements CraftingStorePlugin {
         return true;
     }
 
-    public void openInventory(CraftingStoreInventory inventory) {
-
-    }
-
     public Logger getLogger() {
         return bukkitPlugin.getLogger();
     }

@@ -2,15 +2,17 @@ package net.craftingstore.core;
 
 import net.craftingstore.core.api.CraftingStoreCachedAPI;
 import net.craftingstore.core.exceptions.CraftingStoreApiException;
+import net.craftingstore.core.jobs.ExecuteDonationsJob;
 import net.craftingstore.core.models.api.Root;
 import net.craftingstore.core.models.api.misc.CraftingStoreInformation;
 import net.craftingstore.core.models.api.misc.UpdateInformation;
+import net.craftingstore.core.models.donation.Donation;
 import net.craftingstore.core.provider.ProviderSelector;
+import net.craftingstore.core.scheduler.APICacheRenewer;
 import net.craftingstore.core.scheduler.DonationChecker;
 import net.craftingstore.core.scheduler.InventoryRenewer;
 import net.craftingstore.core.scheduler.ProviderChecker;
 
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,6 +21,7 @@ public class CraftingStore {
     private CraftingStorePlugin plugin;
     private CraftingStoreAPI api;
     private ProviderSelector selector;
+    private CraftingStoreInformation information;
     private boolean enabled = false;
 
     public CraftingStore(CraftingStorePlugin implementation) {
@@ -26,9 +29,10 @@ public class CraftingStore {
         this.api = new CraftingStoreCachedAPI(this);
         this.selector = new ProviderSelector(this);
         if (this.reload()) {
-            this.plugin.registerRunnable(new DonationChecker(this), 10, 120);
+            this.plugin.registerRunnable(new DonationChecker(this), 10, 300);
             this.plugin.registerRunnable(new ProviderChecker(this), 60, 60);
             this.plugin.registerRunnable(new InventoryRenewer(this), 60 * 20, 60 * 20);
+            this.plugin.registerRunnable(new APICacheRenewer(this), 10, 60 * 25);
         }
     }
 
@@ -54,22 +58,22 @@ public class CraftingStore {
             Root keyResult = this.getApi().checkKey();
             if (!keyResult.isSuccess()) {
                 getLogger().log(Level.SEVERE, "API key is invalid. The plugin will not work.");
-                enabled = false;
+                setEnabled(false);
                 return false;
             }
-            CraftingStoreInformation information = this.getApi().getInformation();
+            information = this.getApi().getInformation();
 
             if (information.getUpdateInformation() != null) {
                 UpdateInformation update = information.getUpdateInformation();
                 getLogger().info(update.getMessage());
                 if (update.shouldDisable()) {
                     getLogger().log(Level.SEVERE, "Plugin will be disabled until you install the latest update.");
-                    enabled = false;
+                    setEnabled(false);
                     this.getImplementation().disable();
                     return false;
                 }
             }
-            enabled = true;
+            setEnabled(true);
 
             selector.setProviders(information.getProviders());
             selector.selectProvider();
@@ -85,8 +89,8 @@ public class CraftingStore {
 
     public void executeQueue() {
         try {
-            Arrays.stream(this.getApi().getDonationQueue())
-                    .forEach(donation -> this.getImplementation().executeDonation(donation));
+            Donation[] donationQueue = this.getApi().getDonationQueue();
+            new ExecuteDonationsJob(this, donationQueue);
         } catch (CraftingStoreApiException e) {
             e.printStackTrace();
         }
@@ -94,5 +98,17 @@ public class CraftingStore {
 
     public boolean isEnabled() {
         return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public CraftingStoreInformation getInformation() {
+        return information;
+    }
+
+    public void setInformation(CraftingStoreInformation information) {
+        this.information = information;
     }
 }

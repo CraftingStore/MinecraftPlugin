@@ -2,14 +2,13 @@ package net.craftingstore.core.scheduler;
 
 import net.craftingstore.core.CraftingStore;
 import net.craftingstore.core.exceptions.CraftingStoreApiException;
+import net.craftingstore.core.jobs.ExecuteDonationsJob;
 import net.craftingstore.core.models.donation.Donation;
-
-import java.util.AbstractMap;
-import java.util.Arrays;
 
 public class DonationChecker implements Runnable {
 
     private CraftingStore instance;
+    private long lastRun = 0;
 
     public DonationChecker(CraftingStore instance) {
         this.instance = instance;
@@ -19,16 +18,17 @@ public class DonationChecker implements Runnable {
         if (!instance.isEnabled()) {
             return;
         }
+        if (instance.getProviderSelector().isConnected()) {
+            // Only run this runnable every 25 minutes when we are connected to a websocket.
+            long target = System.currentTimeMillis() - (25 * 60 * 1000);
+            if (lastRun > target) {
+                return;
+            }
+        }
+        lastRun = System.currentTimeMillis();
         try {
             Donation[] donationQueue = instance.getApi().getDonationQueue();
-            int[] completedIds = Arrays.stream(donationQueue)
-                    .map(donation -> new AbstractMap.SimpleEntry<>(donation, instance.getImplementation().executeDonation(donation)))
-                    .filter(AbstractMap.SimpleEntry::getValue)
-                    .mapToInt(entry -> entry.getKey().getId())
-                    .toArray();
-            if (completedIds.length > 0) {
-                instance.getApi().completeDonations(completedIds);
-            }
+            new ExecuteDonationsJob(instance, donationQueue);
         } catch (CraftingStoreApiException e) {
             e.printStackTrace();
         }

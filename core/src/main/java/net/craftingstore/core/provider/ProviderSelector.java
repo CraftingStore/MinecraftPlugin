@@ -63,4 +63,14 @@ public class ProviderSelector {
     public CraftingStoreProvider getCurrentProvider() {
         return currentProvider;
     }
+
+    public boolean isConnected() {
+        return getCurrentProvider() != null && getCurrentProvider().isConnected();
+    }
+
+    public void disconnect() {
+        if (isConnected()) {
+            getCurrentProvider().disconnect();
+        }
+    }
 }

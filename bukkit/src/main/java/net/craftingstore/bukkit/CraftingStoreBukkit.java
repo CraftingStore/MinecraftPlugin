@@ -3,8 +3,11 @@ package net.craftingstore.bukkit;
 import net.craftingstore.bukkit.commands.BuyCommand;
 import net.craftingstore.bukkit.commands.CraftingStoreCommand;
 import net.craftingstore.bukkit.config.Config;
+import net.craftingstore.bukkit.hooks.PlaceholderAPIHook;
 import net.craftingstore.bukkit.listeners.InventoryListener;
+import net.craftingstore.bukkit.listeners.JoinListener;
 import net.craftingstore.core.CraftingStore;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -13,7 +16,8 @@ public class CraftingStoreBukkit extends JavaPlugin {
 
     private CraftingStore craftingStore;
     private Config config;
-    private String prefix = ChatColor.GRAY + "[" + ChatColor.RED + "CraftingStore" + ChatColor.GRAY + "] ";
+    private String prefix = ChatColor.GRAY + "[" + ChatColor.RED + "CraftingStore" + ChatColor.GRAY + "] " + ChatColor.WHITE;
+    public final String ADMIN_PERMISSION = "craftingstore.admin";
 
     @Override
     public void onEnable() {
@@ -22,6 +26,19 @@ public class CraftingStoreBukkit extends JavaPlugin {
         this.getCommand("craftingstore").setExecutor(new CraftingStoreCommand(this));
         this.getCommand("buy").setExecutor(new BuyCommand(this));
         this.getServer().getPluginManager().registerEvents(new InventoryListener(this), this);
+        this.getServer().getPluginManager().registerEvents(new JoinListener(this), this);
+
+        // PlaceholderAPI hook
+        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            new PlaceholderAPIHook(craftingStore);
+            craftingStore.getLogger().info("Hooked with PlaceholderAPI");
+        }
+    }
+
+    @Override
+    public void onDisable() {
+        craftingStore.setEnabled(false);
+        craftingStore.getProviderSelector().disconnect();
     }
 
     public CraftingStore getCraftingStore() {

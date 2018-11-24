@@ -21,6 +21,9 @@ public abstract class CraftingStoreProvider {
 
     public void disconnected() {
         craftingStore.getLogger().info("Disconnected from provider " + information.getType());
+        if (!craftingStore.isEnabled()) {
+            return;
+        }
         this.status.setRetries(this.status.getRetries() + 1);
         this.status.setLastFailed(System.currentTimeMillis());
         this.craftingStore.getProviderSelector().selectProvider();

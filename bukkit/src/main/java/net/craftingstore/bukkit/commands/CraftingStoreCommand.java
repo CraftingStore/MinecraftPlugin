@@ -38,8 +38,8 @@ public class CraftingStoreCommand implements CommandExecutor {
         }
 
         sender.sendMessage(ChatColor.GRAY + "" +ChatColor.STRIKETHROUGH + "-----------------------");
-        sender.sendMessage(ChatColor.DARK_GRAY + ">" + ChatColor.GRAY + " /cs reload" + ChatColor.DARK_GRAY + " -> " + ChatColor.GRAY + "Reload the config.");
-        sender.sendMessage(ChatColor.DARK_GRAY + ">" + ChatColor.GRAY + " /cs key <your key>" + ChatColor.DARK_GRAY + " -> " + ChatColor.GRAY + "Update the key.");
+        sender.sendMessage(ChatColor.DARK_GRAY + ">" + ChatColor.GRAY + " /" + label + " reload" + ChatColor.DARK_GRAY + " -> " + ChatColor.GRAY + "Reload the config.");
+        sender.sendMessage(ChatColor.DARK_GRAY + ">" + ChatColor.GRAY + " /" + label + " key <your key>" + ChatColor.DARK_GRAY + " -> " + ChatColor.GRAY + "Update the key.");
         sender.sendMessage(ChatColor.GRAY + "" +ChatColor.STRIKETHROUGH + "-----------------------");
         return true;
     }
