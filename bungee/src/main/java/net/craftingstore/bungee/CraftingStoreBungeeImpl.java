@@ -26,7 +26,7 @@ public class CraftingStoreBungeeImpl implements CraftingStorePlugin {
             }
         }
 
-        final DonationReceivedEvent event = new DonationReceivedEvent(donation);
+        DonationReceivedEvent event = new DonationReceivedEvent(donation);
         proxy.getPluginManager().callEvent(event);
         if (event.isCancelled()) {
             return false;

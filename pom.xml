@@ -13,6 +13,7 @@
         <module>bukkit</module>
         <module>bungee</module>
         <module>test</module>
+        <module>sponge</module>
     </modules>
 
     <dependencies>
@@ -25,6 +26,12 @@
         <dependency>
             <groupId>net.craftingstore</groupId>
             <artifactId>bungee</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.craftingstore</groupId>
+            <artifactId>sponge</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
