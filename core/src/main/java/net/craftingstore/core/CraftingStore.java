@@ -20,6 +20,7 @@ public class CraftingStore {
     private ProviderSelector selector;
     private CraftingStoreInformation information;
     private boolean enabled = false;
+    public final String ADMIN_PERMISSION = "craftingstore.admin";
 
     public CraftingStore(CraftingStorePlugin implementation) {
         this.plugin = implementation;

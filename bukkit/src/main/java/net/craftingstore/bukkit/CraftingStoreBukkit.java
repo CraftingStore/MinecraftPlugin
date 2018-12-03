@@ -17,7 +17,6 @@ public class CraftingStoreBukkit extends JavaPlugin {
     private CraftingStore craftingStore;
     private Config config;
     private String prefix = ChatColor.GRAY + "[" + ChatColor.RED + "CraftingStore" + ChatColor.GRAY + "] " + ChatColor.WHITE;
-    public final String ADMIN_PERMISSION = "craftingstore.admin";
 
     @Override
     public void onEnable() {

@@ -16,7 +16,7 @@ public class CraftingStoreCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!sender.hasPermission("craftingstore.admin")) {
+        if (!sender.hasPermission(instance.getCraftingStore().ADMIN_PERMISSION)) {
             sender.sendMessage(instance.getPrefix() + "You don't have the required permission!");
             return false;
         }

@@ -133,10 +133,16 @@ public class CraftingStoreAPIImpl extends CraftingStoreAPI {
     }
 
     private HttpRequest getHttpRequest(String endpoint) {
-        return new HttpRequest(HttpMethod.GET, BASE_URL + endpoint).header("token", this.token);
+        return new HttpRequest(HttpMethod.GET, BASE_URL + endpoint)
+                .header("token", this.token)
+                .header("version", this.instance.getImplementation().getVersion())
+                .header("platform", this.instance.getImplementation().getPlatform());
     }
 
     private HttpRequestWithBody getHttpRequestWithBody(String endpoint) {
-        return new HttpRequestWithBody(HttpMethod.POST, BASE_URL + endpoint).header("token", this.token);
+        return new HttpRequestWithBody(HttpMethod.POST, BASE_URL + endpoint)
+                .header("token", this.token)
+                .header("version", this.instance.getImplementation().getVersion())
+                .header("platform", this.instance.getImplementation().getPlatform());
     }
 }

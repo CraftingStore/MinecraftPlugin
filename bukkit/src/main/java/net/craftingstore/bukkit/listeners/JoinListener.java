@@ -18,7 +18,7 @@ public class JoinListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
-        if (!p.hasPermission(instance.ADMIN_PERMISSION)) {
+        if (!p.hasPermission(instance.getCraftingStore().ADMIN_PERMISSION)) {
             return;
         }
         UpdateInformation update = instance.getCraftingStore().getInformation().getUpdateInformation();

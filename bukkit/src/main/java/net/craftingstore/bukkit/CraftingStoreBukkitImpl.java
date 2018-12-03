@@ -58,6 +58,6 @@ public class CraftingStoreBukkitImpl implements CraftingStorePlugin {
 
     @Override
     public String getPlatform() {
-        return bukkitPlugin.getServer().getBukkitVersion();
+        return bukkitPlugin.getServer().getVersion();
     }
 }
