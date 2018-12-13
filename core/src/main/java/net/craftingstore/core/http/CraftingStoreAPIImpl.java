@@ -16,13 +16,18 @@ import net.craftingstore.core.models.api.provider.ProviderInformation;
 import net.craftingstore.core.models.donation.Donation;
 import net.craftingstore.core.models.donation.DonationPackage;
 import net.craftingstore.core.models.donation.DonationPlayer;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.client.methods.RequestBuilder;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class CraftingStoreAPIImpl extends CraftingStoreAPI {
 
@@ -42,10 +47,12 @@ public class CraftingStoreAPIImpl extends CraftingStoreAPI {
 
     public CraftingStoreInformation getInformation() throws CraftingStoreApiException {
         try {
-            RequestBuilder requestBuilder = post("info");
-            requestBuilder.addParameter("version", instance.getImplementation().getVersion());
-            requestBuilder.addParameter("platform", instance.getImplementation().getPlatform());
-            return httpClient.execute(requestBuilder.build(), new JsonResponseHandler<>(gson, CraftingStoreInformation.class));
+            HttpPost request = post("info");
+            List<NameValuePair> params = new ArrayList<>();
+            params.add(new BasicNameValuePair("version", instance.getImplementation().getVersion()));
+            params.add(new BasicNameValuePair("platform", instance.getImplementation().getPlatform()));
+            request.setEntity(new UrlEncodedFormEntity(params));
+            return httpClient.execute(request, new JsonResponseHandler<>(gson, CraftingStoreInformation.class));
         } catch (IOException e) {
             throw new CraftingStoreApiException("Info call failed", e);
         }
@@ -74,9 +81,11 @@ public class CraftingStoreAPIImpl extends CraftingStoreAPI {
 
     public void completeDonations(int[] ids) throws CraftingStoreApiException {
         try {
-            RequestBuilder requestBuilder = post("queue/markComplete");
-            requestBuilder.addParameter("removeIds", gson.toJson(ids));
-            httpClient.execute(requestBuilder.build());
+            HttpPost request = post("queue/markComplete");
+            List<NameValuePair> params = new ArrayList<>();
+            params.add(new BasicNameValuePair("removeIds", gson.toJson(ids)));
+            request.setEntity(new UrlEncodedFormEntity(params));
+            httpClient.execute(request);
         } catch (IOException e) {
             throw new CraftingStoreApiException("Complete Donations call failed", e);
         }
@@ -115,18 +124,19 @@ public class CraftingStoreAPIImpl extends CraftingStoreAPI {
         }
     }
 
-    private HttpUriRequest get(String endpoint) {
-        return RequestBuilder.get(BASE_URL + endpoint)
-                .addHeader("token", this.token)
-                .addHeader("version", this.instance.getImplementation().getVersion())
-                .addHeader("platform", this.instance.getImplementation().getPlatform())
-                .build();
+    private HttpGet get(String endpoint) {
+        HttpGet request = new HttpGet(BASE_URL + endpoint);
+        request.addHeader("token", this.token);
+        request.addHeader("version", this.instance.getImplementation().getVersion());
+        request.addHeader("platform", this.instance.getImplementation().getPlatform());
+        return request;
     }
 
-    private RequestBuilder post(String endpoint) {
-        return RequestBuilder.post(BASE_URL + endpoint)
-                .addHeader("token", this.token)
-                .addHeader("version", this.instance.getImplementation().getVersion())
-                .addHeader("platform", this.instance.getImplementation().getPlatform());
+    private HttpPost post(String endpoint) {
+        HttpPost request = new HttpPost(BASE_URL + endpoint);
+        request.addHeader("token", this.token);
+        request.addHeader("version", this.instance.getImplementation().getVersion());
+        request.addHeader("platform", this.instance.getImplementation().getPlatform());
+        return request;
     }
 }
