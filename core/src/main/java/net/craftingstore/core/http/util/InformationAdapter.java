@@ -1,4 +1,4 @@
-package net.craftingstore.core.api.util;
+package net.craftingstore.core.http.util;
 
 import com.google.gson.*;
 import net.craftingstore.core.models.api.provider.ProviderInformation;

@@ -1,17 +1,15 @@
 package net.craftingstore.core;
 
-import net.craftingstore.core.api.CraftingStoreCachedAPI;
+import net.craftingstore.core.http.CraftingStoreCachedAPI;
 import net.craftingstore.core.exceptions.CraftingStoreApiException;
 import net.craftingstore.core.jobs.ExecuteDonationsJob;
+import net.craftingstore.core.logging.CraftingStoreLogger;
 import net.craftingstore.core.models.api.Root;
 import net.craftingstore.core.models.api.misc.CraftingStoreInformation;
 import net.craftingstore.core.models.api.misc.UpdateInformation;
 import net.craftingstore.core.models.donation.Donation;
 import net.craftingstore.core.provider.ProviderSelector;
 import net.craftingstore.core.scheduler.*;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class CraftingStore {
 
@@ -52,7 +50,7 @@ public class CraftingStore {
         return this.selector;
     }
 
-    public Logger getLogger() {
+    public CraftingStoreLogger getLogger() {
         return getImplementation().getLogger();
     }
 
@@ -61,7 +59,7 @@ public class CraftingStore {
         try {
             Root keyResult = this.getApi().checkKey();
             if (!keyResult.isSuccess()) {
-                getLogger().log(Level.SEVERE, "API key is invalid. The plugin will not work.");
+                getLogger().error("API key is invalid. The plugin will not work.");
                 setEnabled(false);
                 return false;
             }
@@ -71,7 +69,7 @@ public class CraftingStore {
                 UpdateInformation update = information.getUpdateInformation();
                 getLogger().info(update.getMessage());
                 if (update.shouldDisable()) {
-                    getLogger().log(Level.SEVERE, "Plugin will be disabled until you install the latest update.");
+                    getLogger().error("Plugin will be disabled until you install the latest update.");
                     setEnabled(false);
                     return false;
                 }

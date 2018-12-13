@@ -7,7 +7,6 @@ import net.craftingstore.sponge.commands.CraftingStoreCommand;
 import net.craftingstore.sponge.config.Config;
 import net.craftingstore.sponge.module.ConfigModule;
 import net.craftingstore.sponge.module.CraftingStoreModule;
-import org.slf4j.Logger;
 import org.spongepowered.api.command.CommandManager;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
@@ -23,10 +22,6 @@ import java.nio.file.Path;
 
 @Plugin(id = "craftingstore", name = "CraftingStore", version = "2.0")
 public class CraftingStoreSponge {
-
-    @Inject
-    private Logger logger;
-
     private CraftingStore craftingStore;
 
     @Inject

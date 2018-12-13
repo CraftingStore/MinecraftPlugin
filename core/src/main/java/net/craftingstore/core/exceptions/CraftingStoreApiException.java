@@ -1,10 +1,11 @@
 package net.craftingstore.core.exceptions;
 
-import com.mashape.unirest.http.exceptions.UnirestException;
+import java.io.IOException;
 
 public class CraftingStoreApiException extends Exception {
 
-    public CraftingStoreApiException(String s, UnirestException e) {
+    public CraftingStoreApiException(String s, IOException e) {
         super(s, e.getCause());
+        e.printStackTrace();
     }
 }

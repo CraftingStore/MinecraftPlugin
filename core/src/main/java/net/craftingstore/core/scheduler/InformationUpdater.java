@@ -11,6 +11,7 @@ public class InformationUpdater implements Runnable {
     }
 
     public void run() {
+        this.instance.getLogger().debug("Reloading plugin");
         instance.reload();
     }
 }

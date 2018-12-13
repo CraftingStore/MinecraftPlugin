@@ -41,12 +41,12 @@ public class SocketProvider extends CraftingStoreProvider {
             this.client.on(Socket.EVENT_CONNECT_ERROR, (Object... args) -> this.disconnected());
 
             this.client.on("receive-donation", (Object... args) -> {
-                craftingStore.getLogger().info("Received donation from Socket server");
+                craftingStore.getLogger().debug("Received donation from Socket server");
                 this.craftingStore.executeQueue();
             });
             this.client.on("reload-plugin", (Object... args) -> this.craftingStore.reload());
             this.client.connect();
-            craftingStore.getLogger().info("Connecting to CraftingStore websocket at " + information.getUrl());
+            craftingStore.getLogger().debug("Connecting to CraftingStore websocket at " + information.getUrl());
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }

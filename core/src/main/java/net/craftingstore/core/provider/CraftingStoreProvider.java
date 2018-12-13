@@ -20,7 +20,7 @@ public abstract class CraftingStoreProvider {
     public abstract void disconnect();
 
     public void disconnected() {
-        craftingStore.getLogger().info("Disconnected from provider " + information.getType());
+        craftingStore.getLogger().debug("Disconnected from provider " + information.getType());
         if (!craftingStore.isEnabled()) {
             return;
         }

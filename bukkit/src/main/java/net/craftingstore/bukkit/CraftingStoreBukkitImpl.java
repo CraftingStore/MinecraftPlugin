@@ -2,19 +2,21 @@ package net.craftingstore.bukkit;
 
 import net.craftingstore.bukkit.events.DonationReceivedEvent;
 import net.craftingstore.core.CraftingStorePlugin;
-import net.craftingstore.core.models.api.inventory.CraftingStoreInventory;
+import net.craftingstore.core.logging.CraftingStoreLogger;
+import net.craftingstore.core.logging.impl.JavaLogger;
 import net.craftingstore.core.models.donation.Donation;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 
-import java.util.logging.Logger;
-
 public class CraftingStoreBukkitImpl implements CraftingStorePlugin {
 
     private CraftingStoreBukkit bukkitPlugin;
+    private JavaLogger logger;
 
-    public CraftingStoreBukkitImpl(CraftingStoreBukkit bukkitPlugin) {
+    CraftingStoreBukkitImpl(CraftingStoreBukkit bukkitPlugin) {
         this.bukkitPlugin = bukkitPlugin;
+        this.logger = new JavaLogger(bukkitPlugin.getLogger());
+        this.logger.setDebugging(bukkitPlugin.getConfig().getBoolean("debug", false));
     }
 
     public boolean executeDonation(Donation donation) {
@@ -35,12 +37,8 @@ public class CraftingStoreBukkitImpl implements CraftingStorePlugin {
         return true;
     }
 
-    public Logger getLogger() {
-        return bukkitPlugin.getLogger();
-    }
-
-    public void disable() {
-        bukkitPlugin.getPluginLoader().disablePlugin(bukkitPlugin);
+    public CraftingStoreLogger getLogger() {
+        return this.logger;
     }
 
     public void registerRunnable(Runnable runnable, int delay, int interval) {

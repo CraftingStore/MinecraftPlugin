@@ -1,7 +1,7 @@
 package net.craftingstore.core.scheduler;
 
 import net.craftingstore.core.CraftingStore;
-import net.craftingstore.core.api.CraftingStoreCachedAPI;
+import net.craftingstore.core.http.CraftingStoreCachedAPI;
 import net.craftingstore.core.exceptions.CraftingStoreApiException;
 
 public class InventoryRenewer implements Runnable {

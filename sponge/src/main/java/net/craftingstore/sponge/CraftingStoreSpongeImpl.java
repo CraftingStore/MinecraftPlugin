@@ -2,9 +2,11 @@ package net.craftingstore.sponge;
 
 import com.google.inject.Inject;
 import net.craftingstore.core.CraftingStorePlugin;
+import net.craftingstore.core.logging.CraftingStoreLogger;
 import net.craftingstore.core.models.donation.Donation;
 import net.craftingstore.sponge.config.Config;
 import net.craftingstore.sponge.events.DonationReceivedEvent;
+import net.craftingstore.sponge.logging.Slf4jLogger;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.Platform;
 import org.spongepowered.api.entity.living.player.Player;
@@ -26,6 +28,14 @@ public class CraftingStoreSpongeImpl implements CraftingStorePlugin {
     @Inject
     private PluginContainer pluginContainer;
 
+    private Slf4jLogger logger;
+
+    @Inject
+    private void setLogger(Slf4jLogger logger) {
+        this.logger = logger;
+        this.logger.setDebugging(this.config.getConfig().getNode("debug").getBoolean());
+    }
+
     public boolean executeDonation(Donation donation) {
         if (donation.getPlayer().isRequiredOnline()) {
             Player player = game.getServer().getPlayer(donation.getPlayer().getUsername()).orElse(null);
@@ -46,12 +56,8 @@ public class CraftingStoreSpongeImpl implements CraftingStorePlugin {
         return true;
     }
 
-    public java.util.logging.Logger getLogger() {
-        return java.util.logging.Logger.getLogger("CraftingStore");
-    }
-
-    public void disable() {
-        // Not possible in Sponge
+    public CraftingStoreLogger getLogger() {
+        return this.logger;
     }
 
     public void registerRunnable(Runnable runnable, int delay, int interval) {

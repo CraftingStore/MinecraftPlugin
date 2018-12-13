@@ -1,7 +1,8 @@
 package net.craftingstore;
 
 import net.craftingstore.core.CraftingStorePlugin;
-import net.craftingstore.core.models.api.inventory.CraftingStoreInventory;
+import net.craftingstore.core.logging.CraftingStoreLogger;
+import net.craftingstore.core.logging.impl.JavaLogger;
 import net.craftingstore.core.models.donation.Donation;
 
 import java.util.Timer;
@@ -21,16 +22,8 @@ public class TestImpl implements CraftingStorePlugin {
         return true;
     }
 
-    public void openInventory(CraftingStoreInventory inventory) {
-
-    }
-
-    public Logger getLogger() {
-        return Logger.getLogger("Test Logger");
-    }
-
-    public void disable() {
-        timer.cancel();
+    public CraftingStoreLogger getLogger() {
+        return new JavaLogger(Logger.getLogger("Test Logger"));
     }
 
     public void registerRunnable(final Runnable runnable, int delay, int interval) {

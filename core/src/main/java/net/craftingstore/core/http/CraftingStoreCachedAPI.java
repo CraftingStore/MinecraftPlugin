@@ -1,4 +1,4 @@
-package net.craftingstore.core.api;
+package net.craftingstore.core.http;
 
 import net.craftingstore.core.CraftingStore;
 import net.craftingstore.core.exceptions.CraftingStoreApiException;

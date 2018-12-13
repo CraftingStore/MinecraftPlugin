@@ -46,7 +46,7 @@ public class ProviderSelector {
                 .sorted(Comparator.comparingInt(p -> p.getInformation().getPriority()))
                 .collect(Collectors.toList());
         if (availableProviders.size() == 0) {
-            instance.getLogger().info("No providers available");
+            instance.getLogger().debug("No providers available");
             return null;
         }
         ProviderStatus status = availableProviders.get(0);
