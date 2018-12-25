@@ -5,6 +5,8 @@ import net.craftingstore.core.exceptions.CraftingStoreApiException;
 import net.craftingstore.core.jobs.ExecuteDonationsJob;
 import net.craftingstore.core.models.donation.Donation;
 
+import java.util.concurrent.ExecutionException;
+
 public class DonationChecker implements Runnable {
 
     private CraftingStore instance;
@@ -27,9 +29,9 @@ public class DonationChecker implements Runnable {
         }
         lastRun = System.currentTimeMillis();
         try {
-            Donation[] donationQueue = instance.getApi().getDonationQueue();
+            Donation[] donationQueue = instance.getApi().getDonationQueue().get();
             new ExecuteDonationsJob(instance, donationQueue);
-        } catch (CraftingStoreApiException e) {
+        } catch (CraftingStoreApiException | InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
     }

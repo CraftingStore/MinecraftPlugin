@@ -11,6 +11,8 @@ public interface CraftingStorePlugin {
 
     void registerRunnable(Runnable runnable, int delay, int interval);
 
+    void runAsyncTask(Runnable runnable);
+
     String getToken();
 
     String getVersion();

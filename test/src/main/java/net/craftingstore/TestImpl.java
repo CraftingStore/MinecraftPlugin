@@ -37,6 +37,11 @@ public class TestImpl implements CraftingStorePlugin {
         }, delay * 1000, interval * 1000);
     }
 
+    public void runAsyncTask(Runnable runnable) {
+        getLogger().info("Executing runnable instantly");
+        runnable.run();
+    }
+
     public String getToken() {
         return null;
     }

@@ -3,6 +3,7 @@ package net.craftingstore.sponge.commands;
 import com.google.inject.Inject;
 import net.craftingstore.core.CraftingStore;
 import net.craftingstore.sponge.CraftingStoreSponge;
+import org.spongepowered.api.Game;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
@@ -13,6 +14,7 @@ import org.spongepowered.api.text.format.TextStyles;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 
 public class CraftingStoreCommand implements CommandExecutor {
 
@@ -21,6 +23,9 @@ public class CraftingStoreCommand implements CommandExecutor {
 
     @Inject
     private CraftingStoreSponge spongePlugin;
+
+    @Inject
+    private Game game;
 
     @Override
     public CommandResult execute(@Nonnull CommandSource src, @Nonnull CommandContext args) {
@@ -31,7 +36,7 @@ public class CraftingStoreCommand implements CommandExecutor {
             craftingStore.reload();
 
             src.sendMessage(spongePlugin.getPrefix().toBuilder()
-                    .append(Text.builder("The plugin has been reloaded!").build())
+                    .append(Text.builder("The plugin is reloading!").build())
                     .build());
 
             return CommandResult.success();
@@ -39,16 +44,21 @@ public class CraftingStoreCommand implements CommandExecutor {
             spongePlugin.getConfigWrapper().getConfig().getNode("api-key").setValue(key.get());
             spongePlugin.getConfigWrapper().saveConfig();
 
-            if (craftingStore.reload()) {
-                src.sendMessage(spongePlugin.getPrefix().toBuilder()
-                        .append(Text.builder("The new API key has been set in the config, and the plugin has been reloaded.").build())
-                        .build());
-            } else {
-                src.sendMessage(spongePlugin.getPrefix().toBuilder()
-                        .append(Text.builder("The API key is invalid. The plugin will not work until you set a valid API key.").build())
-                        .build());
-            }
-
+            game.getScheduler().createTaskBuilder().execute(() -> {
+                try {
+                    if (craftingStore.reload().get()) {
+                        src.sendMessage(spongePlugin.getPrefix().toBuilder()
+                                .append(Text.builder("The new API key has been set in the config, and the plugin has been reloaded.").build())
+                                .build());
+                    } else {
+                        src.sendMessage(spongePlugin.getPrefix().toBuilder()
+                                .append(Text.builder("The API key is invalid. The plugin will not work until you set a valid API key.").build())
+                                .build());
+                    }
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                }
+            }).async().submit(spongePlugin);
             return CommandResult.success();
         }
 

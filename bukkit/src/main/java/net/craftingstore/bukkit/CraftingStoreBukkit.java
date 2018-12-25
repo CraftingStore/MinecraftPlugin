@@ -37,7 +37,6 @@ public class CraftingStoreBukkit extends JavaPlugin {
     @Override
     public void onDisable() {
         craftingStore.setEnabled(false);
-        craftingStore.getProviderSelector().disconnect();
     }
 
     public CraftingStore getCraftingStore() {

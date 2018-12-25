@@ -25,7 +25,6 @@ public class CraftingStoreBungee extends Plugin {
     @Override
     public void onDisable() {
         craftingStore.setEnabled(false);
-        craftingStore.getProviderSelector().disconnect();
     }
 
     public Configuration getConfig() {

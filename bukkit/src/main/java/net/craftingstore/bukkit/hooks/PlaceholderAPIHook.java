@@ -8,6 +8,7 @@ import net.craftingstore.core.models.api.ApiPayment;
 import net.craftingstore.core.models.api.ApiTopDonator;
 import org.bukkit.entity.Player;
 
+import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,19 +29,20 @@ public class PlaceholderAPIHook extends PlaceholderHook {
             } else if (s.startsWith("payment")) {
                 return handlePayments(player, s);
             }
-        } catch (CraftingStoreApiException e) {
+        } catch (CraftingStoreApiException | ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
 
         return null;
     }
 
-    private String handleDonators(Player player, String s) throws CraftingStoreApiException {
-        if (instance.getApi().getTopDonators() == null) {
+    private String handleDonators(Player player, String s) throws CraftingStoreApiException, ExecutionException, InterruptedException {
+        ApiTopDonator[] topDonators = instance.getApi().getTopDonators().get();
+        if (topDonators == null) {
             return null; // Donators are not retrieved yet.
         } else if (s.equalsIgnoreCase("donator")) {
             StringBuilder builder = new StringBuilder();
-            for (ApiTopDonator donator : instance.getApi().getTopDonators()) {
+            for (ApiTopDonator donator : topDonators) {
                 builder.append(donator.getUsername()).append(": ").append(donator.getTotal()).append(", ");
             }
             builder.substring(0, builder.length() - 2); // Remove the last ', ' from the string
@@ -50,9 +52,9 @@ public class PlaceholderAPIHook extends PlaceholderHook {
             Matcher matcher = pattern.matcher(s);
             if (matcher.matches()) {
                 int id = Integer.parseInt(matcher.group(1));
-                if (instance.getApi().getTopDonators().length >= id) {
+                if (topDonators.length >= id) {
                     id--; // Zero based array
-                    ApiTopDonator donator = instance.getApi().getTopDonators()[id];
+                    ApiTopDonator donator = topDonators[id];
                     return donator.getUsername() + ": " + donator.getTotal();
                 }
             }
@@ -60,12 +62,13 @@ public class PlaceholderAPIHook extends PlaceholderHook {
         return null;
     }
 
-    private String handlePayments(Player player, String s) throws CraftingStoreApiException {
-        if (instance.getApi().getPayments() == null) {
+    private String handlePayments(Player player, String s) throws CraftingStoreApiException, ExecutionException, InterruptedException {
+        ApiPayment[] payments = instance.getApi().getPayments().get();
+        if (payments == null) {
             return null; // Recent payments are not retrieved yet.
         } else if (s.equalsIgnoreCase("payment")) {
             StringBuilder builder = new StringBuilder();
-            for (ApiPayment payment : instance.getApi().getPayments()) {
+            for (ApiPayment payment : payments) {
                 builder.append(payment.getUsername()).append(": ").append(payment.getPackageName()).append(", ");
             }
             builder.substring(0, builder.length() - 2); // Remove the last ', ' from the string
@@ -75,9 +78,9 @@ public class PlaceholderAPIHook extends PlaceholderHook {
             Matcher matcher = pattern.matcher(s);
             if (matcher.matches()) {
                 int id = Integer.parseInt(matcher.group(1));
-                if (instance.getApi().getPayments().length >= id) {
+                if (payments.length >= id) {
                     id--; // Zero based array
-                    ApiPayment payment = instance.getApi().getPayments()[id];
+                    ApiPayment payment = payments[id];
                     return payment.getUsername() + ": " + payment.getPackageName();
                 }
             }

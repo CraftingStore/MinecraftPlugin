@@ -13,6 +13,7 @@ import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.config.DefaultConfig;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
+import org.spongepowered.api.event.game.state.GameStoppedServerEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.text.LiteralText;
 import org.spongepowered.api.text.Text;
@@ -58,6 +59,11 @@ public class CraftingStoreSponge {
                 .executor(injector.getInstance(CraftingStoreCommand.class))
                 .build();
         commandManager.register(this, craftingStoreCommand, "craftingstore", "cs");
+    }
+
+    @Listener
+    public void onServerStopped(GameStoppedServerEvent event) {
+        this.craftingStore.setEnabled(false);
     }
 
     public Config getConfigWrapper() {

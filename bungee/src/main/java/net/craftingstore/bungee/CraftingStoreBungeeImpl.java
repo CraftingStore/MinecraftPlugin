@@ -48,6 +48,10 @@ public class CraftingStoreBungeeImpl implements CraftingStorePlugin {
         bungeePlugin.getProxy().getScheduler().schedule(bungeePlugin, runnable, delay, interval, TimeUnit.SECONDS);
     }
 
+    public void runAsyncTask(Runnable runnable) {
+        bungeePlugin.getProxy().getScheduler().runAsync(bungeePlugin, runnable);
+    }
+
     public String getToken() {
         return bungeePlugin.getConfig().getString("api-key");
     }

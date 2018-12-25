@@ -6,6 +6,8 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.plugin.Command;
 
+import java.util.concurrent.ExecutionException;
+
 public class CraftingStoreCommand extends Command {
 
     private CraftingStoreBungee instance;
@@ -23,18 +25,23 @@ public class CraftingStoreCommand extends Command {
         }
         if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
             instance.getCraftingStore().reload();
-            sender.sendMessage(new TextComponent(instance.getPrefix() + "The plugin has been reloaded!"));
+            sender.sendMessage(new TextComponent(instance.getPrefix() + "The plugin is reloading!"));
             return;
         }
         if (args.length == 2 && args[0].equalsIgnoreCase("key")) {
             instance.getConfig().set("api-key", args[1]);
             instance.getConfigWrapper().saveConfig();
-
-            if (instance.getCraftingStore().reload()) {
-                sender.sendMessage(new TextComponent(instance.getPrefix() + "The new API key has been set in the config, and the plugin has been reloaded."));
-            } else {
-                sender.sendMessage(new TextComponent(instance.getPrefix() + "The API key is invalid. The plugin will not work until you set a valid API key."));
-            }
+            instance.getProxy().getScheduler().runAsync(instance, () -> {
+                try {
+                    if (instance.getCraftingStore().reload().get()) {
+                        sender.sendMessage(new TextComponent(instance.getPrefix() + "The new API key has been set in the config, and the plugin has been reloaded."));
+                    } else {
+                        sender.sendMessage(new TextComponent(instance.getPrefix() + "The API key is invalid. The plugin will not work until you set a valid API key."));
+                    }
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                }
+            });
             return;
         }
 

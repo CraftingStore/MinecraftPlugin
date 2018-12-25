@@ -69,6 +69,13 @@ public class CraftingStoreSpongeImpl implements CraftingStorePlugin {
                 .submit(spongePlugin);
     }
 
+    public void runAsyncTask(Runnable runnable) {
+        game.getScheduler().createTaskBuilder()
+                .execute(runnable)
+                .async()
+                .submit(spongePlugin);
+    }
+
     public String getToken() {
         return config.getConfig().getNode("api-key").getString();
     }

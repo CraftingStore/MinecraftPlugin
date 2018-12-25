@@ -7,6 +7,8 @@ import net.craftingstore.core.models.api.ApiTopDonator;
 import net.craftingstore.core.models.api.inventory.CraftingStoreInventory;
 
 import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 public class CraftingStoreCachedAPI extends CraftingStoreAPIImpl {
 
@@ -17,41 +19,47 @@ public class CraftingStoreCachedAPI extends CraftingStoreAPIImpl {
     }
 
     @Override
-    public CraftingStoreInventory getGUI() throws CraftingStoreApiException {
-        String key = "plugin/inventory";
-        if (!cache.containsKey(key)) {
-            cache.put(key, super.getGUI());
-        }
-        return (CraftingStoreInventory) cache.get(key);
+    public Future<CraftingStoreInventory> getGUI() throws CraftingStoreApiException {
+        return executor.submit(() -> {
+            String key = "plugin/inventory";
+            if (!cache.containsKey(key)) {
+                cache.put(key, super.getGUI().get());
+            }
+            return (CraftingStoreInventory) cache.get(key);
+        });
     }
 
     @Override
-    public ApiTopDonator[] getTopDonators() throws CraftingStoreApiException {
-        String key = "buyers/top";
-        if (!cache.containsKey(key)) {
-            cache.put(key, super.getTopDonators());
-        }
-        return (ApiTopDonator[]) cache.get(key);
+    public Future<ApiTopDonator[]> getTopDonators() throws CraftingStoreApiException {
+        return executor.submit(() -> {
+            String key = "buyers/top";
+            if (!cache.containsKey(key)) {
+                cache.put(key, super.getTopDonators().get());
+            }
+            return (ApiTopDonator[]) cache.get(key);
+        });
     }
 
     @Override
-    public ApiPayment[] getPayments() throws CraftingStoreApiException {
-        String key = "buyers/recent";
-        if (!cache.containsKey(key)) {
-            cache.put(key, super.getPayments());
-        }
-        return (ApiPayment[]) cache.get(key);
+    public Future<ApiPayment[]> getPayments() throws CraftingStoreApiException {
+        return executor.submit(() -> {
+            String key = "buyers/recent";
+            if (!cache.containsKey(key)) {
+                cache.put(key, super.getPayments().get());
+            }
+            return (ApiPayment[]) cache.get(key);
+        });
     }
 
-    public void refreshGUICache() throws CraftingStoreApiException {
-        cache.put("plugin/inventory", super.getGUI());
+    public void refreshGUICache() throws CraftingStoreApiException, ExecutionException, InterruptedException {
+        cache.put("plugin/inventory", super.getGUI().get());
     }
 
-    public void refreshTopDonatorsCache() throws CraftingStoreApiException {
-        cache.put("buyers/top", super.getTopDonators());
+    public void refreshTopDonatorsCache() throws CraftingStoreApiException, ExecutionException, InterruptedException {
+        cache.put("buyers/top", super.getTopDonators().get());
     }
 
-    public void refreshPaymentsCache() throws CraftingStoreApiException {
-        cache.put("buyers/recent", super.getPayments());
+    public void refreshPaymentsCache() throws CraftingStoreApiException, ExecutionException, InterruptedException {
+        cache.put("buyers/recent", super.getPayments().get());
     }
 }

@@ -45,6 +45,10 @@ public class CraftingStoreBukkitImpl implements CraftingStorePlugin {
         bukkitPlugin.getServer().getScheduler().runTaskTimerAsynchronously(bukkitPlugin, runnable, delay * 20, interval * 20);
     }
 
+    public void runAsyncTask(Runnable runnable) {
+        bukkitPlugin.getServer().getScheduler().runTaskAsynchronously(bukkitPlugin, runnable);
+    }
+
     public String getToken() {
         return bukkitPlugin.getConfig().getString("api-key");
     }

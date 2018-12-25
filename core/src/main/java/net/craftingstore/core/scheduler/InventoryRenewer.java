@@ -4,6 +4,8 @@ import net.craftingstore.core.CraftingStore;
 import net.craftingstore.core.http.CraftingStoreCachedAPI;
 import net.craftingstore.core.exceptions.CraftingStoreApiException;
 
+import java.util.concurrent.ExecutionException;
+
 public class InventoryRenewer implements Runnable {
 
     private CraftingStore instance;
@@ -23,7 +25,7 @@ public class InventoryRenewer implements Runnable {
         CraftingStoreCachedAPI api = (CraftingStoreCachedAPI) instance.getApi();
         try {
             api.refreshGUICache();
-        } catch (CraftingStoreApiException e) {
+        } catch (CraftingStoreApiException | ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
     }

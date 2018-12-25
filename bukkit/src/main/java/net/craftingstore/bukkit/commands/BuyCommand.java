@@ -4,11 +4,14 @@ import net.craftingstore.bukkit.CraftingStoreBukkit;
 import net.craftingstore.bukkit.inventory.InventoryBuilder;
 import net.craftingstore.core.exceptions.CraftingStoreApiException;
 import net.craftingstore.core.models.api.inventory.CraftingStoreInventory;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+
+import java.util.concurrent.ExecutionException;
 
 public class BuyCommand implements CommandExecutor {
 
@@ -28,14 +31,18 @@ public class BuyCommand implements CommandExecutor {
             return false;
         }
         Player p = (Player) sender;
-        InventoryBuilder builder = new InventoryBuilder();
-        try {
-            CraftingStoreInventory gui = instance.getCraftingStore().getApi().getGUI();
-            Inventory inventory = builder.buildInventory(gui);
-            p.openInventory(inventory);
-        } catch (CraftingStoreApiException e) {
-            e.printStackTrace();
-        }
+        Bukkit.getScheduler().runTaskAsynchronously(instance, () -> {
+            try {
+                InventoryBuilder builder = new InventoryBuilder();
+                CraftingStoreInventory gui = instance.getCraftingStore().getApi().getGUI().get();
+                Inventory inventory = builder.buildInventory(gui);
+                if (p.isOnline()) {
+                    p.openInventory(inventory);
+                }
+            } catch (CraftingStoreApiException | InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+        });
         return true;
     }
 }
