@@ -24,6 +24,7 @@ public class APICacheRenewer implements Runnable {
             return;
         }
         CraftingStoreCachedAPI api = (CraftingStoreCachedAPI) instance.getApi();
+        this.instance.getLogger().debug("Refreshing API cache.");
         try {
             api.refreshPaymentsCache();
             api.refreshTopDonatorsCache();

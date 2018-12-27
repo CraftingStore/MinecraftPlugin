@@ -28,6 +28,7 @@ public class DonationChecker implements Runnable {
             }
         }
         lastRun = System.currentTimeMillis();
+        this.instance.getLogger().debug("Checking for donations.");
         try {
             Donation[] donationQueue = instance.getApi().getDonationQueue().get();
             new ExecuteDonationsJob(instance, donationQueue);

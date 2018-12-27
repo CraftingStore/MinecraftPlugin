@@ -17,6 +17,7 @@ public class ProviderChecker implements Runnable {
         }
         if (instance.getProviderSelector().getCurrentProvider() == null ||
                 !instance.getProviderSelector().getCurrentProvider().isConnected()) {
+            instance.getLogger().debug("Reconnecting to a provider.");
             instance.getProviderSelector().selectProvider();
         }
     }

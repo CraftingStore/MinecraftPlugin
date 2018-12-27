@@ -16,14 +16,17 @@ import net.craftingstore.core.models.api.provider.ProviderInformation;
 import net.craftingstore.core.models.donation.Donation;
 import net.craftingstore.core.models.donation.DonationPackage;
 import net.craftingstore.core.models.donation.DonationPlayer;
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -96,7 +99,8 @@ public class CraftingStoreAPIImpl extends CraftingStoreAPI {
                 List<NameValuePair> params = new ArrayList<>();
                 params.add(new BasicNameValuePair("removeIds", gson.toJson(ids)));
                 request.setEntity(new UrlEncodedFormEntity(params));
-                httpClient.execute(request);
+                HttpResponse response = httpClient.execute(request);
+                EntityUtils.consumeQuietly(response.getEntity());
             } catch (IOException e) {
                 instance.getLogger().error("Complete Donations call failed");
                 e.printStackTrace();
@@ -147,17 +151,28 @@ public class CraftingStoreAPIImpl extends CraftingStoreAPI {
 
     private HttpGet get(String endpoint) {
         HttpGet request = new HttpGet(BASE_URL + endpoint);
+        request.setConfig(RequestConfig.custom()
+                .setSocketTimeout(10000)
+                .setConnectTimeout(10000)
+                .setConnectionRequestTimeout(10000)
+                .build());
         addHeaders(request);
         return request;
     }
 
     private HttpPost post(String endpoint) {
         HttpPost request = new HttpPost(BASE_URL + endpoint);
+        request.setConfig(RequestConfig.custom()
+                .setSocketTimeout(10000)
+                .setConnectTimeout(10000)
+                .setConnectionRequestTimeout(10000)
+                .build());
         addHeaders(request);
         return request;
     }
 
     private void addHeaders(HttpUriRequest request) {
+        this.instance.getLogger().debug(request.getMethod() + " -> " + request.getURI());
         request.addHeader("token", this.token);
         request.addHeader("version", this.instance.getImplementation().getVersion());
         request.addHeader("platform", this.instance.getImplementation().getPlatform());

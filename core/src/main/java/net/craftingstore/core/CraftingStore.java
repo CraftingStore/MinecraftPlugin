@@ -104,6 +104,7 @@ public class CraftingStore {
     }
 
     public void executeQueue() {
+        this.getLogger().debug("Executing donation queue.");
         this.getImplementation().runAsyncTask(() -> {
             try {
                 Donation[] donationQueue = this.getApi().getDonationQueue().get();
