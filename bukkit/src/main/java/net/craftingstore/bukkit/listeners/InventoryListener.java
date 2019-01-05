@@ -26,6 +26,10 @@ public class InventoryListener implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent e) {
+        // Fix "Negative, non outside slot -1" error.
+        if (e.getRawSlot() < 0) {
+            return;
+        }
         if (e.getClickedInventory() == null
                 || e.getClickedInventory().getHolder() == null
                 || !(e.getClickedInventory().getHolder() instanceof CraftingStoreInventoryHolder)) {

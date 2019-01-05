@@ -7,7 +7,7 @@ import net.craftingstore.sponge.commands.CraftingStoreCommand;
 import net.craftingstore.sponge.config.Config;
 import net.craftingstore.sponge.module.ConfigModule;
 import net.craftingstore.sponge.module.CraftingStoreModule;
-import org.spongepowered.api.command.CommandManager;
+import org.spongepowered.api.Game;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.config.DefaultConfig;
@@ -21,9 +21,12 @@ import org.spongepowered.api.text.format.TextColors;
 
 import java.nio.file.Path;
 
-@Plugin(id = "craftingstore", name = "CraftingStore", version = "2.0.2")
+@Plugin(id = "craftingstore", name = "CraftingStore", version = "2.0.3")
 public class CraftingStoreSponge {
     private CraftingStore craftingStore;
+
+    @Inject
+    private Game game;
 
     @Inject
     private Injector injector;
@@ -31,9 +34,6 @@ public class CraftingStoreSponge {
     @Inject
     @DefaultConfig(sharedRoot = false)
     private Path defaultConfig;
-
-    @Inject
-    private CommandManager commandManager;
 
     private Config config;
 
@@ -58,7 +58,7 @@ public class CraftingStoreSponge {
                 )
                 .executor(injector.getInstance(CraftingStoreCommand.class))
                 .build();
-        commandManager.register(this, craftingStoreCommand, "craftingstore", "cs");
+        game.getCommandManager().register(this, craftingStoreCommand, "craftingstore", "cs");
     }
 
     @Listener
