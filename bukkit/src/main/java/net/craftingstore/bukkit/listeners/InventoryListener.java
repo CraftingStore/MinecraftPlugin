@@ -38,7 +38,7 @@ public class InventoryListener implements Listener {
         e.setCancelled(true);
         Player p = (Player) e.getWhoClicked();
         CraftingStoreInventoryHolder holder = (CraftingStoreInventoryHolder) e.getInventory().getHolder();
-        InventoryItem item = holder.getCsInventory().getByIndex(e.getSlot());
+        InventoryItem item = holder.getCsInventory().getByIndex(e.getRawSlot());
         if (item == null) {
             return;
         }
