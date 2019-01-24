@@ -30,14 +30,14 @@ public class InventoryListener implements Listener {
         if (e.getRawSlot() < 0) {
             return;
         }
-        if (e.getClickedInventory() == null
-                || e.getClickedInventory().getHolder() == null
-                || !(e.getClickedInventory().getHolder() instanceof CraftingStoreInventoryHolder)) {
+        if (e.getInventory() == null
+                || e.getInventory().getHolder() == null
+                || !(e.getInventory().getHolder() instanceof CraftingStoreInventoryHolder)) {
             return;
         }
         e.setCancelled(true);
         Player p = (Player) e.getWhoClicked();
-        CraftingStoreInventoryHolder holder = (CraftingStoreInventoryHolder) e.getClickedInventory().getHolder();
+        CraftingStoreInventoryHolder holder = (CraftingStoreInventoryHolder) e.getInventory().getHolder();
         InventoryItem item = holder.getCsInventory().getByIndex(e.getSlot());
         if (item == null) {
             return;
