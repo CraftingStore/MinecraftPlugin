@@ -36,9 +36,11 @@ public class BuyCommand implements CommandExecutor {
                 InventoryBuilder builder = new InventoryBuilder();
                 CraftingStoreInventory gui = instance.getCraftingStore().getApi().getGUI().get();
                 Inventory inventory = builder.buildInventory(gui);
-                if (p.isOnline()) {
-                    p.openInventory(inventory);
-                }
+                Bukkit.getScheduler().runTask(instance, () -> {
+                    if (p.isOnline()) {
+                        p.openInventory(inventory);
+                    }
+                });
             } catch (CraftingStoreApiException | InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }

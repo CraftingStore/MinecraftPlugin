@@ -1,6 +1,7 @@
 package net.craftingstore.bukkit.listeners;
 
 import net.craftingstore.bukkit.CraftingStoreBukkit;
+import net.craftingstore.core.models.api.misc.CraftingStoreInformation;
 import net.craftingstore.core.models.api.misc.UpdateInformation;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,10 +22,15 @@ public class JoinListener implements Listener {
         if (!p.hasPermission(instance.getCraftingStore().ADMIN_PERMISSION)) {
             return;
         }
-        UpdateInformation update = instance.getCraftingStore().getInformation().getUpdateInformation();
-        // Update notification
-        if (update != null) {
-            p.sendMessage(instance.getPrefix() + update.getMessage());
+        CraftingStoreInformation information = instance.getCraftingStore().getInformation();
+        UpdateInformation update = null;
+        if (information != null) {
+            update = information.getUpdateInformation();
+
+            // Update notification
+            if (update != null) {
+                p.sendMessage(instance.getPrefix() + update.getMessage());
+            }
         }
 
         if (!instance.getCraftingStore().isEnabled()) {
