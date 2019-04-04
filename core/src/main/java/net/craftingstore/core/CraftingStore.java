@@ -70,6 +70,11 @@ public class CraftingStore {
         this.getApi().setToken(this.getImplementation().getToken());
         return executor.submit(() -> {
             try {
+                if (this.getApi().token == null || this.getApi().token.isEmpty()) {
+                    getLogger().error("API key not set in the config. You need to set the correct api key using /craftingstore key <key>.");
+                    setEnabled(false);
+                    return false;
+                }
                 Root keyResult = this.getApi().checkKey().get();
                 if (!keyResult.isSuccess()) {
                     getLogger().error("API key is invalid. The plugin will not work.");
