@@ -44,6 +44,18 @@
                                     <pattern>org.json</pattern>
                                     <shadedPattern>net.craftingstore.libraries.json</shadedPattern>
                                 </relocation>
+                                <relocation>
+                                    <pattern>io.socket</pattern>
+                                    <shadedPattern>net.craftingstore.libraries.socket</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>okhttp3</pattern>
+                                    <shadedPattern>net.craftingstore.libraries.okhttp3</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>okio</pattern>
+                                    <shadedPattern>net.craftingstore.libraries.okio</shadedPattern>
+                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>
