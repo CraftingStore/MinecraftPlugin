@@ -40,6 +40,10 @@
                                     <pattern>org.apache</pattern>
                                     <shadedPattern>net.craftingstore.libraries.apache</shadedPattern>
                                 </relocation>
+                                <relocation>
+                                    <pattern>org.json</pattern>
+                                    <shadedPattern>net.craftingstore.libraries.json</shadedPattern>
+                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>
