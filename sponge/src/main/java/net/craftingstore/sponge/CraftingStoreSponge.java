@@ -3,8 +3,10 @@ package net.craftingstore.sponge;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import net.craftingstore.core.CraftingStore;
+import net.craftingstore.sponge.commands.BuyCommand;
 import net.craftingstore.sponge.commands.CraftingStoreCommand;
 import net.craftingstore.sponge.config.Config;
+import net.craftingstore.sponge.listeners.InventoryClickListener;
 import net.craftingstore.sponge.module.ConfigModule;
 import net.craftingstore.sponge.module.CraftingStoreModule;
 import org.spongepowered.api.Game;
@@ -21,7 +23,7 @@ import org.spongepowered.api.text.format.TextColors;
 
 import java.nio.file.Path;
 
-@Plugin(id = "craftingstore", name = "CraftingStore", version = "2.0.9")
+@Plugin(id = "craftingstore", name = "CraftingStore", version = "2.1.0")
 public class CraftingStoreSponge {
     private CraftingStore craftingStore;
 
@@ -58,7 +60,15 @@ public class CraftingStoreSponge {
                 )
                 .executor(injector.getInstance(CraftingStoreCommand.class))
                 .build();
+
+        CommandSpec buyCommand = CommandSpec.builder()
+                .description(Text.of("CraftingStore buy command"))
+                .executor(injector.getInstance(BuyCommand.class))
+                .build();
         game.getCommandManager().register(this, craftingStoreCommand, "craftingstore", "cs");
+        game.getCommandManager().register(this, buyCommand, "buy");
+
+        game.getEventManager().registerListeners(this, injector.getInstance(InventoryClickListener.class));
     }
 
     @Listener
