@@ -15,7 +15,5 @@ public interface CraftingStorePlugin {
 
     String getToken();
 
-    String getVersion();
-
-    String getPlatform();
+    PluginConfiguration getConfiguration();
 }

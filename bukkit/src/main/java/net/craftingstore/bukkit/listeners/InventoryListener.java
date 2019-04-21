@@ -3,6 +3,11 @@ package net.craftingstore.bukkit.listeners;
 import net.craftingstore.bukkit.CraftingStoreBukkit;
 import net.craftingstore.bukkit.inventory.CraftingStoreInventoryHolder;
 import net.craftingstore.bukkit.inventory.InventoryBuilder;
+import net.craftingstore.bukkit.inventory.InventoryItemHandler;
+import net.craftingstore.bukkit.inventory.handlers.BackButtonHandler;
+import net.craftingstore.bukkit.inventory.handlers.CategoryItemHandler;
+import net.craftingstore.bukkit.inventory.handlers.CloseButtonHandler;
+import net.craftingstore.bukkit.inventory.handlers.MessageButtonHandler;
 import net.craftingstore.core.models.api.inventory.*;
 import net.craftingstore.core.models.api.inventory.types.InventoryItemBackButton;
 import net.craftingstore.core.models.api.inventory.types.InventoryItemCategory;
@@ -15,13 +20,22 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
+import java.util.HashMap;
+
 public class InventoryListener implements Listener {
 
+    private HashMap<Class<? extends InventoryItem>, InventoryItemHandler> handlers = new HashMap<>();
+
     private CraftingStoreBukkit instance;
-    private InventoryBuilder inventoryBuilder = new InventoryBuilder();
+    private InventoryBuilder inventoryBuilder;
 
     public InventoryListener(CraftingStoreBukkit instance) {
         this.instance = instance;
+        this.inventoryBuilder = new InventoryBuilder();
+        this.handlers.put(InventoryItemBackButton.class, new BackButtonHandler(this.inventoryBuilder));
+        this.handlers.put(InventoryItemCategory.class, new CategoryItemHandler(this.inventoryBuilder));
+        this.handlers.put(InventoryItemCloseButton.class, new CloseButtonHandler());
+        this.handlers.put(InventoryItemMessage.class, new MessageButtonHandler());
     }
 
     @EventHandler
@@ -42,40 +56,9 @@ public class InventoryListener implements Listener {
         if (item == null) {
             return;
         }
-        if (item instanceof InventoryItemMessage) {
-            handleMessageItem(p, (InventoryItemMessage) item);
-        } else if (item instanceof InventoryItemCategory) {
-            handleCategoryItem(p, (InventoryItemCategory) item, holder);
-        } else if (item instanceof InventoryItemBackButton) {
-            handleBackButton(p, holder);
-        } else if (item instanceof InventoryItemCloseButton) {
-            handleCloseButton(p);
-        }
-    }
 
-    private void handleCloseButton(Player p) {
-        p.closeInventory();
-    }
-
-    private void handleBackButton(Player p, CraftingStoreInventoryHolder holder) {
-        if (holder.getParentInventory() != null) {
-            Inventory inventory = inventoryBuilder.buildInventory(holder.getParentInventory().getCsInventory(), holder.getParentInventory().getParentInventory());
-            p.openInventory(inventory);
-        }
-    }
-
-    private void handleCategoryItem(Player p, InventoryItemCategory category, CraftingStoreInventoryHolder parent) {
-        CraftingStoreInventory csInventory = new CraftingStoreInventory(category.getTitle(), category.getContent(), category.getSize());
-        Inventory inventory = inventoryBuilder.buildInventory(csInventory, parent);
-        p.openInventory(inventory);
-    }
-
-    private void handleMessageItem(Player p, InventoryItemMessage itemMessage) {
-        for (String message : itemMessage.getMessages()) {
-            p.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
-        }
-        if (itemMessage.shouldClose()) {
-            p.closeInventory();
+        if (handlers.containsKey(item.getClass())) {
+            handlers.get(item.getClass()).handle(p, item, holder);
         }
     }
 }

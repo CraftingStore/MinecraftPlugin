@@ -2,6 +2,7 @@ package net.craftingstore.bungee;
 
 import net.craftingstore.bungee.events.DonationReceivedEvent;
 import net.craftingstore.core.CraftingStorePlugin;
+import net.craftingstore.core.PluginConfiguration;
 import net.craftingstore.core.logging.CraftingStoreLogger;
 import net.craftingstore.core.logging.impl.JavaLogger;
 import net.craftingstore.core.models.donation.Donation;
@@ -14,9 +15,11 @@ public class CraftingStoreBungeeImpl implements CraftingStorePlugin {
 
     private CraftingStoreBungee bungeePlugin;
     private JavaLogger logger;
+    private BungeePluginConfiguration configuration;
 
     CraftingStoreBungeeImpl(CraftingStoreBungee bungeePlugin) {
         this.bungeePlugin = bungeePlugin;
+        this.configuration = new BungeePluginConfiguration(bungeePlugin);
         this.logger = new JavaLogger(bungeePlugin.getLogger());
         this.logger.setDebugging(bungeePlugin.getConfig().getBoolean("debug", false));
     }
@@ -56,11 +59,8 @@ public class CraftingStoreBungeeImpl implements CraftingStorePlugin {
         return bungeePlugin.getConfig().getString("api-key");
     }
 
-    public String getVersion() {
-        return bungeePlugin.getDescription().getVersion();
-    }
-
-    public String getPlatform() {
-        return bungeePlugin.getProxy().getVersion();
+    @Override
+    public PluginConfiguration getConfiguration() {
+        return this.configuration;
     }
 }

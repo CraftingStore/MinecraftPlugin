@@ -57,8 +57,8 @@ public class CraftingStoreAPIImpl extends CraftingStoreAPI {
             try {
                 HttpPost request = post("info");
                 List<NameValuePair> params = new ArrayList<>();
-                params.add(new BasicNameValuePair("version", instance.getImplementation().getVersion()));
-                params.add(new BasicNameValuePair("platform", instance.getImplementation().getPlatform()));
+                params.add(new BasicNameValuePair("version", instance.getImplementation().getConfiguration().getVersion()));
+                params.add(new BasicNameValuePair("platform", instance.getImplementation().getConfiguration().getPlatform()));
                 request.setEntity(new UrlEncodedFormEntity(params));
                 return httpClient.execute(request, new JsonResponseHandler<>(gson, CraftingStoreInformation.class));
             } catch (IOException e) {
@@ -174,7 +174,7 @@ public class CraftingStoreAPIImpl extends CraftingStoreAPI {
     private void addHeaders(HttpUriRequest request) {
         this.instance.getLogger().debug(request.getMethod() + " -> " + request.getURI());
         request.addHeader("token", this.token);
-        request.addHeader("version", this.instance.getImplementation().getVersion());
-        request.addHeader("platform", this.instance.getImplementation().getPlatform());
+        request.addHeader("version", this.instance.getImplementation().getConfiguration().getVersion());
+        request.addHeader("platform", this.instance.getImplementation().getConfiguration().getPlatform());
     }
 }

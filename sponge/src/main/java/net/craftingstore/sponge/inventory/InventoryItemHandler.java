@@ -4,5 +4,5 @@ import net.craftingstore.core.models.api.inventory.InventoryItem;
 import org.spongepowered.api.entity.living.player.Player;
 
 public interface InventoryItemHandler<T extends InventoryItem> {
-    public void handle(Player p, T item, InventoryAttachment attachment);
+    void handle(Player p, T item, InventoryAttachment attachment);
 }

@@ -71,7 +71,10 @@ public class CraftingStore {
         return executor.submit(() -> {
             try {
                 if (this.getApi().token == null || this.getApi().token.isEmpty()) {
-                    getLogger().error("API key not set in the config. You need to set the correct api key using /craftingstore key <key>.");
+                    getLogger().error(String.format(
+                            "API key not set in the config. You need to set the correct api key using /%s key <key>.",
+                            this.getImplementation().getConfiguration().getMainCommands()[0]
+                    ));
                     setEnabled(false);
                     return false;
                 }

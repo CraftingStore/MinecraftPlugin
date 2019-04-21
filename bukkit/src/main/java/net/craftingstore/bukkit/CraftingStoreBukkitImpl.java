@@ -2,6 +2,7 @@ package net.craftingstore.bukkit;
 
 import net.craftingstore.bukkit.events.DonationReceivedEvent;
 import net.craftingstore.core.CraftingStorePlugin;
+import net.craftingstore.core.PluginConfiguration;
 import net.craftingstore.core.logging.CraftingStoreLogger;
 import net.craftingstore.core.logging.impl.JavaLogger;
 import net.craftingstore.core.models.donation.Donation;
@@ -12,9 +13,11 @@ public class CraftingStoreBukkitImpl implements CraftingStorePlugin {
 
     private CraftingStoreBukkit bukkitPlugin;
     private JavaLogger logger;
+    private PluginConfiguration pluginConfiguration;
 
     CraftingStoreBukkitImpl(CraftingStoreBukkit bukkitPlugin) {
         this.bukkitPlugin = bukkitPlugin;
+        this.pluginConfiguration = new BukkitPluginConfiguration(bukkitPlugin);
         this.logger = new JavaLogger(bukkitPlugin.getLogger());
         this.logger.setDebugging(bukkitPlugin.getConfig().getBoolean("debug", false));
     }
@@ -54,12 +57,7 @@ public class CraftingStoreBukkitImpl implements CraftingStorePlugin {
     }
 
     @Override
-    public String getVersion() {
-        return bukkitPlugin.getDescription().getVersion();
-    }
-
-    @Override
-    public String getPlatform() {
-        return bukkitPlugin.getServer().getVersion();
+    public PluginConfiguration getConfiguration() {
+        return this.pluginConfiguration;
     }
 }

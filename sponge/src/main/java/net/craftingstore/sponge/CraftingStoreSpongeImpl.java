@@ -2,6 +2,7 @@ package net.craftingstore.sponge;
 
 import com.google.inject.Inject;
 import net.craftingstore.core.CraftingStorePlugin;
+import net.craftingstore.core.PluginConfiguration;
 import net.craftingstore.core.logging.CraftingStoreLogger;
 import net.craftingstore.core.models.donation.Donation;
 import net.craftingstore.sponge.config.Config;
@@ -9,6 +10,7 @@ import net.craftingstore.sponge.events.DonationReceivedEvent;
 import net.craftingstore.sponge.logging.Slf4jLogger;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.Platform;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.plugin.PluginContainer;
 
@@ -26,7 +28,7 @@ public class CraftingStoreSpongeImpl implements CraftingStorePlugin {
     private Config config;
 
     @Inject
-    private PluginContainer pluginContainer;
+    private SpongePluginConfiguration configuration;
 
     private Slf4jLogger logger;
 
@@ -80,13 +82,8 @@ public class CraftingStoreSpongeImpl implements CraftingStorePlugin {
         return config.getConfig().getNode("api-key").getString();
     }
 
-    public String getVersion() {
-        return pluginContainer.getVersion().orElse("unknown-version");
-    }
-
-    public String getPlatform() {
-        return "sponge/"
-                + game.getPlatform().getContainer(Platform.Component.API).getVersion().orElse("unknown")
-                + "/" + game.getPlatform().getContainer(Platform.Component.IMPLEMENTATION).getVersion().orElse("unknown");
+    @Override
+    public PluginConfiguration getConfiguration() {
+        return this.configuration;
     }
 }
