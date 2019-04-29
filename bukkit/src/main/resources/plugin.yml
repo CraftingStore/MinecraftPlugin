@@ -1,13 +1,14 @@
 name: CraftingStore
 main: net.craftingstore.bukkit.CraftingStoreBukkit
-version: 2.1.1
+version: 2.1.2
 authors: [Tim_kwakman, thijs_a]
 prefix: CraftingStore
 softdepend: [PlaceholderAPI]
+api-version: "1.13"
 commands:
   craftingstore:
     description: CraftingStore command
     aliases: [cs]
-  buy:
+  csbuy:
     description: Buy command
-    aliases: [csbuy]
+    aliases: [buy]
