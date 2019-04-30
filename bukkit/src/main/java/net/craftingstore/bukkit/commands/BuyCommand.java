@@ -33,7 +33,7 @@ public class BuyCommand implements CommandExecutor {
         Player p = (Player) sender;
         Bukkit.getScheduler().runTaskAsynchronously(instance, () -> {
             try {
-                InventoryBuilder builder = new InventoryBuilder();
+                InventoryBuilder builder = new InventoryBuilder(this.instance);
                 CraftingStoreInventory gui = instance.getCraftingStore().getApi().getGUI().get();
                 Inventory inventory = builder.buildInventory(gui);
                 Bukkit.getScheduler().runTask(instance, () -> {

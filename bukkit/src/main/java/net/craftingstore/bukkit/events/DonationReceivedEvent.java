@@ -28,6 +28,7 @@ public class DonationReceivedEvent extends Event implements Cancellable {
 
     @Deprecated
     public DonationReceivedEvent(String command, String username, UUID uuid, String packageName, int packagePrice, int couponDiscount) {
+        super(true);
         this.command = command;
         this.username = username;
         this.uuid = uuid;
@@ -37,6 +38,7 @@ public class DonationReceivedEvent extends Event implements Cancellable {
     }
 
     public DonationReceivedEvent(Donation donation) {
+        super(true);
         this.command = donation.getCommand();
         this.username = donation.getPlayer().getUsername();
         this.uuid = donation.getPlayer().getUUID();

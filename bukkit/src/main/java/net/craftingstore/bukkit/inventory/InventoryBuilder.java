@@ -1,6 +1,8 @@
 package net.craftingstore.bukkit.inventory;
 
+import net.craftingstore.bukkit.CraftingStoreBukkit;
 import net.craftingstore.bukkit.util.XMaterial;
+import net.craftingstore.core.CraftingStore;
 import net.craftingstore.core.models.api.inventory.CraftingStoreInventory;
 import net.craftingstore.core.models.api.inventory.InventoryItem;
 import org.bukkit.Bukkit;
@@ -14,6 +16,12 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 public class InventoryBuilder {
+
+    private CraftingStoreBukkit instance;
+
+    public InventoryBuilder(CraftingStoreBukkit instance) {
+        this.instance = instance;
+    }
 
     public Inventory buildInventory(CraftingStoreInventory csInventory) {
         return buildInventory(csInventory, null);
@@ -33,7 +41,8 @@ public class InventoryBuilder {
                 xMaterial = XMaterial.CHEST;
             } else {
                 xMaterial = XMaterial.fromString(inventoryItem.getIcon().getMaterial());
-                if (xMaterial == null) {
+                if (xMaterial == null || xMaterial.parseMaterial() == null) {
+                    instance.getCraftingStore().getLogger().debug("Material " + inventoryItem.getIcon().getMaterial() + " not found.");
                     xMaterial = XMaterial.CHEST;
                 }
             }

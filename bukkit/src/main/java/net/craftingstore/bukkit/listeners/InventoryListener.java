@@ -31,7 +31,7 @@ public class InventoryListener implements Listener {
 
     public InventoryListener(CraftingStoreBukkit instance) {
         this.instance = instance;
-        this.inventoryBuilder = new InventoryBuilder();
+        this.inventoryBuilder = new InventoryBuilder(instance);
         this.handlers.put(InventoryItemBackButton.class, new BackButtonHandler(this.inventoryBuilder));
         this.handlers.put(InventoryItemCategory.class, new CategoryItemHandler(this.inventoryBuilder));
         this.handlers.put(InventoryItemCloseButton.class, new CloseButtonHandler());

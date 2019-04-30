@@ -23,7 +23,7 @@ import org.spongepowered.api.text.format.TextColors;
 
 import java.nio.file.Path;
 
-@Plugin(id = "craftingstore", name = "CraftingStore", version = "2.1.2")
+@Plugin(id = "craftingstore", name = "CraftingStore", version = "2.1.3")
 public class CraftingStoreSponge {
     private CraftingStore craftingStore;
 
