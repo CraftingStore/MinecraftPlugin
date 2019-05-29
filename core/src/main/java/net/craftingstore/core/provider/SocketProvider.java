@@ -10,6 +10,7 @@ import java.net.URISyntaxException;
 public class SocketProvider extends CraftingStoreProvider {
 
     private Socket client;
+    private static final long DISABLE_TIMEOUT = 5 * 1000;
 
     public SocketProvider(CraftingStore craftingStore, ProviderStatus status) {
         super(craftingStore, status);
@@ -25,6 +26,18 @@ public class SocketProvider extends CraftingStoreProvider {
     public void disconnect() {
         if (client != null) {
             client.disconnect();
+            // Let the current thread wait until disconnected, to prevent the server from killing the threads.
+            try {
+                long disconnectStart = System.currentTimeMillis();
+                while (client.connected()) {
+                    Thread.sleep(5);
+                    if (System.currentTimeMillis() - disconnectStart > DISABLE_TIMEOUT) {
+                        break;
+                    }
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 

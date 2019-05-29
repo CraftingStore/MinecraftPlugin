@@ -33,10 +33,10 @@ public class CraftingStoreCachedAPI extends CraftingStoreAPIImpl {
     public Future<ApiTopDonator[]> getTopDonators() throws CraftingStoreApiException {
         return executor.submit(() -> {
             String key = "buyers/top";
-            if (!cache.containsKey(key)) {
-                cache.put(key, super.getTopDonators().get());
+            if (cache.containsKey(key)) {
+                return (ApiTopDonator[]) cache.get(key);
             }
-            return (ApiTopDonator[]) cache.get(key);
+            return null;
         });
     }
 
@@ -44,10 +44,10 @@ public class CraftingStoreCachedAPI extends CraftingStoreAPIImpl {
     public Future<ApiPayment[]> getPayments() throws CraftingStoreApiException {
         return executor.submit(() -> {
             String key = "buyers/recent";
-            if (!cache.containsKey(key)) {
-                cache.put(key, super.getPayments().get());
+            if (cache.containsKey(key)) {
+                return (ApiPayment[]) cache.get(key);
             }
-            return (ApiPayment[]) cache.get(key);
+            return null;
         });
     }
 

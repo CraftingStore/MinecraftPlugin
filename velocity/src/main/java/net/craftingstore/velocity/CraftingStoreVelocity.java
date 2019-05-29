@@ -8,22 +8,17 @@ import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.event.proxy.ProxyShutdownEvent;
 import com.velocitypowered.api.plugin.Plugin;
-import com.velocitypowered.api.plugin.PluginContainer;
-import com.velocitypowered.api.plugin.PluginManager;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
-import com.velocitypowered.api.proxy.ProxyServer;
 import net.craftingstore.core.CraftingStore;
 import net.craftingstore.velocity.command.CraftingStoreCommand;
 import net.craftingstore.velocity.config.Config;
 import net.craftingstore.velocity.module.ConfigModule;
 import net.craftingstore.velocity.module.CraftingStoreModule;
-import net.kyori.text.TextComponent;
-import net.kyori.text.format.TextColor;
 
 import java.nio.file.Path;
 
 @Singleton
-@Plugin(id = "craftingstore", name = "CraftingStore", version = "2.1.4")
+@Plugin(id = "craftingstore", name = "CraftingStore", version = "2.1.5")
 public class CraftingStoreVelocity {
 
     @Inject
