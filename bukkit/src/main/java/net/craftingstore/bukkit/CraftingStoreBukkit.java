@@ -23,8 +23,12 @@ public class CraftingStoreBukkit extends JavaPlugin {
     public void onEnable() {
         config = new Config("config.yml", this);
         this.craftingStore = new CraftingStore(new CraftingStoreBukkitImpl(this));
+
         this.getCommand("craftingstore").setExecutor(new CraftingStoreCommand(this));
-        this.getCommand("csbuy").setExecutor(new BuyCommand(this));
+        if (this.craftingStore.getImplementation().getConfiguration().isBuyCommandEnabled()) {
+            this.getCommand("csbuy").setExecutor(new BuyCommand(this));
+        }
+
         this.getServer().getPluginManager().registerEvents(new InventoryListener(this), this);
         this.getServer().getPluginManager().registerEvents(new AdminJoinListener(this), this);
         this.getServer().getPluginManager().registerEvents(new PendingDonationJoinListener(this), this);

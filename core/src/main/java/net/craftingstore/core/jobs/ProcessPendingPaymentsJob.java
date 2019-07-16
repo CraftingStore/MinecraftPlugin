@@ -19,9 +19,8 @@ public class ProcessPendingPaymentsJob {
     private void execute() throws CraftingStoreApiException {
         instance.getLogger().debug("Executing ProcessPendingPaymentsJob.");
 
-        Donation[] donations = instance.getPendingDonations().entrySet().stream()
-                .filter(d -> d.getValue().getPlayer().getUsername().equals(this.username))
-                .map(Map.Entry::getValue)
+        Donation[] donations = instance.getPendingDonations().values().stream()
+                .filter(donation -> donation.getPlayer().getUsername().equals(this.username))
                 .toArray(Donation[]::new);
         if (donations.length == 0) {
             return;

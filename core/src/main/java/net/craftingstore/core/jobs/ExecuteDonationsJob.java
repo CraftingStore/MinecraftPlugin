@@ -25,7 +25,8 @@ public class ExecuteDonationsJob {
             donations.put(donation, instance.getImplementation().executeDonation(donation));
         }
 
-        int[] completedIds = donations.entrySet().stream().filter(Map.Entry::getValue)
+        int[] completedIds = donations.entrySet().stream()
+                .filter(Map.Entry::getValue)
                 .mapToInt(entry -> entry.getKey().getId())
                 .toArray();
 

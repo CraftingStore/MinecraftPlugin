@@ -8,4 +8,6 @@ public interface PluginConfiguration {
     String getVersion();
 
     String getPlatform();
+
+    boolean isBuyCommandEnabled();
 }

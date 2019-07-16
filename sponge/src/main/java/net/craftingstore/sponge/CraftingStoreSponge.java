@@ -7,6 +7,7 @@ import net.craftingstore.sponge.commands.BuyCommand;
 import net.craftingstore.sponge.commands.CraftingStoreCommand;
 import net.craftingstore.sponge.config.Config;
 import net.craftingstore.sponge.listeners.InventoryClickListener;
+import net.craftingstore.sponge.listeners.PendingDonationJoinListener;
 import net.craftingstore.sponge.module.ConfigModule;
 import net.craftingstore.sponge.module.CraftingStoreModule;
 import org.spongepowered.api.Game;
@@ -23,7 +24,7 @@ import org.spongepowered.api.text.format.TextColors;
 
 import java.nio.file.Path;
 
-@Plugin(id = "craftingstore", name = "CraftingStore", version = "2.1.5")
+@Plugin(id = "craftingstore", name = "CraftingStore", version = "2.2.0")
 public class CraftingStoreSponge {
     private CraftingStore craftingStore;
 
@@ -66,13 +67,19 @@ public class CraftingStoreSponge {
                 .executor(injector.getInstance(BuyCommand.class))
                 .build();
         game.getCommandManager().register(this, craftingStoreCommand, "craftingstore", "cs");
-        game.getCommandManager().register(this, buyCommand, "buy");
+        if (this.craftingStore.getImplementation().getConfiguration().isBuyCommandEnabled()) {
+            game.getCommandManager().register(this, buyCommand, "buy");
+        }
 
         game.getEventManager().registerListeners(this, injector.getInstance(InventoryClickListener.class));
+        game.getEventManager().registerListeners(this, injector.getInstance(PendingDonationJoinListener.class));
     }
 
     @Listener
     public void onServerStopped(GameStoppedServerEvent event) {
+        if (this.craftingStore == null) {
+            return;
+        }
         this.craftingStore.setEnabled(false);
     }
 

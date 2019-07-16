@@ -19,11 +19,14 @@ public class PendingDonationJoinListener {
             return;
         }
         Player p = e.getTargetEntity().getPlayer().get();
+        String username = p.getName();
 
-        try {
-            new ProcessPendingPaymentsJob(this.craftingStore, p.getName());
-        } catch (CraftingStoreApiException ex) {
-            ex.printStackTrace();
-        }
+        craftingStore.getImplementation().runAsyncTask(() -> {
+            try {
+                new ProcessPendingPaymentsJob(this.craftingStore, username);
+            } catch (CraftingStoreApiException ex) {
+                ex.printStackTrace();
+            }
+        });
     }
 }

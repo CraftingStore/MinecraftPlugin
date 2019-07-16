@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
 import com.velocitypowered.api.command.CommandManager;
+import com.velocitypowered.api.event.EventManager;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.event.proxy.ProxyShutdownEvent;
@@ -12,17 +13,21 @@ import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import net.craftingstore.core.CraftingStore;
 import net.craftingstore.velocity.command.CraftingStoreCommand;
 import net.craftingstore.velocity.config.Config;
+import net.craftingstore.velocity.listeners.PendingDonationJoinListener;
 import net.craftingstore.velocity.module.ConfigModule;
 import net.craftingstore.velocity.module.CraftingStoreModule;
 
 import java.nio.file.Path;
 
 @Singleton
-@Plugin(id = "craftingstore", name = "CraftingStore", version = "2.1.5")
+@Plugin(id = "craftingstore", name = "CraftingStore", version = "2.2.0")
 public class CraftingStoreVelocity {
 
     @Inject
     private CommandManager commandManager;
+
+    @Inject
+    private EventManager eventManager;
 
     private Config config;
     private CraftingStore craftingStore;
@@ -40,6 +45,7 @@ public class CraftingStoreVelocity {
         injector = injector.createChildInjector(new CraftingStoreModule(craftingStore));
 
         commandManager.register(injector.getInstance(CraftingStoreCommand.class), "csv");
+        eventManager.register(this, injector.getInstance(PendingDonationJoinListener.class));
     }
 
     @Subscribe

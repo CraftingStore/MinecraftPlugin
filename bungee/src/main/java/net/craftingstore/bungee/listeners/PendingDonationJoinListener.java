@@ -19,10 +19,13 @@ public class PendingDonationJoinListener implements Listener {
     @EventHandler
     public void onPostLogin(PostLoginEvent e) {
         ProxiedPlayer p = e.getPlayer();
-        try {
-            new ProcessPendingPaymentsJob(instance.getCraftingStore(), p.getName());
-        } catch (CraftingStoreApiException ex) {
-            ex.printStackTrace();
-        }
+        String username = p.getName();
+        instance.getCraftingStore().getImplementation().runAsyncTask(() -> {
+            try {
+                new ProcessPendingPaymentsJob(instance.getCraftingStore(), username);
+            } catch (CraftingStoreApiException ex) {
+                ex.printStackTrace();
+            }
+        });
     }
 }

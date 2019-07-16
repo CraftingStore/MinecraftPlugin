@@ -29,4 +29,9 @@ public class BungeePluginConfiguration implements PluginConfiguration {
     public String getPlatform() {
         return plugin.getProxy().getVersion();
     }
+
+    @Override
+    public boolean isBuyCommandEnabled() {
+        return false;
+    }
 }

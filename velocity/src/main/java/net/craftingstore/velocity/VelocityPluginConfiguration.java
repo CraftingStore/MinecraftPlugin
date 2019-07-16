@@ -32,4 +32,9 @@ public class VelocityPluginConfiguration implements PluginConfiguration {
     public String getPlatform() {
         return proxyServer.getVersion().toString();
     }
+
+    @Override
+    public boolean isBuyCommandEnabled() {
+        return false;
+    }
 }
