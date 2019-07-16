@@ -8,11 +8,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-public class JoinListener implements Listener {
+public class AdminJoinListener implements Listener {
 
     private CraftingStoreBukkit instance;
 
-    public JoinListener(CraftingStoreBukkit instance) {
+    public AdminJoinListener(CraftingStoreBukkit instance) {
         this.instance = instance;
     }
 

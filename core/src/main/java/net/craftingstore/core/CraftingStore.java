@@ -11,6 +11,9 @@ import net.craftingstore.core.models.donation.Donation;
 import net.craftingstore.core.provider.ProviderSelector;
 import net.craftingstore.core.scheduler.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -25,9 +28,11 @@ public class CraftingStore {
     private boolean enabled = false;
     public final String ADMIN_PERMISSION = "craftingstore.admin";
     private ExecutorService executor = Executors.newSingleThreadExecutor();
+    private Map<Integer, Donation> pendingDonations;
 
     public CraftingStore(CraftingStorePlugin implementation) {
         this.plugin = implementation;
+        this.pendingDonations = new HashMap<>();
         this.api = new CraftingStoreCachedAPI(this);
         this.selector = new ProviderSelector(this);
         this.getImplementation().runAsyncTask(() -> {
@@ -136,5 +141,9 @@ public class CraftingStore {
 
     public CraftingStoreInformation getInformation() {
         return information;
+    }
+
+    public Map<Integer, Donation> getPendingDonations() {
+        return pendingDonations;
     }
 }

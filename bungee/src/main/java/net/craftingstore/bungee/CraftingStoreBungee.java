@@ -2,7 +2,8 @@ package net.craftingstore.bungee;
 
 import net.craftingstore.bungee.commands.CraftingStoreCommand;
 import net.craftingstore.bungee.config.Config;
-import net.craftingstore.bungee.listeners.JoinListener;
+import net.craftingstore.bungee.listeners.AdminJoinListener;
+import net.craftingstore.bungee.listeners.PendingDonationJoinListener;
 import net.craftingstore.core.CraftingStore;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -19,7 +20,8 @@ public class CraftingStoreBungee extends Plugin {
         config = new Config(this, "config.yml");
         this.craftingStore = new CraftingStore(new CraftingStoreBungeeImpl(this));
         getProxy().getPluginManager().registerCommand(this, new CraftingStoreCommand(this));
-        getProxy().getPluginManager().registerListener(this, new JoinListener(this));
+        getProxy().getPluginManager().registerListener(this, new AdminJoinListener(this));
+        getProxy().getPluginManager().registerListener(this, new PendingDonationJoinListener(this));
     }
 
     @Override

@@ -29,4 +29,9 @@ public class BukkitPluginConfiguration implements PluginConfiguration {
     public String getPlatform() {
         return plugin.getServer().getVersion();
     }
+
+    @Override
+    public boolean isBuyCommandEnabled() {
+        return !plugin.getConfig().getBoolean("disable-buy-command", false);
+    }
 }

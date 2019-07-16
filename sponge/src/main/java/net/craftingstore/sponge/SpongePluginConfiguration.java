@@ -14,6 +14,9 @@ public class SpongePluginConfiguration implements PluginConfiguration {
     @Inject
     private PluginContainer pluginContainer;
 
+    @Inject
+    private CraftingStoreSponge craftingStoreSponge;
+
     @Override
     public String getName() {
         return "Sponge";
@@ -34,5 +37,10 @@ public class SpongePluginConfiguration implements PluginConfiguration {
         return "sponge/"
                 + game.getPlatform().getContainer(Platform.Component.API).getVersion().orElse("unknown")
                 + "/" + game.getPlatform().getContainer(Platform.Component.IMPLEMENTATION).getVersion().orElse("unknown");
+    }
+
+    @Override
+    public boolean isBuyCommandEnabled() {
+        return !craftingStoreSponge.getConfigWrapper().getConfig().getNode("disable-buy-command").getBoolean(false);
     }
 }

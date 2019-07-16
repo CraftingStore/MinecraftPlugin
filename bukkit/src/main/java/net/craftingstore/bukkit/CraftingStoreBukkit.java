@@ -5,7 +5,8 @@ import net.craftingstore.bukkit.commands.CraftingStoreCommand;
 import net.craftingstore.bukkit.config.Config;
 import net.craftingstore.bukkit.hooks.PlaceholderAPIHook;
 import net.craftingstore.bukkit.listeners.InventoryListener;
-import net.craftingstore.bukkit.listeners.JoinListener;
+import net.craftingstore.bukkit.listeners.AdminJoinListener;
+import net.craftingstore.bukkit.listeners.PendingDonationJoinListener;
 import net.craftingstore.core.CraftingStore;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -22,10 +23,15 @@ public class CraftingStoreBukkit extends JavaPlugin {
     public void onEnable() {
         config = new Config("config.yml", this);
         this.craftingStore = new CraftingStore(new CraftingStoreBukkitImpl(this));
+
         this.getCommand("craftingstore").setExecutor(new CraftingStoreCommand(this));
-        this.getCommand("csbuy").setExecutor(new BuyCommand(this));
+        if (this.craftingStore.getImplementation().getConfiguration().isBuyCommandEnabled()) {
+            this.getCommand("csbuy").setExecutor(new BuyCommand(this));
+        }
+
         this.getServer().getPluginManager().registerEvents(new InventoryListener(this), this);
-        this.getServer().getPluginManager().registerEvents(new JoinListener(this), this);
+        this.getServer().getPluginManager().registerEvents(new AdminJoinListener(this), this);
+        this.getServer().getPluginManager().registerEvents(new PendingDonationJoinListener(this), this);
 
         // PlaceholderAPI hook
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
