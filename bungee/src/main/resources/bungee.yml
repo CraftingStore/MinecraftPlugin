@@ -1,5 +1,5 @@
 name: CraftingStore
 main: net.craftingstore.bungee.CraftingStoreBungee
-version: 2.2.0
+version: 2.2.1
 author: thijs_a
 prefix: CraftingStore
