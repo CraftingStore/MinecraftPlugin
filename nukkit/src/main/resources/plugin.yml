@@ -1,0 +1,13 @@
+name: CraftingStore
+main: net.craftingstore.nukkit.CraftingStoreNukkit
+version: 2.2.1
+authors: [Tim_kwakman, thijs_a]
+prefix: CraftingStore
+api: ["1.0.5"]
+commands:
+  craftingstore:
+    description: CraftingStore command
+    aliases: [cs]
+  csbuy:
+    description: Buy command
+    aliases: [buy]

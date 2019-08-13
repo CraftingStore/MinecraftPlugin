@@ -1,33 +1,31 @@
-package net.craftingstore.bukkit.listeners;
+package net.craftingstore.nukkit.listeners;
 
-import net.craftingstore.bukkit.CraftingStoreBukkit;
-import net.craftingstore.bukkit.inventory.CraftingStoreInventoryHolder;
-import net.craftingstore.bukkit.inventory.InventoryBuilder;
-import net.craftingstore.bukkit.inventory.InventoryItemHandler;
-import net.craftingstore.bukkit.inventory.handlers.BackButtonHandler;
-import net.craftingstore.bukkit.inventory.handlers.CategoryItemHandler;
-import net.craftingstore.bukkit.inventory.handlers.CloseButtonHandler;
-import net.craftingstore.bukkit.inventory.handlers.MessageButtonHandler;
+import cn.nukkit.Player;
+import cn.nukkit.event.EventHandler;
+import cn.nukkit.event.Listener;
+import cn.nukkit.event.inventory.InventoryClickEvent;
 import net.craftingstore.core.models.api.inventory.InventoryItem;
 import net.craftingstore.core.models.api.inventory.types.InventoryItemBackButton;
 import net.craftingstore.core.models.api.inventory.types.InventoryItemCategory;
 import net.craftingstore.core.models.api.inventory.types.InventoryItemCloseButton;
 import net.craftingstore.core.models.api.inventory.types.InventoryItemMessage;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
+import net.craftingstore.nukkit.CraftingStoreNukkit;
+import net.craftingstore.nukkit.inventory.CraftingStoreInventoryHolder;
+import net.craftingstore.nukkit.inventory.InventoryBuilder;
+import net.craftingstore.nukkit.inventory.InventoryItemHandler;
+import net.craftingstore.nukkit.inventory.handlers.BackButtonHandler;
+import net.craftingstore.nukkit.inventory.handlers.CategoryItemHandler;
+import net.craftingstore.nukkit.inventory.handlers.CloseButtonHandler;
+import net.craftingstore.nukkit.inventory.handlers.MessageButtonHandler;
 
 import java.util.HashMap;
 
 public class InventoryListener implements Listener {
-
     private HashMap<Class<? extends InventoryItem>, InventoryItemHandler> handlers = new HashMap<>();
-
-    private CraftingStoreBukkit instance;
+    private CraftingStoreNukkit instance;
     private InventoryBuilder inventoryBuilder;
 
-    public InventoryListener(CraftingStoreBukkit instance) {
+    public InventoryListener(CraftingStoreNukkit instance) {
         this.instance = instance;
         this.inventoryBuilder = new InventoryBuilder(instance);
         this.handlers.put(InventoryItemBackButton.class, new BackButtonHandler(this.inventoryBuilder));
@@ -39,18 +37,16 @@ public class InventoryListener implements Listener {
     @EventHandler
     public void onClick(InventoryClickEvent e) {
         // Fix "Negative, non outside slot -1" error.
-        if (e.getRawSlot() < 0) {
+        if (e.getSlot() < 0) {
             return;
         }
-        if (e.getInventory() == null
-                || e.getInventory().getHolder() == null
-                || !(e.getInventory().getHolder() instanceof CraftingStoreInventoryHolder)) {
+        if (e.getInventory() == null || e.getInventory().getHolder() == null || !(e.getInventory().getHolder() instanceof CraftingStoreInventoryHolder)) {
             return;
         }
         e.setCancelled(true);
-        Player p = (Player) e.getWhoClicked();
+        Player p = e.getPlayer();
         CraftingStoreInventoryHolder holder = (CraftingStoreInventoryHolder) e.getInventory().getHolder();
-        InventoryItem item = holder.getCsInventory().getByIndex(e.getRawSlot());
+        InventoryItem item = holder.getCSInventory().getByIndex(e.getSlot());
         if (item == null) {
             return;
         }

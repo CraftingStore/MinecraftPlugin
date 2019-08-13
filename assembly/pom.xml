@@ -56,6 +56,10 @@
                                     <pattern>okio</pattern>
                                     <shadedPattern>net.craftingstore.libraries.okio</shadedPattern>
                                 </relocation>
+                                <relocation>
+                                    <pattern>com.nukkitx.fakeinventories</pattern>
+                                    <shadedPattern>net.craftingstore.libraries.fakeinvs</shadedPattern>
+                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>
@@ -88,6 +92,11 @@
         <dependency>
             <groupId>net.craftingstore</groupId>
             <artifactId>velocity</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.craftingstore</groupId>
+            <artifactId>nukkit</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

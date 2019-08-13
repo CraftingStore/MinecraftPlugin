@@ -16,5 +16,6 @@
         <module>sponge</module>
         <module>assembly</module>
         <module>velocity</module>
+        <module>nukkit</module>
     </modules>
 </project>
