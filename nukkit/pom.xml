@@ -23,10 +23,6 @@
 
     <repositories>
         <repository>
-            <id>retronics</id>
-            <url>https://repo.openprocesses.ml/repository/retronicsmc/</url>
-        </repository>
-        <repository>
             <id>jitpack</id>
             <url>https://jitpack.io</url>
         </repository>
