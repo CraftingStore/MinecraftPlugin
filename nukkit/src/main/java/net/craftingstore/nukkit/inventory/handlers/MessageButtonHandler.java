@@ -1,6 +1,7 @@
 package net.craftingstore.nukkit.inventory.handlers;
 
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.utils.TextFormat;
 import net.craftingstore.core.models.api.inventory.types.InventoryItemMessage;
 import net.craftingstore.nukkit.inventory.CraftingStoreInventoryHolder;
@@ -13,7 +14,7 @@ public class MessageButtonHandler implements InventoryItemHandler<InventoryItemM
             p.sendMessage(TextFormat.colorize('&', message));
         }
         if (item.shouldClose()) {
-            p.removeAllWindows(); // TODO: Check if this is the right way to close an inventory window
+            Server.getInstance().getScheduler().scheduleDelayedTask(p::removeAllWindows, 2);
         }
     }
 }
