@@ -23,7 +23,7 @@ public class CraftingStoreNukkit extends PluginBase {
     public void onEnable() {
         RegisteredServiceProvider<FakeInventories> provider = getServer().getServiceManager().getProvider(FakeInventories.class);
         if (provider == null || provider.getProvider() == null) {
-
+            this.getServer().getPluginManager().disablePlugin(this);
         }
         config = new Config("config.yml", this);
         this.craftingStore = new CraftingStore(new CraftingStoreNukkitImpl(this));
