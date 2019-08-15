@@ -32,12 +32,12 @@ public class BuyCommand implements CommandExecutor {
         }
 
         Player p = (Player) sender;
-        Server.getInstance().getScheduler().scheduleTask(instance, () -> {
+        instance.getServer().getScheduler().scheduleTask(instance, () -> {
             try {
                 InventoryBuilder builder = new InventoryBuilder(this.instance);
                 CraftingStoreInventory gui = instance.getCraftingStore().getApi().getGUI().get();
                 Inventory inventory = builder.buildInventory(gui);
-                Server.getInstance().getScheduler().scheduleTask(instance, () -> {
+                instance.getServer().getScheduler().scheduleTask(instance, () -> {
                     if (p.isOnline()) {
                         p.addWindow(inventory);
                     }
