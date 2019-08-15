@@ -56,10 +56,6 @@
                                     <pattern>okio</pattern>
                                     <shadedPattern>net.craftingstore.libraries.okio</shadedPattern>
                                 </relocation>
-                                <relocation>
-                                    <pattern>com.nukkitx.fakeinventories</pattern>
-                                    <shadedPattern>net.craftingstore.libraries.fakeinvs</shadedPattern>
-                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>

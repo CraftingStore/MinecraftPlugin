@@ -50,6 +50,7 @@
             <groupId>com.nukkitx</groupId>
             <artifactId>fakeinventories</artifactId>
             <version>1.0.3-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
