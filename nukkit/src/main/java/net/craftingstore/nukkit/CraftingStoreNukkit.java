@@ -3,21 +3,22 @@ package net.craftingstore.nukkit;
 import cn.nukkit.command.PluginCommand;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.plugin.service.RegisteredServiceProvider;
+import cn.nukkit.utils.Config;
 import cn.nukkit.utils.TextFormat;
 import com.nukkitx.fakeinventories.inventory.FakeInventories;
 import net.craftingstore.core.CraftingStore;
 import net.craftingstore.nukkit.commands.BuyCommand;
 import net.craftingstore.nukkit.commands.CraftingStoreCommand;
-import net.craftingstore.nukkit.config.Config;
+import net.craftingstore.nukkit.config.Configuration;
 import net.craftingstore.nukkit.listeners.AdminJoinListener;
 import net.craftingstore.nukkit.listeners.InventoryListener;
 import net.craftingstore.nukkit.listeners.PendingDonationJoinListener;
-import org.simpleyaml.configuration.file.FileConfiguration;
 
 public class CraftingStoreNukkit extends PluginBase {
     private CraftingStore craftingStore;
-    private Config config;
+    private Configuration config;
     private String prefix = TextFormat.GRAY + "[" + TextFormat.RED + "CraftingStore" + TextFormat.GRAY + "] " + TextFormat.WHITE;
+    private static CraftingStoreNukkit instance;
 
     @Override
     public void onEnable() {
@@ -25,7 +26,7 @@ public class CraftingStoreNukkit extends PluginBase {
         if (provider == null || provider.getProvider() == null) {
             this.getServer().getPluginManager().disablePlugin(this);
         }
-        config = new Config("config.yml", this);
+        config = new Configuration("config.yml", this);
         this.craftingStore = new CraftingStore(new CraftingStoreNukkitImpl(this));
 
         PluginCommand cs = (PluginCommand) getServer().getPluginCommand("craftingstore");
@@ -50,15 +51,20 @@ public class CraftingStoreNukkit extends PluginBase {
         return craftingStore;
     }
 
-    public FileConfiguration getConfigFile() {
+    @Override
+    public Config getConfig() {
         return this.config.getConfig();
     }
 
-    public Config getConfigWrapper() {
+    public Configuration getConfigWrapper() {
         return this.config;
     }
 
     public String getPrefix() {
         return prefix;
+    }
+
+    public static CraftingStoreNukkit getInstance() {
+        return instance;
     }
 }

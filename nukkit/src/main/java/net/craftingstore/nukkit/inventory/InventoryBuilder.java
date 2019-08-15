@@ -9,7 +9,6 @@ import net.craftingstore.core.models.api.inventory.InventoryItem;
 import net.craftingstore.nukkit.CraftingStoreNukkit;
 
 import java.util.Arrays;
-import java.util.stream.Collectors;
 
 public class InventoryBuilder {
     private CraftingStoreNukkit instance;
@@ -41,13 +40,12 @@ public class InventoryBuilder {
                     item = Item.get(Item.CHEST);
                 }
             }
-            Item itemStack = Item.get(inventoryItem.getIcon().getAmount());
+            Item itemStack = Item.get(item.getId(), inventoryItem.getIcon().getAmount());
             itemStack.setCustomName(TextFormat.colorize('&', inventoryItem.getName()));
             if (inventoryItem.getDescription() != null && inventoryItem.getDescription().length != 0) {
-                itemStack.setLore(Arrays.stream(inventoryItem.getDescription())
+                itemStack.setLore(Arrays.toString(Arrays.stream(inventoryItem.getDescription())
                         .map(d -> TextFormat.colorize('&', d))
-                        .collect(Collectors.toList())
-                        .toString()
+                        .toArray())
                 );
             }
             inventory.setItem(inventoryItem.getIndex(), itemStack);
