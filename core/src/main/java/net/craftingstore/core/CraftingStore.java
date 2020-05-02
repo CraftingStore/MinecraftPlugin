@@ -9,6 +9,7 @@ import net.craftingstore.core.models.api.misc.CraftingStoreInformation;
 import net.craftingstore.core.models.api.misc.UpdateInformation;
 import net.craftingstore.core.models.donation.Donation;
 import net.craftingstore.core.provider.ProviderSelector;
+import net.craftingstore.core.runner.DonationRunner;
 import net.craftingstore.core.scheduler.*;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class CraftingStore {
     private CraftingStoreAPI api;
     private ProviderSelector selector;
     private CraftingStoreInformation information;
+    private DonationRunner donationRunner;
     private boolean enabled = false;
     public final String ADMIN_PERMISSION = "craftingstore.admin";
     private ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -35,6 +37,7 @@ public class CraftingStore {
         this.pendingDonations = new HashMap<>();
         this.api = new CraftingStoreCachedAPI(this);
         this.selector = new ProviderSelector(this);
+        this.donationRunner = new DonationRunner(this);
         this.getImplementation().runAsyncTask(() -> {
             try {
                 if (this.reload().get()) {
@@ -117,15 +120,7 @@ public class CraftingStore {
     }
 
     public void executeQueue() {
-        this.getLogger().debug("Executing donation queue.");
-        this.getImplementation().runAsyncTask(() -> {
-            try {
-                Donation[] donationQueue = this.getApi().getDonationQueue().get();
-                new ExecuteDonationsJob(this, donationQueue);
-            } catch (CraftingStoreApiException | InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            }
-        });
+        this.donationRunner.runDonations();
     }
 
     public boolean isEnabled() {

@@ -34,4 +34,9 @@ public class BungeePluginConfiguration implements PluginConfiguration {
     public boolean isBuyCommandEnabled() {
         return false;
     }
+
+    @Override
+    public int getTimeBetweenCommands() {
+        return plugin.getConfig().getInt("time-between-commands", 200);
+    }
 }

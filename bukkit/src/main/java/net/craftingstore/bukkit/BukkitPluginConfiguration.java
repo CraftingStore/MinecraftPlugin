@@ -34,4 +34,9 @@ public class BukkitPluginConfiguration implements PluginConfiguration {
     public boolean isBuyCommandEnabled() {
         return !plugin.getConfig().getBoolean("disable-buy-command", false);
     }
+
+    @Override
+    public int getTimeBetweenCommands() {
+        return plugin.getConfig().getInt("time-between-commands", 200);
+    }
 }

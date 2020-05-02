@@ -22,7 +22,22 @@ public class ExecuteDonationsJob {
 
         Map<Donation, Boolean> donations = new HashMap<>();
         for (Donation donation : this.donations) {
-            donations.put(donation, instance.getImplementation().executeDonation(donation));
+            if (!donations.isEmpty()) {
+                // Wait x ms before executing the next command, so donations with a lot of commands will not create lag
+                try {
+                    int waitingTime = this.instance.getImplementation().getConfiguration().getTimeBetweenCommands();
+                    this.instance.getLogger().debug(String.format("Waiting %dms before executing next donation", waitingTime));
+                    Thread.sleep(waitingTime);
+                    this.instance.getLogger().debug("Waiting done");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            this.instance.getLogger().debug(String.format("Executing donation %d", donation.getId()));
+            this.instance.getLogger().debug(String.format("Command is '%s'", donation.getCommand()));
+            boolean result = instance.getImplementation().executeDonation(donation);
+            donations.put(donation, result);
+            this.instance.getLogger().debug(String.format("Result of execution is %s", result));
         }
 
         int[] completedIds = donations.entrySet().stream()
@@ -44,6 +59,6 @@ public class ExecuteDonationsJob {
                 instance.getPendingDonations().put(entry.getKey().getId(), entry.getKey());
             }
         }
-        this.instance.getLogger().debug("Execution done.");
+        this.instance.getLogger().debug("Execution of ExecuteDonationsJob finished.");
     }
 }

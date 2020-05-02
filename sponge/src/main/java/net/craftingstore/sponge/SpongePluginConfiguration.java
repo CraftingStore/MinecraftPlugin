@@ -43,4 +43,9 @@ public class SpongePluginConfiguration implements PluginConfiguration {
     public boolean isBuyCommandEnabled() {
         return !craftingStoreSponge.getConfigWrapper().getConfig().getNode("disable-buy-command").getBoolean(false);
     }
+
+    @Override
+    public int getTimeBetweenCommands() {
+        return craftingStoreSponge.getConfigWrapper().getConfig().getNode("time-between-commands").getInt(200);
+    }
 }

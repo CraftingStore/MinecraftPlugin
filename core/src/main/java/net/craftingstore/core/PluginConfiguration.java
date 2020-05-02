@@ -10,4 +10,6 @@ public interface PluginConfiguration {
     String getPlatform();
 
     boolean isBuyCommandEnabled();
+
+    int getTimeBetweenCommands();
 }
