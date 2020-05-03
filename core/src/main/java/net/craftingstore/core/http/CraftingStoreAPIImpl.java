@@ -28,12 +28,13 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
+import javax.net.ssl.SSLContext;
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class CraftingStoreAPIImpl extends CraftingStoreAPI {
@@ -49,7 +50,15 @@ public class CraftingStoreAPIImpl extends CraftingStoreAPI {
         gsonBuilder.registerTypeAdapter(ProviderInformation.class, new InformationAdapter());
         gsonBuilder.registerTypeAdapter(InventoryItem.class, new InventoryAdapter());
         this.gson = gsonBuilder.create();
-        httpClient = HttpClients.createDefault();
+        try {
+            SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
+            sslContext.init(null, null, null);
+            httpClient = HttpClients.custom()
+                    .setSSLContext(sslContext)
+                    .build();
+        } catch (NoSuchAlgorithmException | KeyManagementException e) {
+            e.printStackTrace();
+        }
     }
 
     public Future<CraftingStoreInformation> getInformation() throws CraftingStoreApiException {
