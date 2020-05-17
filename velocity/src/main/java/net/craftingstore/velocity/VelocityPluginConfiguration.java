@@ -44,6 +44,13 @@ public class VelocityPluginConfiguration implements PluginConfiguration {
 
     @Override
     public int getTimeBetweenCommands() {
-        return ((Long) config.getConfig().getOrDefault("time-between-commands", 200)).intValue();
+        Object value = config.getConfig().getOrDefault("time-between-commands", 200);
+        if (value instanceof Integer) {
+            return (int) value;
+        }
+        if (value instanceof Long) {
+            return ((Long) value).intValue();
+        }
+        throw new RuntimeException("Invalid integer value in time-between-commands");
     }
 }
