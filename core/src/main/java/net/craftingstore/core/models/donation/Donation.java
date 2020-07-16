@@ -2,22 +2,33 @@ package net.craftingstore.core.models.donation;
 
 public class Donation {
 
-    private int id;
+    private int commandId;
+    private int paymentId;
     private String command;
     private DonationPlayer player;
     private DonationPackage donationPackage;
     private int discount;
 
-    public Donation(int id, String command, DonationPlayer player, DonationPackage donationPackage, int discount) {
-        this.id = id;
+    public Donation(int commandId, int paymentId, String command, DonationPlayer player, DonationPackage donationPackage, int discount) {
+        this.commandId = commandId;
+        this.paymentId = paymentId;
         this.command = command;
         this.player = player;
         this.donationPackage = donationPackage;
         this.discount = discount;
     }
 
+    @Deprecated
     public int getId() {
-        return id;
+        return commandId;
+    }
+
+    public int getCommandId() {
+        return commandId;
+    }
+
+    public int getPaymentId() {
+        return paymentId;
     }
 
     public String getCommand() {

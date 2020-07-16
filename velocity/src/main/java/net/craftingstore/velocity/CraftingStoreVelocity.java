@@ -20,7 +20,7 @@ import net.craftingstore.velocity.module.CraftingStoreModule;
 import java.nio.file.Path;
 
 @Singleton
-@Plugin(id = "craftingstore", name = "CraftingStore", version = "2.3.1")
+@Plugin(id = "craftingstore", name = "CraftingStore")
 public class CraftingStoreVelocity {
 
     @Inject

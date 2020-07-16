@@ -3,9 +3,9 @@ package net.craftingstore.core.models.donation;
 public class DonationPackage {
 
     private String name;
-    private int price;
+    private float price;
 
-    public DonationPackage(String name, int price) {
+    public DonationPackage(String name, float price) {
         this.name = name;
         this.price = price;
     }
@@ -14,7 +14,12 @@ public class DonationPackage {
         return name;
     }
 
+    @Deprecated
     public int getPrice() {
+        return (int) price;
+    }
+
+    public float getPriceFloat() {
         return price;
     }
 }

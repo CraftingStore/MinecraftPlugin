@@ -92,8 +92,15 @@ public class CraftingStoreAPIImpl extends CraftingStoreAPI {
                 ApiDonation[] apiDonations = httpClient.execute(get("queue"), new JsonResponseHandler<>(gson, ApiDonation[].class));
                 return Arrays.stream(apiDonations).map(apiDonation -> {
                     DonationPlayer player = new DonationPlayer(apiDonation.getMcName(), apiDonation.getUuid(), apiDonation.getRequireOnline());
-                    DonationPackage donationPackage = new DonationPackage(apiDonation.getPackageName(), apiDonation.getPackagePrice());
-                    return new Donation(apiDonation.getId(), apiDonation.getCommand(), player, donationPackage, apiDonation.getCouponDiscount());
+                    DonationPackage donationPackage = new DonationPackage(apiDonation.getPackageName(), apiDonation.getPackagePriceCents() / 100f);
+                    return new Donation(
+                            apiDonation.getCommandId(),
+                            apiDonation.getPaymentId(),
+                            apiDonation.getCommand(),
+                            player,
+                            donationPackage,
+                            apiDonation.getCouponDiscount()
+                    );
                 }).toArray(Donation[]::new);
             } catch (IOException e) {
                 throw new CraftingStoreApiException("Donation Queue call failed", e);

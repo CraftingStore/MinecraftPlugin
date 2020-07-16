@@ -33,7 +33,7 @@ public class ExecuteDonationsJob {
                     e.printStackTrace();
                 }
             }
-            this.instance.getLogger().debug(String.format("Executing donation %d", donation.getId()));
+            this.instance.getLogger().debug(String.format("Executing donation #%d with command id #%d", donation.getPaymentId(), donation.getCommandId()));
             this.instance.getLogger().debug(String.format("Command is '%s'", donation.getCommand()));
             boolean result = instance.getImplementation().executeDonation(donation);
             donations.put(donation, result);
