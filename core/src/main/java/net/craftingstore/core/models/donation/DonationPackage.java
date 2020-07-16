@@ -5,23 +5,27 @@ import java.math.BigDecimal;
 public class DonationPackage {
 
     private String name;
-    private BigDecimal price;
+    private int priceInCents;
 
-    public DonationPackage(String name, BigDecimal price) {
+    public DonationPackage(String name, int priceInCents) {
         this.name = name;
-        this.price = price;
+        this.priceInCents = priceInCents;
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     @Deprecated
     public int getPrice() {
-        return price.intValue();
+        return (int) Math.round(this.priceInCents / 100d);
     }
 
     public BigDecimal getPriceDecimal() {
-        return price;
+        return BigDecimal.valueOf(this.priceInCents / 100d);
+    }
+
+    public int getPriceInCents() {
+        return this.priceInCents;
     }
 }

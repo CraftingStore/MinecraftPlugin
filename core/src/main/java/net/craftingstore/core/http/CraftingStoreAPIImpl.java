@@ -93,8 +93,7 @@ public class CraftingStoreAPIImpl extends CraftingStoreAPI {
                 ApiDonation[] apiDonations = httpClient.execute(get("queue"), new JsonResponseHandler<>(gson, ApiDonation[].class));
                 return Arrays.stream(apiDonations).map(apiDonation -> {
                     DonationPlayer player = new DonationPlayer(apiDonation.getMcName(), apiDonation.getUuid(), apiDonation.getRequireOnline());
-                    BigDecimal price = new BigDecimal(Float.toString(apiDonation.getPackagePriceCents() / 100f));
-                    DonationPackage donationPackage = new DonationPackage(apiDonation.getPackageName(), price);
+                    DonationPackage donationPackage = new DonationPackage(apiDonation.getPackageName(), apiDonation.getPackagePriceCents());
                     return new Donation(
                             apiDonation.getCommandId(),
                             apiDonation.getPaymentId(),
