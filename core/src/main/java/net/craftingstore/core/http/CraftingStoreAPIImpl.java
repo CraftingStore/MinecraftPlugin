@@ -30,6 +30,7 @@ import org.apache.http.util.EntityUtils;
 
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -92,7 +93,8 @@ public class CraftingStoreAPIImpl extends CraftingStoreAPI {
                 ApiDonation[] apiDonations = httpClient.execute(get("queue"), new JsonResponseHandler<>(gson, ApiDonation[].class));
                 return Arrays.stream(apiDonations).map(apiDonation -> {
                     DonationPlayer player = new DonationPlayer(apiDonation.getMcName(), apiDonation.getUuid(), apiDonation.getRequireOnline());
-                    DonationPackage donationPackage = new DonationPackage(apiDonation.getPackageName(), apiDonation.getPackagePriceCents() / 100f);
+                    BigDecimal price = new BigDecimal(Float.toString(apiDonation.getPackagePriceCents() / 100f));
+                    DonationPackage donationPackage = new DonationPackage(apiDonation.getPackageName(), price);
                     return new Donation(
                             apiDonation.getCommandId(),
                             apiDonation.getPaymentId(),

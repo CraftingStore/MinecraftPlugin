@@ -1,11 +1,13 @@
 package net.craftingstore.core.models.donation;
 
+import java.math.BigDecimal;
+
 public class DonationPackage {
 
     private String name;
-    private float price;
+    private BigDecimal price;
 
-    public DonationPackage(String name, float price) {
+    public DonationPackage(String name, BigDecimal price) {
         this.name = name;
         this.price = price;
     }
@@ -16,10 +18,10 @@ public class DonationPackage {
 
     @Deprecated
     public int getPrice() {
-        return (int) price;
+        return price.intValue();
     }
 
-    public float getPriceFloat() {
+    public BigDecimal getPriceDecimal() {
         return price;
     }
 }
