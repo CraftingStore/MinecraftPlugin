@@ -1,28 +1,27 @@
 package net.craftingstore.bukkit.hooks;
 
-import me.clip.placeholderapi.PlaceholderAPI;
-import me.clip.placeholderapi.PlaceholderHook;
+import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import net.craftingstore.core.CraftingStore;
 import net.craftingstore.core.exceptions.CraftingStoreApiException;
 import net.craftingstore.core.models.api.ApiPayment;
 import net.craftingstore.core.models.api.ApiTopDonator;
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class PlaceholderAPIHook extends PlaceholderHook {
+public class PlaceholderAPIHook extends PlaceholderExpansion {
 
     private CraftingStore instance;
 
     public PlaceholderAPIHook(CraftingStore instance) {
         this.instance = instance;
-        PlaceholderAPI.registerPlaceholderHook("craftingstore", this);
+        this.register(); // Documentation is missing so we are using this method.
     }
 
     @Override
-    public String onPlaceholderRequest(Player player, String s) {
+    public String onRequest(OfflinePlayer player, String s) {
         try {
             if (s.startsWith("donator")) {
                 return handleDonators(player, s);
@@ -36,7 +35,7 @@ public class PlaceholderAPIHook extends PlaceholderHook {
         return null;
     }
 
-    private String handleDonators(Player player, String s) throws CraftingStoreApiException, ExecutionException, InterruptedException {
+    private String handleDonators(OfflinePlayer player, String s) throws CraftingStoreApiException, ExecutionException, InterruptedException {
         ApiTopDonator[] topDonators = instance.getApi().getTopDonators().get();
         if (topDonators == null) {
             return null; // Donators are not retrieved yet.
@@ -62,7 +61,7 @@ public class PlaceholderAPIHook extends PlaceholderHook {
         return null;
     }
 
-    private String handlePayments(Player player, String s) throws CraftingStoreApiException, ExecutionException, InterruptedException {
+    private String handlePayments(OfflinePlayer player, String s) throws CraftingStoreApiException, ExecutionException, InterruptedException {
         ApiPayment[] payments = instance.getApi().getPayments().get();
         if (payments == null) {
             return null; // Recent payments are not retrieved yet.
@@ -86,5 +85,20 @@ public class PlaceholderAPIHook extends PlaceholderHook {
             }
         }
         return null;
+    }
+
+    @Override
+    public String getIdentifier() {
+        return "craftingstore";
+    }
+
+    @Override
+    public String getAuthor() {
+        return "CraftingStore";
+    }
+
+    @Override
+    public String getVersion() {
+        return this.instance.getImplementation().getConfiguration().getVersion();
     }
 }

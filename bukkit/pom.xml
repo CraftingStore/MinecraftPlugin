@@ -35,10 +35,20 @@
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
+        <!-- PlaceHolderAPI start -->
         <repository>
-            <id>placeholderapi</id>
-            <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+            <id>PlaceholderAPI</id>
+            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
+        <repository>
+            <id>razyr-dev</id>
+            <url>https://rayzr.dev/repo/</url>
+        </repository>
+        <repository>
+            <id>codemc</id>
+            <url>https://repo.codemc.org/repository/maven-public</url>
+        </repository>
+        <!-- PlaceholderRAPI end -->
     </repositories>
 
     <dependencies>
@@ -55,8 +65,8 @@
         </dependency>
         <dependency>
             <groupId>me.clip</groupId>
-            <artifactId>placeholderapi</artifactId>
-            <version>2.9.2</version>
+            <artifactId>PlaceholderAPI</artifactId>
+            <version>2.10.7</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
