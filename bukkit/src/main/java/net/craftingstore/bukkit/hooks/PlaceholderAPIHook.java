@@ -38,7 +38,7 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
     private String handleDonators(OfflinePlayer player, String s) throws CraftingStoreApiException, ExecutionException, InterruptedException {
         ApiTopDonator[] topDonators = instance.getApi().getTopDonators().get();
         if (topDonators == null) {
-            return null; // Donators are not retrieved yet.
+            return ""; // Donators are not retrieved yet.
         } else if (s.equalsIgnoreCase("donator")) {
             StringBuilder builder = new StringBuilder();
             for (ApiTopDonator donator : topDonators) {
@@ -58,13 +58,13 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
                 }
             }
         }
-        return null;
+        return "";
     }
 
     private String handlePayments(OfflinePlayer player, String s) throws CraftingStoreApiException, ExecutionException, InterruptedException {
         ApiPayment[] payments = instance.getApi().getPayments().get();
         if (payments == null) {
-            return null; // Recent payments are not retrieved yet.
+            return ""; // Recent payments are not retrieved yet.
         } else if (s.equalsIgnoreCase("payment")) {
             StringBuilder builder = new StringBuilder();
             for (ApiPayment payment : payments) {
@@ -84,7 +84,7 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
                 }
             }
         }
-        return null;
+        return "";
     }
 
     @Override
