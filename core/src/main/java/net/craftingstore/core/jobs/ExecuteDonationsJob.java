@@ -21,8 +21,20 @@ public class ExecuteDonationsJob {
         this.instance.getLogger().debug("Executing ExecuteDonationsJob.");
 
         Map<Donation, Boolean> donations = new HashMap<>();
-        for (Donation donation : this.donations) {
-            if (!donations.isEmpty()) {
+        for (int i = 0; i < this.donations.length; i++) {
+            Donation donation = this.donations[i];
+            this.instance.getLogger().debug(String.format("Executing donation #%d with command id #%d", donation.getPaymentId(), donation.getCommandId()));
+            this.instance.getLogger().debug(String.format("Command is '%s'", donation.getCommand()));
+            boolean result = instance.getImplementation().executeDonation(donation);
+            donations.put(donation, result);
+            this.instance.getLogger().debug(String.format("Result of execution is %s", result));
+
+            if (i < (this.donations.length - 1)) {
+                if (!result) {
+                    this.instance.getLogger().debug("Not delaying command execution because last command did not successfully execute.");
+                    continue;
+                }
+
                 // Wait x ms before executing the next command, so donations with a lot of commands will not create lag
                 try {
                     int waitingTime = this.instance.getImplementation().getConfiguration().getTimeBetweenCommands();
@@ -33,11 +45,6 @@ public class ExecuteDonationsJob {
                     e.printStackTrace();
                 }
             }
-            this.instance.getLogger().debug(String.format("Executing donation #%d with command id #%d", donation.getPaymentId(), donation.getCommandId()));
-            this.instance.getLogger().debug(String.format("Command is '%s'", donation.getCommand()));
-            boolean result = instance.getImplementation().executeDonation(donation);
-            donations.put(donation, result);
-            this.instance.getLogger().debug(String.format("Result of execution is %s", result));
         }
 
         int[] completedIds = donations.entrySet().stream()
