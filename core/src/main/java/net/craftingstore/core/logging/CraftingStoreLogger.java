@@ -20,4 +20,8 @@ public abstract class CraftingStoreLogger {
             this.debug("Debug logging has been enabled!");
         }
     }
+
+    public boolean isDebugging() {
+        return this.debugging;
+    }
 }

@@ -60,6 +60,14 @@ public class SocketProvider extends CraftingStoreProvider {
             this.client.on(Socket.EVENT_CONNECT_ERROR, (Object... args) -> {
                 craftingStore.getLogger().debug("Socket server connect error event called");
                 this.disconnected();
+                if (!craftingStore.getLogger().isDebugging()) {
+                    return;
+                }
+                for (Object arg : args) {
+                    if (arg instanceof Exception) {
+                        ((Exception) arg).printStackTrace();
+                    }
+                }
             });
             this.client.on("authenticated", (Object... args) -> {
                 craftingStore.getLogger().debug("Socket server authenticated");
@@ -70,8 +78,22 @@ public class SocketProvider extends CraftingStoreProvider {
                 this.craftingStore.executeQueue();
             });
             this.client.on("reload-plugin", (Object... args) -> this.craftingStore.reload());
+            this.client.on("disable-plugin", (Object... args) -> {
+                if (args.length > 0) {
+                    craftingStore.getLogger().error(args[0].toString());
+                }
+                this.craftingStore.setEnabled(false);
+            });
             this.client.on(Socket.EVENT_ERROR, (Object... args) -> {
                 craftingStore.getLogger().debug("Socket error event called");
+                if (!craftingStore.getLogger().isDebugging()) {
+                    return;
+                }
+                for (Object arg : args) {
+                    if (arg instanceof Exception) {
+                        ((Exception) arg).printStackTrace();
+                    }
+                }
             });
             this.client.on(Socket.EVENT_RECONNECT, (Object... args) -> {
                 craftingStore.getLogger().debug("Socket reconnect event called");

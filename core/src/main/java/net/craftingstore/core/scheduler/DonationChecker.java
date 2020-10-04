@@ -33,7 +33,11 @@ public class DonationChecker implements Runnable {
             Donation[] donationQueue = instance.getApi().getDonationQueue().get();
             new ExecuteDonationsJob(instance, donationQueue);
         } catch (CraftingStoreApiException | InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+            if (instance.getLogger().isDebugging()) {
+                e.printStackTrace();
+            } else {
+                instance.getLogger().error("Failed to check for donations. If this issue persists, please contact support at https://craftingstore.net.");
+            }
         }
     }
 }

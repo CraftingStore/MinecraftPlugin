@@ -26,7 +26,11 @@ public class DonationRunner {
                 Donation[] donationQueue = this.craftingStore.getApi().getDonationQueue().get();
                 new ExecuteDonationsJob(this.craftingStore, donationQueue);
             } catch (CraftingStoreApiException | InterruptedException | ExecutionException e) {
-                e.printStackTrace();
+                if (craftingStore.getLogger().isDebugging()) {
+                    e.printStackTrace();
+                } else {
+                    craftingStore.getLogger().info("Failed to retrieve donation. The plugin will retry every 30 minutes.");
+                }
             }
         });
     }

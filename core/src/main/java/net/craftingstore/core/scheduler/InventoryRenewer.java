@@ -27,7 +27,11 @@ public class InventoryRenewer implements Runnable {
         try {
             api.refreshGUICache();
         } catch (CraftingStoreApiException | ExecutionException | InterruptedException e) {
-            e.printStackTrace();
+            if (instance.getLogger().isDebugging()) {
+                e.printStackTrace();
+            } else {
+                instance.getLogger().error("Failed to renew GUI cache. If this issue persists, please contact support at https://craftingstore.net.");
+            }
         }
     }
 }
