@@ -12,7 +12,6 @@ public class ChatColorUtil {
             Class.forName("net.md_5.bungee.api.ChatColor").getMethod("of", String.class);
             hasHexAvailable = true;
         } catch (NoSuchMethodException | ClassNotFoundException ignored) {
-            ignored.printStackTrace();
         }
     }
 
