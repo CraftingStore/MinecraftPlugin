@@ -1,13 +1,12 @@
 package net.craftingstore.bukkit.inventory;
 
 import net.craftingstore.bukkit.CraftingStoreBukkit;
+import net.craftingstore.bukkit.util.VersionUtil;
 import net.craftingstore.bukkit.util.XMaterial;
-import net.craftingstore.core.CraftingStore;
 import net.craftingstore.core.models.api.inventory.CraftingStoreInventory;
 import net.craftingstore.core.models.api.inventory.InventoryItem;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -54,6 +53,9 @@ public class InventoryBuilder {
                         .map(d -> ChatColor.translateAlternateColorCodes('&', d))
                         .collect(Collectors.toList())
                 );
+            }
+            if (VersionUtil.isCustomModalDataAvailable() && inventoryItem.getIcon().getCustomModelData() != null) {
+                meta.setCustomModelData(inventoryItem.getIcon().getCustomModelData());
             }
             itemStack.setItemMeta(meta);
             inventory.setItem(inventoryItem.getIndex(), itemStack);
