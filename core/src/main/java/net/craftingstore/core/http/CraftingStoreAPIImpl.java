@@ -30,7 +30,6 @@ import org.apache.http.util.EntityUtils;
 
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;

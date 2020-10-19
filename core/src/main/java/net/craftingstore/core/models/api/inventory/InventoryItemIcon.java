@@ -2,7 +2,8 @@ package net.craftingstore.core.models.api.inventory;
 
 public class InventoryItemIcon {
     private String material;
-    private int amount;
+    private Integer amount;
+    private int customModelData;
     private InventoryItemEnhancement[] enhancements;
 
     public String getMaterial() {
@@ -11,6 +12,10 @@ public class InventoryItemIcon {
 
     public int getAmount() {
         return amount;
+    }
+
+    public Integer getCustomModelData() {
+        return customModelData;
     }
 
     public InventoryItemEnhancement[] getEnhancements() {

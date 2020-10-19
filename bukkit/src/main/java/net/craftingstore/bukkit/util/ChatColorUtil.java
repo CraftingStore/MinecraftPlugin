@@ -5,18 +5,9 @@ import java.util.regex.Pattern;
 
 public class ChatColorUtil {
     private static final Pattern HEX_PATTERN = Pattern.compile("&#(\\w{5}[0-9a-f])");
-    private static boolean hasHexAvailable = false;
-
-    static {
-        try {
-            Class.forName("net.md_5.bungee.api.ChatColor").getMethod("of", String.class);
-            hasHexAvailable = true;
-        } catch (NoSuchMethodException | ClassNotFoundException ignored) {
-        }
-    }
 
     public static String translate(String textToTranslate) {
-        if (hasHexAvailable) {
+        if (VersionUtil.isHexAvailable()) {
             return translateHexCodes(textToTranslate);
         }
         return org.bukkit.ChatColor.translateAlternateColorCodes('&', textToTranslate);
