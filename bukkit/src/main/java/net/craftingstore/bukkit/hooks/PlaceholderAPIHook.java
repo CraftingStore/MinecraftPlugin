@@ -63,8 +63,8 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
 
     private String handlePayments(OfflinePlayer player, String s) throws CraftingStoreApiException, ExecutionException, InterruptedException {
         ApiPayment[] payments = instance.getApi().getPayments().get();
-        if (payments == null) {
-            return ""; // Recent payments are not retrieved yet.
+        if (payments == null || payments.length == 0) {
+            return ""; // Recent payments are not retrieved yet or there are no payments.
         } else if (s.equalsIgnoreCase("payment")) {
             StringBuilder builder = new StringBuilder();
             for (ApiPayment payment : payments) {
