@@ -44,10 +44,39 @@ public class CraftingStoreCommand extends Command {
             });
             return;
         }
+        if (args.length == 1 || args.length == 2 && args[0].equalsIgnoreCase("debug")) {
+            boolean isDebugging = this.instance.getCraftingStore().getLogger().isDebugging();
+            if (args.length == 1) {
+                sender.sendMessage(new TextComponent(String.format(
+                        "%sDebug mode is currently %s.",
+                        this.instance.getPrefix(),
+                        isDebugging ? "enabled" : "disabled"
+                )));
+                return;
+            }
+            String debugValue = args[1].toLowerCase();
+            if (debugValue.equalsIgnoreCase("true")) {
+                isDebugging = true;
+            } else if (debugValue.equalsIgnoreCase("false")) {
+                isDebugging = false;
+            } else {
+                sender.sendMessage(new TextComponent(instance.getPrefix() + "Unknown debug value."));
+                return;
+            }
+            this.instance.getCraftingStore().getLogger().setDebugging(isDebugging);
+            instance.getConfig().set("debug", isDebugging);
+            instance.getConfigWrapper().saveConfig();
+            sender.sendMessage(new TextComponent(String.format(
+                    "%sDebug mode has been %s.",
+                    this.instance.getPrefix(),
+                    isDebugging ? "enabled" : "disabled"
+            )));
+            return;
+        }
 
-        sender.sendMessage(new TextComponent(ChatColor.GRAY + "" +ChatColor.STRIKETHROUGH + "-----------------------"));
+        sender.sendMessage(new TextComponent(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------------------"));
         sender.sendMessage(new TextComponent(ChatColor.DARK_GRAY + ">" + ChatColor.GRAY + " /csb reload" + ChatColor.DARK_GRAY + " -> " + ChatColor.GRAY + "Reload the config."));
         sender.sendMessage(new TextComponent(ChatColor.DARK_GRAY + ">" + ChatColor.GRAY + " /csb key <your key>" + ChatColor.DARK_GRAY + " -> " + ChatColor.GRAY + "Update the key."));
-        sender.sendMessage(new TextComponent(ChatColor.GRAY + "" +ChatColor.STRIKETHROUGH + "-----------------------"));
+        sender.sendMessage(new TextComponent(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------------------"));
     }
 }
