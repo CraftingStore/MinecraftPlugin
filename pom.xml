@@ -11,7 +11,7 @@
 
     <properties>
         <revision>${craftingstore-version}-RELEASE</revision>
-        <craftingstore-version>2.6.3</craftingstore-version>
+        <craftingstore-version>2.6.4</craftingstore-version>
     </properties>
 
     <build>
