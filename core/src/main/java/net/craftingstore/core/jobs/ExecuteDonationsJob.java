@@ -8,6 +8,9 @@ import java.util.*;
 import java.util.stream.Stream;
 
 public class ExecuteDonationsJob {
+
+    public static final int CHUNK_SIZE = 25;
+
     private CraftingStore instance;
     private Donation[] donations;
 
@@ -18,7 +21,7 @@ public class ExecuteDonationsJob {
     }
 
     private void execute() throws CraftingStoreApiException {
-        this.instance.getLogger().debug("Executing ExecuteDonationsJob.");
+        this.instance.getLogger().debug(String.format("Executing ExecuteDonationsJob for %d donations.", this.donations.length));
 
         Map<Donation, Boolean> donations = new HashMap<>();
         for (int i = 0; i < this.donations.length; i++) {
@@ -61,7 +64,7 @@ public class ExecuteDonationsJob {
             // Check if the donation has been executed and is in the cache
             if (entry.getValue() && instance.getPendingDonations().containsKey(entry.getKey().getId())) {
                 instance.getPendingDonations().remove(entry.getKey().getId());
-            } else if (!entry.getValue()){
+            } else if (!entry.getValue()) {
                 // Add the donation to the list of pending donations so it gets executed when the player gets online.
                 instance.getPendingDonations().put(entry.getKey().getId(), entry.getKey());
             }

@@ -4,7 +4,9 @@ import net.craftingstore.core.CraftingStore;
 import net.craftingstore.core.exceptions.CraftingStoreApiException;
 import net.craftingstore.core.jobs.ExecuteDonationsJob;
 import net.craftingstore.core.models.donation.Donation;
+import net.craftingstore.core.util.ArrayUtil;
 
+import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
 public class DonationChecker implements Runnable {
@@ -31,7 +33,12 @@ public class DonationChecker implements Runnable {
         this.instance.getLogger().debug("Checking for donations.");
         try {
             Donation[] donationQueue = instance.getApi().getDonationQueue().get();
-            new ExecuteDonationsJob(instance, donationQueue);
+            Donation[][] chunked = ArrayUtil.splitArray(donationQueue, ExecuteDonationsJob.CHUNK_SIZE);
+            for (int i = 0; i < chunked.length; i++) {
+                Donation[] chunk = chunked[i];
+                this.instance.getLogger().debug(String.format("Creating ExecuteDonationsJob for chunk %d/%d", i + 1, chunked.length));
+                new ExecuteDonationsJob(instance, chunk);
+            }
         } catch (CraftingStoreApiException | InterruptedException | ExecutionException e) {
             if (instance.getLogger().isDebugging()) {
                 e.printStackTrace();
