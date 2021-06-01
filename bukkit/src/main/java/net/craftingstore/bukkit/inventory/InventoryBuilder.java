@@ -3,7 +3,6 @@ package net.craftingstore.bukkit.inventory;
 import net.craftingstore.bukkit.CraftingStoreBukkit;
 import net.craftingstore.bukkit.util.ChatColorUtil;
 import net.craftingstore.bukkit.util.VersionUtil;
-import net.craftingstore.bukkit.util.XMaterial;
 import net.craftingstore.core.models.api.inventory.CraftingStoreInventory;
 import net.craftingstore.core.models.api.inventory.InventoryItem;
 import org.bukkit.Bukkit;
@@ -16,10 +15,12 @@ import java.util.stream.Collectors;
 
 public class InventoryBuilder {
 
-    private CraftingStoreBukkit instance;
+    private final CraftingStoreBukkit instance;
+    private final InventoryItemBuilder inventoryItemBuilder;
 
     public InventoryBuilder(CraftingStoreBukkit instance) {
         this.instance = instance;
+        this.inventoryItemBuilder = new InventoryItemBuilder(instance);
     }
 
     public Inventory buildInventory(CraftingStoreInventory csInventory) {
@@ -35,17 +36,7 @@ public class InventoryBuilder {
         Inventory inventory = Bukkit.createInventory(new CraftingStoreInventoryHolder(csInventory, parent), csInventory.getSize(), title);
 
         for (InventoryItem inventoryItem : csInventory.getContent()) {
-            XMaterial xMaterial;
-            if (inventoryItem.getIcon().getMaterial() == null) {
-                xMaterial = XMaterial.CHEST;
-            } else {
-                xMaterial = XMaterial.fromString(inventoryItem.getIcon().getMaterial());
-                if (xMaterial == null || xMaterial.parseMaterial() == null) {
-                    instance.getCraftingStore().getLogger().debug("Material " + inventoryItem.getIcon().getMaterial() + " not found.");
-                    xMaterial = XMaterial.CHEST;
-                }
-            }
-            ItemStack itemStack = xMaterial.parseItem(inventoryItem.getIcon().getAmount());
+            ItemStack itemStack = this.inventoryItemBuilder.getItemStack(inventoryItem.getIcon().getMaterial(), inventoryItem.getIcon().getAmount());
             ItemMeta meta = itemStack.getItemMeta();
             if (meta != null) {
                 meta.setDisplayName(ChatColorUtil.translate(inventoryItem.getName()));

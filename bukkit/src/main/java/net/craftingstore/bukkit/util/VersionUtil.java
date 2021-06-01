@@ -3,6 +3,7 @@ package net.craftingstore.bukkit.util;
 public class VersionUtil {
     private static boolean hexAvailable = false;
     private static boolean customModalDataAvailable = false;
+    private static boolean guavaAvailable = false;
 
     static {
         try {
@@ -15,6 +16,11 @@ public class VersionUtil {
             customModalDataAvailable = true;
         } catch (NoSuchMethodException | ClassNotFoundException ignored) {
         }
+        try {
+            Class.forName("com.google.common.cache.CacheBuilder").getMethod("build");
+            guavaAvailable = true;
+        } catch (NoSuchMethodException | ClassNotFoundException ignored) {
+        }
     }
 
     public static boolean isHexAvailable() {
@@ -23,5 +29,9 @@ public class VersionUtil {
 
     public static boolean isCustomModalDataAvailable() {
         return customModalDataAvailable;
+    }
+
+    public static boolean isGuavaAvailable() {
+        return guavaAvailable;
     }
 }
