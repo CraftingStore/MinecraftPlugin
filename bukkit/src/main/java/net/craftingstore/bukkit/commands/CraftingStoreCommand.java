@@ -44,7 +44,7 @@ public class CraftingStoreCommand implements CommandExecutor {
             });
             return true;
         }
-        if (args.length == 1 || args.length == 2 && args[0].equalsIgnoreCase("debug")) {
+        if ((args.length == 1 || args.length == 2) && args[0].equalsIgnoreCase("debug")) {
             boolean isDebugging = this.instance.getCraftingStore().getLogger().isDebugging();
             if (args.length == 1) {
                 sender.sendMessage(String.format(

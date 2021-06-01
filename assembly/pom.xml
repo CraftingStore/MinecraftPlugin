@@ -41,8 +41,8 @@
                             <finalName>CraftingStore-${project.version}</finalName>
                             <relocations>
                                 <relocation>
-                                    <pattern>org.apache</pattern>
-                                    <shadedPattern>net.craftingstore.libraries.apache</shadedPattern>
+                                    <pattern>org.apache.http</pattern>
+                                    <shadedPattern>net.craftingstore.libraries.apache.http</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>org.json</pattern>
@@ -60,7 +60,27 @@
                                     <pattern>okio</pattern>
                                     <shadedPattern>net.craftingstore.libraries.okio</shadedPattern>
                                 </relocation>
+                                <relocation>
+                                    <pattern>com.cryptomorin.xseries</pattern>
+                                    <shadedPattern>net.craftingstore.libraries.xseries</shadedPattern>
+                                </relocation>
                             </relocations>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>com/cryptomorin/xseries/messages/*</exclude>
+                                        <exclude>com/cryptomorin/xseries/particles/*</exclude>
+                                        <exclude>com/cryptomorin/xseries/XBiome*</exclude>
+                                        <exclude>com/cryptomorin/xseries/NMSExtras*</exclude>
+                                        <exclude>com/cryptomorin/xseries/NoteBlockMusic*</exclude>
+                                        <exclude>com/cryptomorin/xseries/XSound*</exclude>
+                                        <exclude>com/cryptomorin/xseries/XPotion*</exclude>
+                                        <exclude>com/cryptomorin/xseries/XEnchantment*</exclude>
+                                        <exclude>com/cryptomorin/xseries/XEntity*</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
                         </configuration>
                     </execution>
                 </executions>

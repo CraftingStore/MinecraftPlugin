@@ -894,7 +894,7 @@ public enum XMaterial {
     public ItemStack parseItem(int amount) {
         Material mat = parseMaterial();
         if (isNewVersion()) {
-            return new ItemStack(mat);
+            return new ItemStack(mat, amount);
         }
         return new ItemStack(mat, amount, (byte) data);
     }
