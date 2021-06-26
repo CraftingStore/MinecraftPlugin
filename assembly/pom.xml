@@ -45,8 +45,8 @@
                                     <shadedPattern>net.craftingstore.libraries.apache.http</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>org.apache.commons</pattern>
-                                    <shadedPattern>net.craftingstore.libraries.apache.commons</shadedPattern>
+                                    <pattern>org.apache.commons.lang3</pattern>
+                                    <shadedPattern>net.craftingstore.libraries.apache.commons.lang3</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>org.json</pattern>

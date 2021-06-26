@@ -35,7 +35,8 @@ public class SocketProvider extends CraftingStoreProvider {
                         break;
                     }
                 }
-                Thread.sleep(75);
+                // Wait some time on SocketIO
+                Thread.sleep(150);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
