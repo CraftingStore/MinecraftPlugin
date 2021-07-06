@@ -49,6 +49,14 @@
                                     <shadedPattern>net.craftingstore.libraries.apache.commons.lang3</shadedPattern>
                                 </relocation>
                                 <relocation>
+                                    <pattern>org.apache.commons.logging</pattern>
+                                    <shadedPattern>net.craftingstore.libraries.apache.commons.logging</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.apache.commons.codec</pattern>
+                                    <shadedPattern>net.craftingstore.libraries.apache.commons.codec</shadedPattern>
+                                </relocation>
+                                <relocation>
                                     <pattern>org.json</pattern>
                                     <shadedPattern>net.craftingstore.libraries.json</shadedPattern>
                                 </relocation>
