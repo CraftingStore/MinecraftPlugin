@@ -2,19 +2,19 @@ package net.craftingstore.velocity.module;
 
 import com.google.inject.AbstractModule;
 import net.craftingstore.core.CraftingStore;
-import net.craftingstore.velocity.CraftingStoreVelocity;
 import net.craftingstore.velocity.annotation.Prefix;
-import net.kyori.text.TextComponent;
-import net.kyori.text.format.TextColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.NamedTextColor;
 
 public class CraftingStoreModule extends AbstractModule {
 
     private CraftingStore craftingStore;
-    private TextComponent prefix = TextComponent.builder("")
-            .append(TextComponent.of("[", TextColor.GRAY))
-            .append(TextComponent.of("CraftingStore", TextColor.RED))
-            .append(TextComponent.of("] ", TextColor.GRAY))
-            .append(TextComponent.of("", TextColor.WHITE))
+    private TextComponent prefix = Component.text()
+            .append(Component.text("[", NamedTextColor.GRAY))
+            .append(Component.text("CraftingStore", NamedTextColor.RED))
+            .append(Component.text("] ", NamedTextColor.GRAY))
+            .append(Component.text("", NamedTextColor.WHITE))
             .build();
 
     public CraftingStoreModule(CraftingStore craftingStore) {
@@ -23,6 +23,6 @@ public class CraftingStoreModule extends AbstractModule {
 
     protected void configure() {
         bind(CraftingStore.class).toInstance(craftingStore);
-        bind(TextComponent.class).annotatedWith(Prefix.class).toInstance(prefix);
+        bind(Component.class).annotatedWith(Prefix.class).toInstance(prefix);
     }
 }
