@@ -1,28 +1,27 @@
 package net.craftingstore.velocity.command;
 
 import com.google.inject.Inject;
-import com.velocitypowered.api.command.Command;
 import com.velocitypowered.api.command.CommandSource;
+import com.velocitypowered.api.command.SimpleCommand;
 import com.velocitypowered.api.proxy.ProxyServer;
 import net.craftingstore.core.CraftingStore;
 import net.craftingstore.velocity.CraftingStoreVelocity;
 import net.craftingstore.velocity.annotation.Prefix;
 import net.craftingstore.velocity.config.Config;
-import net.kyori.text.TextComponent;
-import net.kyori.text.format.TextColor;
-import net.kyori.text.format.TextDecoration;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 
 import java.util.concurrent.ExecutionException;
 
-public class CraftingStoreCommand implements Command {
+public class CraftingStoreCommand implements SimpleCommand {
 
     @Inject
     private CraftingStore craftingStore;
 
     @Inject
     @Prefix
-    private TextComponent prefix;
+    private Component prefix;
 
     @Inject
     private CraftingStoreVelocity velocityPlugin;
@@ -34,12 +33,14 @@ public class CraftingStoreCommand implements Command {
     private ProxyServer proxyServer;
 
     @Override
-    public void execute(CommandSource sender, @NonNull String[] args) {
+    public void execute(Invocation invocation) {
+        String[] args = invocation.arguments();
+        CommandSource sender = invocation.source();
         if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
             craftingStore.reload();
-            sender.sendMessage(TextComponent.builder("")
+            sender.sendMessage(Component.text()
                     .append(prefix)
-                    .append(TextComponent.of("The plugin is reloading!"))
+                    .append(Component.text("The plugin is reloading!"))
                     .build());
             return;
         }
@@ -49,14 +50,14 @@ public class CraftingStoreCommand implements Command {
             proxyServer.getScheduler().buildTask(velocityPlugin, () -> {
                 try {
                     if (craftingStore.reload().get()) {
-                        sender.sendMessage(TextComponent.builder("")
+                        sender.sendMessage(Component.text()
                                 .append(prefix)
-                                .append(TextComponent.of("The new API key has been set in the config, and the plugin has been reloaded."))
+                                .append(Component.text("The new API key has been set in the config, and the plugin has been reloaded."))
                                 .build());
                     } else {
-                        sender.sendMessage(TextComponent.builder("")
+                        sender.sendMessage(Component.text()
                                 .append(prefix)
-                                .append(TextComponent.of("The API key is invalid. The plugin will not work until you set a valid API key."))
+                                .append(Component.text("The API key is invalid. The plugin will not work until you set a valid API key."))
                                 .build());
                     }
                 } catch (InterruptedException | ExecutionException e) {
@@ -67,29 +68,29 @@ public class CraftingStoreCommand implements Command {
         }
 
         sender.sendMessage(
-                TextComponent.of("-----------------------", TextColor.GRAY).decoration(TextDecoration.STRIKETHROUGH, true)
+                Component.text("-----------------------", NamedTextColor.GRAY).decoration(TextDecoration.STRIKETHROUGH, true)
         );
-        sender.sendMessage(TextComponent.builder("")
-                .append(TextComponent.of("> ", TextColor.DARK_GRAY))
-                .append(TextComponent.of("/csv reload", TextColor.GRAY))
-                .append(TextComponent.of(" -> ", TextColor.DARK_GRAY))
-                .append(TextComponent.of("Reload the config.", TextColor.GRAY))
+        sender.sendMessage(Component.text()
+                .append(Component.text("> ", NamedTextColor.DARK_GRAY))
+                .append(Component.text("/csv reload", NamedTextColor.GRAY))
+                .append(Component.text(" -> ", NamedTextColor.DARK_GRAY))
+                .append(Component.text("Reload the config.", NamedTextColor.GRAY))
                 .build()
         );
-        sender.sendMessage(TextComponent.builder("")
-                .append(TextComponent.of("> ", TextColor.DARK_GRAY))
-                .append(TextComponent.of("/csv key <your key>", TextColor.GRAY))
-                .append(TextComponent.of(" -> ", TextColor.DARK_GRAY))
-                .append(TextComponent.of("Update the key.", TextColor.GRAY))
+        sender.sendMessage(Component.text()
+                .append(Component.text("> ", NamedTextColor.DARK_GRAY))
+                .append(Component.text("/csv key <your key>", NamedTextColor.GRAY))
+                .append(Component.text(" -> ", NamedTextColor.DARK_GRAY))
+                .append(Component.text("Update the key.", NamedTextColor.GRAY))
                 .build()
         );
         sender.sendMessage(
-                TextComponent.of("-----------------------", TextColor.GRAY).decoration(TextDecoration.STRIKETHROUGH, true)
+                Component.text("-----------------------", NamedTextColor.GRAY).decoration(TextDecoration.STRIKETHROUGH, true)
         );
     }
 
     @Override
-    public boolean hasPermission(CommandSource source, @NonNull String[] args) {
-        return source.hasPermission("craftingstore.admin");
+    public boolean hasPermission(Invocation invocation) {
+        return invocation.source().hasPermission("craftingstore.admin");
     }
 }

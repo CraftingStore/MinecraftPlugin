@@ -44,7 +44,7 @@ public class CraftingStoreVelocity {
         this.craftingStore = new CraftingStore(injector.getInstance(CraftingStoreVelocityImpl.class));
         injector = injector.createChildInjector(new CraftingStoreModule(craftingStore));
 
-        commandManager.register(injector.getInstance(CraftingStoreCommand.class), "csv");
+        commandManager.register("csv", injector.getInstance(CraftingStoreCommand.class));
         eventManager.register(this, injector.getInstance(PendingDonationJoinListener.class));
     }
 

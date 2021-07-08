@@ -53,9 +53,11 @@ public class CraftingStoreVelocityImpl implements CraftingStorePlugin {
             return false;
         }
 
-        if (!proxyServer.getCommandManager().execute(proxyServer.getConsoleCommandSource(), donation.getCommand())) {
-            logger.error("Command " + donation.getCommand() + " failed");
-        }
+        proxyServer.getCommandManager().executeAsync(proxyServer.getConsoleCommandSource(), donation.getCommand())
+                .exceptionally(e -> {
+                    logger.error("Command " + donation.getCommand() + " failed");
+                    return null;
+                });
         return true;
     }
 
