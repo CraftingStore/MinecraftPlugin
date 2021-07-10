@@ -126,5 +126,10 @@
             <artifactId>velocity</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>net.craftingstore</groupId>
+            <artifactId>nukkit</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>
