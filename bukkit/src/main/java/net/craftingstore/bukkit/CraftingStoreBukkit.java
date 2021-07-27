@@ -4,6 +4,7 @@ import net.craftingstore.bukkit.commands.BuyCommand;
 import net.craftingstore.bukkit.commands.CraftingStoreCommand;
 import net.craftingstore.bukkit.config.Config;
 import net.craftingstore.bukkit.hooks.PlaceholderAPIHook;
+import net.craftingstore.bukkit.hooks.VaultHook;
 import net.craftingstore.bukkit.listeners.InventoryListener;
 import net.craftingstore.bukkit.listeners.AdminJoinListener;
 import net.craftingstore.bukkit.listeners.PendingDonationJoinListener;
@@ -18,6 +19,7 @@ public class CraftingStoreBukkit extends JavaPlugin {
     private CraftingStore craftingStore;
     private Config config;
     private String prefix = ChatColor.GRAY + "[" + ChatColor.RED + "CraftingStore" + ChatColor.GRAY + "] " + ChatColor.WHITE;
+    private VaultHook vaultHook;
 
     @Override
     public void onEnable() {
@@ -37,6 +39,16 @@ public class CraftingStoreBukkit extends JavaPlugin {
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             new PlaceholderAPIHook(craftingStore);
             craftingStore.getLogger().info("Hooked with PlaceholderAPI");
+        }
+        // Vault hook
+        if (Bukkit.getPluginManager().isPluginEnabled("Vault")) {
+            this.vaultHook = new VaultHook(this);
+            if (this.vaultHook.register()) {
+                craftingStore.getLogger().info("Hooked with Vault");
+            } else {
+                craftingStore.getLogger().info("There was a problem hooking with Vault");
+                this.vaultHook = null;
+            }
         }
     }
 
@@ -61,5 +73,13 @@ public class CraftingStoreBukkit extends JavaPlugin {
 
     public String getPrefix() {
         return prefix;
+    }
+
+    public VaultHook getVaultHook() {
+        return vaultHook;
+    }
+
+    public boolean isHookedWithVault() {
+        return vaultHook != null;
     }
 }

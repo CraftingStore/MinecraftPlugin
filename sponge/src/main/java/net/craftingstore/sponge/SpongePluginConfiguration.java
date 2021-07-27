@@ -48,4 +48,9 @@ public class SpongePluginConfiguration implements PluginConfiguration {
     public int getTimeBetweenCommands() {
         return craftingStoreSponge.getConfigWrapper().getConfig().getNode("time-between-commands").getInt(200);
     }
+
+    @Override
+    public String getNotEnoughBalanceMessage() {
+        return null;
+    }
 }

@@ -39,4 +39,9 @@ public class BungeePluginConfiguration implements PluginConfiguration {
     public int getTimeBetweenCommands() {
         return plugin.getConfig().getInt("time-between-commands", 200);
     }
+
+    @Override
+    public String getNotEnoughBalanceMessage() {
+        return null;
+    }
 }

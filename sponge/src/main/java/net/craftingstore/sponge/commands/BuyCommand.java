@@ -3,6 +3,7 @@ package net.craftingstore.sponge.commands;
 import com.google.inject.Inject;
 import net.craftingstore.core.CraftingStore;
 import net.craftingstore.core.exceptions.CraftingStoreApiException;
+import net.craftingstore.core.models.api.ApiInventory;
 import net.craftingstore.core.models.api.inventory.CraftingStoreInventory;
 import net.craftingstore.sponge.CraftingStoreSponge;
 import net.craftingstore.sponge.inventory.InventoryBuilder;
@@ -43,8 +44,9 @@ public class BuyCommand implements CommandExecutor {
         game.getScheduler().createTaskBuilder()
                 .execute(() -> {
                     try {
-                        CraftingStoreInventory gui = craftingStore.getApi().getGUI().get();
-                        Inventory inventory = this.inventoryBuilder.buildInventory(gui);
+                        ApiInventory gui = craftingStore.getApi().getGUI().get();
+                        CraftingStoreInventory craftingStoreInventory = new CraftingStoreInventory(gui.getTitle(), gui.getContent(), gui.getSize());
+                        Inventory inventory = this.inventoryBuilder.buildInventory(craftingStoreInventory);
                         game.getScheduler().createTaskBuilder()
                                 .execute(() -> {
                                     if (p.isOnline()) {

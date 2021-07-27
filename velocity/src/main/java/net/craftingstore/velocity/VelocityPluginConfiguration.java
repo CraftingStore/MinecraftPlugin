@@ -53,4 +53,9 @@ public class VelocityPluginConfiguration implements PluginConfiguration {
         }
         throw new RuntimeException("Invalid integer value in time-between-commands");
     }
+
+    @Override
+    public String getNotEnoughBalanceMessage() {
+        return null;
+    }
 }

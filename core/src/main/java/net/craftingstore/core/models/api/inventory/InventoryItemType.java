@@ -1,23 +1,24 @@
 package net.craftingstore.core.models.api.inventory;
 
-import net.craftingstore.core.models.api.inventory.types.InventoryItemBackButton;
-import net.craftingstore.core.models.api.inventory.types.InventoryItemCategory;
-import net.craftingstore.core.models.api.inventory.types.InventoryItemCloseButton;
-import net.craftingstore.core.models.api.inventory.types.InventoryItemMessage;
+import net.craftingstore.core.models.api.inventory.types.*;
 
 public enum InventoryItemType {
+    NULL(null),
     CATEGORY(InventoryItemCategory.class),
     MESSAGE(InventoryItemMessage.class),
     BACK(InventoryItemBackButton.class),
-    CLOSE(InventoryItemCloseButton.class);
+    CLOSE(InventoryItemCloseButton.class),
+    BUYABLE_PACKAGE(InventoryItemBuyablePackage.class),
+    BUY_DETAILS(InventoryItemBuyDetails.class),
+    BUY_BUTTON(InventoryItemBuyButton.class);
 
-    private Class c;
+    private final Class<? extends InventoryItem> c;
 
-    InventoryItemType(Class c) {
+    InventoryItemType(Class<? extends InventoryItem> c) {
         this.c = c;
     }
 
-    public Class getActualClass() {
+    public Class<? extends InventoryItem> getActualClass() {
         return c;
     }
 }
