@@ -8,11 +8,13 @@ import net.craftingstore.core.exceptions.CraftingStoreApiException;
 import net.craftingstore.core.http.util.InformationAdapter;
 import net.craftingstore.core.http.util.InventoryAdapter;
 import net.craftingstore.core.http.util.JsonResponseHandler;
+import net.craftingstore.core.http.util.JsonResponseHandlerV7;
 import net.craftingstore.core.models.api.*;
-import net.craftingstore.core.models.api.inventory.CraftingStoreInventory;
 import net.craftingstore.core.models.api.inventory.InventoryItem;
 import net.craftingstore.core.models.api.misc.CraftingStoreInformation;
 import net.craftingstore.core.models.api.provider.ProviderInformation;
+import net.craftingstore.core.models.api.request.PackageInformationRequest;
+import net.craftingstore.core.models.api.request.PaymentCreateRequest;
 import net.craftingstore.core.models.donation.Donation;
 import net.craftingstore.core.models.donation.DonationPackage;
 import net.craftingstore.core.models.donation.DonationPlayer;
@@ -24,6 +26,8 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
@@ -35,6 +39,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.Future;
 
 public class CraftingStoreAPIImpl extends CraftingStoreAPI {
@@ -64,7 +69,7 @@ public class CraftingStoreAPIImpl extends CraftingStoreAPI {
     public Future<CraftingStoreInformation> getInformation() throws CraftingStoreApiException {
         return executor.submit(() -> {
             try {
-                HttpPost request = post("info");
+                HttpPost request = post("v4/info");
                 List<NameValuePair> params = new ArrayList<>();
                 params.add(new BasicNameValuePair("version", instance.getImplementation().getConfiguration().getVersion()));
                 params.add(new BasicNameValuePair("platform", instance.getImplementation().getConfiguration().getPlatform()));
@@ -76,10 +81,10 @@ public class CraftingStoreAPIImpl extends CraftingStoreAPI {
         });
     }
 
-    public Future<Root> checkKey() throws CraftingStoreApiException {
+    public Future<Root<?>> checkKey() throws CraftingStoreApiException {
         return executor.submit(() -> {
             try {
-                return httpClient.execute(get("validateToken"), new JsonResponseHandler<>(gson, Root.class));
+                return httpClient.execute(get("v4/validateToken"), new JsonResponseHandler<>(gson, Root.class));
             } catch (IOException e) {
                 throw new CraftingStoreApiException("Check Key call failed", e);
             }
@@ -89,7 +94,7 @@ public class CraftingStoreAPIImpl extends CraftingStoreAPI {
     public Future<Donation[]> getDonationQueue() throws CraftingStoreApiException {
         return executor.submit(() -> {
             try {
-                ApiDonation[] apiDonations = httpClient.execute(get("queue"), new JsonResponseHandler<>(gson, ApiDonation[].class));
+                ApiDonation[] apiDonations = httpClient.execute(get("v4/queue"), new JsonResponseHandler<>(gson, ApiDonation[].class));
                 return Arrays.stream(apiDonations).map(apiDonation -> {
                     DonationPlayer player = new DonationPlayer(apiDonation.getMcName(), apiDonation.getUuid(), apiDonation.getRequireOnline());
                     DonationPackage donationPackage = new DonationPackage(apiDonation.getPackageName(), apiDonation.getPackagePriceCents());
@@ -111,7 +116,7 @@ public class CraftingStoreAPIImpl extends CraftingStoreAPI {
     public void completeDonations(int[] ids) throws CraftingStoreApiException {
         executor.submit(() -> {
             try {
-                HttpPost request = post("queue/markComplete");
+                HttpPost request = post("v4/queue/markComplete");
                 List<NameValuePair> params = new ArrayList<>();
                 params.add(new BasicNameValuePair("removeIds", gson.toJson(ids)));
                 request.setEntity(new UrlEncodedFormEntity(params));
@@ -127,28 +132,17 @@ public class CraftingStoreAPIImpl extends CraftingStoreAPI {
     public Future<ApiPayment[]> getPayments() throws CraftingStoreApiException {
         return executor.submit(() -> {
             try {
-                return httpClient.execute(get("buyers/recent"), new JsonResponseHandler<>(gson, ApiPayment[].class));
+                return httpClient.execute(get("v4/buyers/recent"), new JsonResponseHandler<>(gson, ApiPayment[].class));
             } catch (IOException e) {
                 throw new CraftingStoreApiException("Payments call failed", e);
             }
         });
     }
 
-    @Deprecated
-    public Future<ApiCategory[]> getCategories() throws CraftingStoreApiException {
+    public Future<ApiInventory> getGUI() throws CraftingStoreApiException {
         return executor.submit(() -> {
             try {
-                return httpClient.execute(get("plugin/inventory"), new JsonResponseHandler<>(gson, ApiCategory[].class));
-            } catch (IOException e) {
-                throw new CraftingStoreApiException("Categories call failed", e);
-            }
-        });
-    }
-
-    public Future<CraftingStoreInventory> getGUI() throws CraftingStoreApiException {
-        return executor.submit(() -> {
-            try {
-                return httpClient.execute(get("plugin/gui"), new JsonResponseHandler<>(gson, CraftingStoreInventory.class));
+                return httpClient.execute(get("v4/plugin/gui"), new JsonResponseHandler<>(gson, ApiInventory.class));
             } catch (IOException e) {
                 throw new CraftingStoreApiException("Inventory call failed", e);
             }
@@ -158,9 +152,61 @@ public class CraftingStoreAPIImpl extends CraftingStoreAPI {
     public Future<ApiTopDonator[]> getTopDonators() throws CraftingStoreApiException {
         return executor.submit(() -> {
             try {
-                return httpClient.execute(get("buyers/top"), new JsonResponseHandler<>(gson, ApiTopDonator[].class));
+                return httpClient.execute(get("v4/buyers/top"), new JsonResponseHandler<>(gson, ApiTopDonator[].class));
             } catch (IOException e) {
                 throw new CraftingStoreApiException("Top Donators call failed", e);
+            }
+        });
+    }
+
+    public Future<ApiPackageInformation> getPackageInformation(
+            String inGameName,
+            UUID uuid,
+            String ip,
+            int packageId
+    ) throws CraftingStoreApiException {
+        return executor.submit(() -> {
+            try {
+                HttpPost request = post("v7/package/ingame/information");
+                PackageInformationRequest packageInformationRequest = new PackageInformationRequest(
+                        inGameName,
+                        uuid.toString(),
+                        ip,
+                        packageId
+                );
+                request.setEntity(new StringEntity(gson.toJson(packageInformationRequest), ContentType.APPLICATION_JSON));
+                return httpClient.execute(request, new JsonResponseHandlerV7<>(gson, ApiPackageInformation.class));
+            } catch (IOException e) {
+                throw new CraftingStoreApiException("Get package information call failed", e);
+            }
+        });
+    }
+
+    public Future<Boolean> createPayment(
+        String inGameName,
+        int price,
+        int[] packages
+    ) throws CraftingStoreApiException {
+        return executor.submit(() -> {
+            try {
+                HttpPost request = post("v7/payments");
+                PaymentCreateRequest paymentCreateRequest = new PaymentCreateRequest(
+                        inGameName,
+                        "Paid with in-game currency",
+                        "ingame",
+                        price,
+                        null,
+                        true,
+                        packages
+                );
+                request.setEntity(new StringEntity(gson.toJson(paymentCreateRequest), ContentType.APPLICATION_JSON));
+                HttpResponse response = httpClient.execute(request);
+                EntityUtils.consumeQuietly(response.getEntity());
+                return true;
+            } catch (IOException e) {
+                instance.getLogger().error("Payment create call failed");
+                e.printStackTrace();
+                return false;
             }
         });
     }

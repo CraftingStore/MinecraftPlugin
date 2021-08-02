@@ -13,7 +13,7 @@ public class InventoryAdapter implements JsonDeserializer<InventoryItem> {
 
         JsonPrimitive prim = (JsonPrimitive) jsonObject.get("type");
         InventoryItemType itemType = InventoryItemType.valueOf(prim.getAsString());
-        Class klass = itemType.getActualClass();
+        Class<? extends InventoryItem> klass = itemType.getActualClass();
         return context.deserialize(jsonObject, klass);
     }
 }

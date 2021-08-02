@@ -12,4 +12,6 @@ public interface PluginConfiguration {
     boolean isBuyCommandEnabled();
 
     int getTimeBetweenCommands();
+
+    String getNotEnoughBalanceMessage();
 }

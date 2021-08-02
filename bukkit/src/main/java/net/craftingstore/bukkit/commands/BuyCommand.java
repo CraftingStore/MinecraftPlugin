@@ -3,6 +3,7 @@ package net.craftingstore.bukkit.commands;
 import net.craftingstore.bukkit.CraftingStoreBukkit;
 import net.craftingstore.bukkit.inventory.InventoryBuilder;
 import net.craftingstore.core.exceptions.CraftingStoreApiException;
+import net.craftingstore.core.models.api.ApiInventory;
 import net.craftingstore.core.models.api.inventory.CraftingStoreInventory;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -34,8 +35,10 @@ public class BuyCommand implements CommandExecutor {
         Bukkit.getScheduler().runTaskAsynchronously(instance, () -> {
             try {
                 InventoryBuilder builder = new InventoryBuilder(this.instance);
-                CraftingStoreInventory gui = instance.getCraftingStore().getApi().getGUI().get();
-                Inventory inventory = builder.buildInventory(gui);
+                ApiInventory gui = instance.getCraftingStore().getApi().getGUI().get();
+                Inventory inventory = builder.buildInventory(
+                        new CraftingStoreInventory(gui.getTitle(), gui.getContent(), gui.getSize())
+                );
                 Bukkit.getScheduler().runTask(instance, () -> {
                     if (p.isOnline()) {
                         p.openInventory(inventory);

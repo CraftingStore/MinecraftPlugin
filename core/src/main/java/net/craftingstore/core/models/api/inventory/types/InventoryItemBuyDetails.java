@@ -4,16 +4,16 @@ import net.craftingstore.core.models.api.inventory.InventoryItem;
 import net.craftingstore.core.models.api.inventory.InventoryItemIcon;
 import net.craftingstore.core.models.api.inventory.InventoryItemType;
 
-public class InventoryItemBackButton extends InventoryItem {
+public class InventoryItemBuyDetails extends InventoryItem {
 
-    public InventoryItemBackButton() {}
+    public InventoryItemBuyDetails() {}
 
-    public InventoryItemBackButton(
+    public InventoryItemBuyDetails(
             String name,
             String[] description,
             InventoryItemIcon icon,
             int index
     ) {
-        super(name, description, InventoryItemType.BACK, icon, index);
+        super(name, description, InventoryItemType.BUY_DETAILS, icon, index);
     }
 }

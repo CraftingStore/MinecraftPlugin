@@ -5,12 +5,15 @@ import net.craftingstore.bukkit.util.ChatColorUtil;
 import net.craftingstore.bukkit.util.VersionUtil;
 import net.craftingstore.core.models.api.inventory.CraftingStoreInventory;
 import net.craftingstore.core.models.api.inventory.InventoryItem;
+import org.apache.commons.text.StringSubstitutor;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class InventoryBuilder {
@@ -24,24 +27,31 @@ public class InventoryBuilder {
     }
 
     public Inventory buildInventory(CraftingStoreInventory csInventory) {
-        return buildInventory(csInventory, null);
+        return buildInventory(csInventory, new CraftingStoreInventoryHolder(csInventory, null));
     }
 
-    public Inventory buildInventory(CraftingStoreInventory csInventory, CraftingStoreInventoryHolder parent) {
+    public Inventory buildInventory(CraftingStoreInventory csInventory, CraftingStoreInventoryHolder holder) {
+        return buildInventory(csInventory, holder, new HashMap<>());
+    }
+
+    public Inventory buildInventory(CraftingStoreInventory csInventory, CraftingStoreInventoryHolder holder, Map<String, ?> placeholders) {
         String title = csInventory.getTitle();
         if (title == null || title.isEmpty()) {
             title = "CraftingStore";
         }
-        title = ChatColorUtil.translate(title);
-        Inventory inventory = Bukkit.createInventory(new CraftingStoreInventoryHolder(csInventory, parent), csInventory.getSize(), title);
+
+        StringSubstitutor stringSubstitutor = new StringSubstitutor(placeholders, "{", "}");
+        title = ChatColorUtil.translate(stringSubstitutor.replace(title));
+        Inventory inventory = Bukkit.createInventory(holder, csInventory.getSize(), title);
 
         for (InventoryItem inventoryItem : csInventory.getContent()) {
             ItemStack itemStack = this.inventoryItemBuilder.getItemStack(inventoryItem.getIcon().getMaterial(), inventoryItem.getIcon().getAmount());
             ItemMeta meta = itemStack.getItemMeta();
             if (meta != null) {
-                meta.setDisplayName(ChatColorUtil.translate(inventoryItem.getName()));
+                meta.setDisplayName(ChatColorUtil.translate(stringSubstitutor.replace(inventoryItem.getName())));
                 if (inventoryItem.getDescription() != null && inventoryItem.getDescription().length != 0) {
                     meta.setLore(Arrays.stream(inventoryItem.getDescription())
+                            .map(stringSubstitutor::replace)
                             .map(ChatColorUtil::translate)
                             .collect(Collectors.toList())
                     );

@@ -39,4 +39,9 @@ public class BukkitPluginConfiguration implements PluginConfiguration {
     public int getTimeBetweenCommands() {
         return plugin.getConfig().getInt("time-between-commands", 200);
     }
+
+    @Override
+    public String getNotEnoughBalanceMessage() {
+        return plugin.getConfig().getString("not-enough-balance-message", "&4You do not have enough in-game money in your account! You can also buy this package on the website:");
+    }
 }

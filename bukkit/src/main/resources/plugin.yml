@@ -3,7 +3,7 @@ main: net.craftingstore.bukkit.CraftingStoreBukkit
 version: ${craftingstore-version}
 authors: [Tim_kwakman, thijs_a]
 prefix: CraftingStore
-softdepend: [PlaceholderAPI]
+softdepend: [PlaceholderAPI, Vault]
 api-version: "1.13"
 commands:
   craftingstore:
