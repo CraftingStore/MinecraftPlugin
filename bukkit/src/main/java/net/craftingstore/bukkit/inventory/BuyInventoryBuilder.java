@@ -10,6 +10,7 @@ import net.craftingstore.core.models.api.inventory.InventoryItem;
 import net.craftingstore.core.models.api.inventory.InventoryItemIcon;
 import net.craftingstore.core.models.api.inventory.InventoryItemType;
 import net.craftingstore.core.models.api.inventory.types.InventoryItemBuyablePackage;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
@@ -40,12 +41,12 @@ public class BuyInventoryBuilder {
         ).get();
         if (!packageInformation.isAllowedToBuy()) {
             p.sendMessage(ChatColorUtil.translate(packageInformation.getMessage()));
-            p.closeInventory();
+            this.closeInventory(p);
             return null;
         }
         if (packageInformation.getPrice() != item.getPrice()) {
             p.sendMessage(this.instance.getPrefix() + "There was a problem with the payment data. Please try again later.");
-            p.closeInventory();
+            this.closeInventory(p);
             return null;
         }
 
@@ -75,5 +76,13 @@ public class BuyInventoryBuilder {
                 craftingStoreInventory,
                 new CraftingStoreInventoryHolder(craftingStoreInventory, null)
         );
+    }
+
+    private void closeInventory(Player p) {
+        Bukkit.getScheduler().runTask(instance, () -> {
+            if (p.isOnline()) {
+                p.closeInventory();
+            }
+        });
     }
 }
