@@ -44,7 +44,7 @@ import java.util.concurrent.Future;
 
 public class CraftingStoreAPIImpl extends CraftingStoreAPI {
 
-    private final String BASE_URL = "https://api.craftingstore.net/v4/";
+    private final String BASE_URL = "https://api.craftingstore.net/";
     private CraftingStore instance;
     private Gson gson;
     private HttpClient httpClient;
