@@ -58,4 +58,13 @@ public class VelocityPluginConfiguration implements PluginConfiguration {
     public String getNotEnoughBalanceMessage() {
         return null;
     }
+
+    @Override
+    public boolean isUsingAlternativeApi() {
+        Object value = config.getConfig().getOrDefault("use-alternative-api", false);
+        if (value instanceof Boolean) {
+            return (boolean) value;
+        }
+        throw new RuntimeException("Invalid boolean value in use-alternative-api");
+    }
 }

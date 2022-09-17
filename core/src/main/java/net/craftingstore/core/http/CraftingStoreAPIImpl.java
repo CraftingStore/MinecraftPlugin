@@ -45,6 +45,7 @@ import java.util.concurrent.Future;
 public class CraftingStoreAPIImpl extends CraftingStoreAPI {
 
     private final String BASE_URL = "https://api.craftingstore.net/";
+    private final String ALTERNATIVE_BASE_URL = "https://api-fallback.craftingstore.net/";
     private CraftingStore instance;
     private Gson gson;
     private HttpClient httpClient;
@@ -212,7 +213,7 @@ public class CraftingStoreAPIImpl extends CraftingStoreAPI {
     }
 
     private HttpGet get(String endpoint) {
-        HttpGet request = new HttpGet(BASE_URL + endpoint);
+        HttpGet request = new HttpGet(this.getEndpoint(endpoint));
         request.setConfig(RequestConfig.custom()
                 .setSocketTimeout(10000)
                 .setConnectTimeout(10000)
@@ -223,7 +224,7 @@ public class CraftingStoreAPIImpl extends CraftingStoreAPI {
     }
 
     private HttpPost post(String endpoint) {
-        HttpPost request = new HttpPost(BASE_URL + endpoint);
+        HttpPost request = new HttpPost(this.getEndpoint(endpoint));
         request.setConfig(RequestConfig.custom()
                 .setSocketTimeout(10000)
                 .setConnectTimeout(10000)
@@ -238,5 +239,12 @@ public class CraftingStoreAPIImpl extends CraftingStoreAPI {
         request.addHeader("token", this.token);
         request.addHeader("version", this.instance.getImplementation().getConfiguration().getVersion());
         request.addHeader("platform", this.instance.getImplementation().getConfiguration().getPlatform());
+    }
+
+    private String getEndpoint(String endpoint) {
+        if (this.instance.getImplementation().getConfiguration().isUsingAlternativeApi()) {
+            return this.ALTERNATIVE_BASE_URL + endpoint;
+        }
+        return this.BASE_URL + endpoint;
     }
 }

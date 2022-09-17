@@ -44,4 +44,9 @@ public class BungeePluginConfiguration implements PluginConfiguration {
     public String getNotEnoughBalanceMessage() {
         return null;
     }
+
+    @Override
+    public boolean isUsingAlternativeApi() {
+        return plugin.getConfig().getBoolean("use-alternative-api", false);
+    }
 }

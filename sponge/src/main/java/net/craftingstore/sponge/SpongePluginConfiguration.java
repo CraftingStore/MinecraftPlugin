@@ -53,4 +53,9 @@ public class SpongePluginConfiguration implements PluginConfiguration {
     public String getNotEnoughBalanceMessage() {
         return null;
     }
+
+    @Override
+    public boolean isUsingAlternativeApi() {
+        return craftingStoreSponge.getConfigWrapper().getConfig().getNode("use-alternative-api").getBoolean(false);
+    }
 }

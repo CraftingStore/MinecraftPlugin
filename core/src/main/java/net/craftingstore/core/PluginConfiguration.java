@@ -14,4 +14,6 @@ public interface PluginConfiguration {
     int getTimeBetweenCommands();
 
     String getNotEnoughBalanceMessage();
+
+    boolean isUsingAlternativeApi();
 }

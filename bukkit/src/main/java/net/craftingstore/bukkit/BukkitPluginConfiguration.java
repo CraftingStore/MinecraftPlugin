@@ -44,4 +44,9 @@ public class BukkitPluginConfiguration implements PluginConfiguration {
     public String getNotEnoughBalanceMessage() {
         return plugin.getConfig().getString("not-enough-balance-message", "&4You do not have enough in-game money in your account! You can also buy this package on the website:");
     }
+
+    @Override
+    public boolean isUsingAlternativeApi() {
+        return plugin.getConfig().getBoolean("use-alternative-api", false);
+    }
 }
