@@ -6,6 +6,7 @@ import org.json.simple.parser.ParseException;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.util.Objects;
 
 public class Config extends File {
 
@@ -26,7 +27,7 @@ public class Config extends File {
         if (!exists()) {
             try {
                 if (getClass().getClassLoader().getResource(name) != null) {
-                    Files.copy(getClass().getClassLoader().getResourceAsStream(name), toPath());
+                    Files.copy(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(name)), toPath());
                 } else {
                     createNewFile();
                 }
@@ -37,7 +38,7 @@ public class Config extends File {
 
         JSONParser parser = new JSONParser();
         try {
-            this.config = (JSONObject) parser.parse(new FileReader(this));
+            config = (JSONObject) parser.parse(new FileReader(this));
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
@@ -53,7 +54,7 @@ public class Config extends File {
     public void saveConfig() {
         try {
             PrintWriter pw = new PrintWriter(this);
-            pw.write(this.config.toJSONString());
+            pw.write(config.toJSONString());
             pw.flush();
             pw.close();
         } catch (FileNotFoundException e) {

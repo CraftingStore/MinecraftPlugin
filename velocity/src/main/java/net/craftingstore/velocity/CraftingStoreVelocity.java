@@ -29,19 +29,18 @@ public class CraftingStoreVelocity {
     @Inject
     private EventManager eventManager;
 
-    private Config config;
     private CraftingStore craftingStore;
     private Injector injector;
 
     @Inject
     public CraftingStoreVelocity(@DataDirectory Path configDirectory, Injector injector) {
-        this.config = new Config(configDirectory.toFile(), "config.json");
+        Config config = new Config(configDirectory.toFile(), "config.json");
         this.injector = injector.createChildInjector(new ConfigModule(config));
     }
 
     @Subscribe
     public void onInitialization(ProxyInitializeEvent event) {
-        this.craftingStore = new CraftingStore(injector.getInstance(CraftingStoreVelocityImpl.class));
+        craftingStore = new CraftingStore(injector.getInstance(CraftingStoreVelocityImpl.class));
         injector = injector.createChildInjector(new CraftingStoreModule(craftingStore));
 
         commandManager.register("csv", injector.getInstance(CraftingStoreCommand.class));
@@ -50,6 +49,6 @@ public class CraftingStoreVelocity {
 
     @Subscribe
     public void onShutdown(ProxyShutdownEvent event) {
-        this.craftingStore.setEnabled(false);
+        craftingStore.setEnabled(false);
     }
 }

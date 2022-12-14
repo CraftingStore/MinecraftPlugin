@@ -4,9 +4,9 @@ import java.util.UUID;
 
 public class DonationPlayer {
 
-    private String username;
+    private final String username;
     private UUID uuid;
-    private boolean requiredOnline;
+    private final boolean requiredOnline;
 
     public DonationPlayer(String username, String uuid, boolean requiredOnline) {
         this.username = username;

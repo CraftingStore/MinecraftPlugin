@@ -4,14 +4,14 @@ import net.craftingstore.core.CraftingStore;
 
 public class InformationUpdater implements Runnable {
 
-    private CraftingStore instance;
+    private final CraftingStore instance;
 
     public InformationUpdater(CraftingStore instance) {
         this.instance = instance;
     }
 
     public void run() {
-        this.instance.getLogger().debug("Reloading plugin");
+        instance.getLogger().debug("Reloading plugin");
         instance.reload();
     }
 }

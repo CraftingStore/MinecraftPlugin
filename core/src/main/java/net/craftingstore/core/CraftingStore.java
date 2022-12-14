@@ -22,35 +22,35 @@ import java.util.concurrent.Future;
 
 public class CraftingStore {
 
-    private CraftingStorePlugin plugin;
-    private CraftingStoreAPI api;
-    private ProviderSelector selector;
+    private final CraftingStorePlugin plugin;
+    private final CraftingStoreAPI api;
+    private final ProviderSelector selector;
     private CraftingStoreInformation information;
-    private DonationRunner donationRunner;
+    private final DonationRunner donationRunner;
     private boolean enabled = false;
     public final String ADMIN_PERMISSION = "craftingstore.admin";
-    private ExecutorService executor = Executors.newSingleThreadExecutor();
-    private Map<Integer, Donation> pendingDonations;
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private final Map<Integer, Donation> pendingDonations;
 
     public CraftingStore(CraftingStorePlugin implementation) {
-        this.plugin = implementation;
-        this.pendingDonations = new HashMap<>();
-        this.api = new CraftingStoreCachedAPI(this);
-        this.selector = new ProviderSelector(this);
-        this.donationRunner = new DonationRunner(this);
-        this.getImplementation().runAsyncTask(() -> {
+        plugin = implementation;
+        pendingDonations = new HashMap<>();
+        api = new CraftingStoreCachedAPI(this);
+        selector = new ProviderSelector(this);
+        donationRunner = new DonationRunner(this);
+        getImplementation().runAsyncTask(() -> {
             try {
-                if (this.reload().get()) {
+                if (reload().get()) {
                     // Every 5 minutes
-                    this.plugin.registerRunnable(new DonationChecker(this), 10, 5 * 60);
+                    plugin.registerRunnable(new DonationChecker(this), 10, 5 * 60);
                     // Every minute
-                    this.plugin.registerRunnable(new ProviderChecker(this), 60, 60);
+                    plugin.registerRunnable(new ProviderChecker(this), 60, 60);
                     // Every 20 minutes
-                    this.plugin.registerRunnable(new InventoryRenewer(this), 20 * 60, 20 * 60);
+                    plugin.registerRunnable(new InventoryRenewer(this), 20 * 60, 20 * 60);
                     // Every 25 minutes
-                    this.plugin.registerRunnable(new APICacheRenewer(this), 10, 60 * 25);
+                    plugin.registerRunnable(new APICacheRenewer(this), 10, 60 * 25);
                     // Every 24 hours
-                    this.plugin.registerRunnable(new InformationUpdater(this), 24 * 60 * 60, 24 * 60 * 60);
+                    plugin.registerRunnable(new InformationUpdater(this), 24 * 60 * 60, 24 * 60 * 60);
                 }
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
@@ -67,7 +67,7 @@ public class CraftingStore {
     }
 
     public ProviderSelector getProviderSelector() {
-        return this.selector;
+        return selector;
     }
 
     public CraftingStoreLogger getLogger() {
@@ -75,24 +75,24 @@ public class CraftingStore {
     }
 
     public Future<Boolean> reload() {
-        this.getApi().setToken(this.getImplementation().getToken());
+        getApi().setToken(getImplementation().getToken());
         return executor.submit(() -> {
             try {
-                if (this.getApi().token == null || this.getApi().token.isEmpty()) {
+                if (getApi().token == null || getApi().token.isEmpty()) {
                     getLogger().error(String.format(
                             "API key not set in the config. You need to set the correct api key using /%s key <key>.",
-                            this.getImplementation().getConfiguration().getMainCommands()[0]
+                            getImplementation().getConfiguration().getMainCommands()[0]
                     ));
                     setEnabled(false);
                     return false;
                 }
-                Root keyResult = this.getApi().checkKey().get();
+                Root keyResult = getApi().checkKey().get();
                 if (!keyResult.isSuccess()) {
                     getLogger().error("API key is invalid. The plugin will not work.");
                     setEnabled(false);
                     return false;
                 }
-                information = this.getApi().getInformation().get();
+                information = getApi().getInformation().get();
 
                 if (information.getUpdateInformation() != null) {
                     UpdateInformation update = information.getUpdateInformation();
@@ -120,7 +120,7 @@ public class CraftingStore {
     }
 
     public void executeQueue() {
-        this.donationRunner.runDonations();
+        donationRunner.runDonations();
     }
 
     public boolean isEnabled() {

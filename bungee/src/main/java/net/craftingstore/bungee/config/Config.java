@@ -13,9 +13,9 @@ import java.util.logging.Level;
 
 public class Config {
 
-    private Plugin instance;
+    private final Plugin instance;
     private Configuration configuration;
-    private String filename;
+    private final String filename;
 
     public Config(Plugin instance, String filename) {
         this.instance = instance;

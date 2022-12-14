@@ -20,15 +20,15 @@ public class BuyablePackageHandler implements InventoryItemHandler<InventoryItem
 
     @Override
     public void handle(Player p, InventoryItemBuyablePackage item, CraftingStoreInventoryHolder holder) {
-        if (!this.instance.isHookedWithVault()) {
+        if (!instance.isHookedWithVault()) {
             p.sendMessage(instance.getPrefix() + "CraftingStore is not hooked with Vault!");
             p.closeInventory();
             return;
         }
 
-        if (!this.instance.getVaultHook().getEconomy().has(p, item.getPrice())) {
+        if (!instance.getVaultHook().getEconomy().has(p, item.getPrice())) {
             p.sendMessage(ChatColorUtil.translate(
-                    this.instance.getCraftingStore().getImplementation().getConfiguration().getNotEnoughBalanceMessage()
+                    instance.getCraftingStore().getImplementation().getConfiguration().getNotEnoughBalanceMessage()
             ));
             for (String message : item.getMessages()) {
                 p.sendMessage(ChatColorUtil.translate(message));
@@ -37,11 +37,11 @@ public class BuyablePackageHandler implements InventoryItemHandler<InventoryItem
             return;
         }
 
-        Inventory loading = this.buyInventoryBuilder.buildLoadInventory();
+        Inventory loading = buyInventoryBuilder.buildLoadInventory();
         p.openInventory(loading);
-        Bukkit.getScheduler().runTaskAsynchronously(this.instance, () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(instance, () -> {
             try {
-                Inventory inventory = this.buyInventoryBuilder.build(p, item, holder);
+                Inventory inventory = buyInventoryBuilder.build(p, item, holder);
                 if (inventory != null) {
                     Bukkit.getScheduler().runTask(instance, () -> {
                         if (p.isOnline()) {

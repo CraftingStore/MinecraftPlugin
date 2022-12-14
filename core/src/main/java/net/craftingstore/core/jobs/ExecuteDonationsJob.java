@@ -11,39 +11,39 @@ public class ExecuteDonationsJob {
 
     public static final int CHUNK_SIZE = 25;
 
-    private CraftingStore instance;
-    private Donation[] donations;
+    private final CraftingStore instance;
+    private final Donation[] donations;
 
     public ExecuteDonationsJob(CraftingStore instance, Donation[] donations) throws CraftingStoreApiException {
         this.instance = instance;
         this.donations = donations;
-        this.execute();
+        execute();
     }
 
     private void execute() throws CraftingStoreApiException {
-        this.instance.getLogger().debug(String.format("Executing ExecuteDonationsJob for %d donations.", this.donations.length));
+        instance.getLogger().debug(String.format("Executing ExecuteDonationsJob for %d donations.", donations.length));
 
         Map<Donation, Boolean> donations = new HashMap<>();
         for (int i = 0; i < this.donations.length; i++) {
             Donation donation = this.donations[i];
-            this.instance.getLogger().debug(String.format("Executing donation #%d with command id #%d", donation.getPaymentId(), donation.getCommandId()));
-            this.instance.getLogger().debug(String.format("Command is '%s'", donation.getCommand()));
+            instance.getLogger().debug(String.format("Executing donation #%d with command id #%d", donation.getPaymentId(), donation.getCommandId()));
+            instance.getLogger().debug(String.format("Command is '%s'", donation.getCommand()));
             boolean result = instance.getImplementation().executeDonation(donation);
             donations.put(donation, result);
-            this.instance.getLogger().debug(String.format("Result of execution is %s", result));
+            instance.getLogger().debug(String.format("Result of execution is %s", result));
 
             if (i < (this.donations.length - 1)) {
                 if (!result) {
-                    this.instance.getLogger().debug("Not delaying command execution because last command did not successfully execute.");
+                    instance.getLogger().debug("Not delaying command execution because last command did not successfully execute.");
                     continue;
                 }
 
                 // Wait x ms before executing the next command, so donations with a lot of commands will not create lag
                 try {
-                    int waitingTime = this.instance.getImplementation().getConfiguration().getTimeBetweenCommands();
-                    this.instance.getLogger().debug(String.format("Waiting %dms before executing next donation", waitingTime));
+                    int waitingTime = instance.getImplementation().getConfiguration().getTimeBetweenCommands();
+                    instance.getLogger().debug(String.format("Waiting %dms before executing next donation", waitingTime));
                     Thread.sleep(waitingTime);
-                    this.instance.getLogger().debug("Waiting done");
+                    instance.getLogger().debug("Waiting done");
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -56,7 +56,7 @@ public class ExecuteDonationsJob {
                 .toArray();
 
         if (completedIds.length > 0) {
-            this.instance.getLogger().debug("Marking executed donations as complete.");
+            instance.getLogger().debug("Marking executed donations as complete.");
             instance.getApi().completeDonations(completedIds);
         }
 
@@ -69,6 +69,6 @@ public class ExecuteDonationsJob {
                 instance.getPendingDonations().put(entry.getKey().getId(), entry.getKey());
             }
         }
-        this.instance.getLogger().debug("Execution of ExecuteDonationsJob finished.");
+        instance.getLogger().debug("Execution of ExecuteDonationsJob finished.");
     }
 }

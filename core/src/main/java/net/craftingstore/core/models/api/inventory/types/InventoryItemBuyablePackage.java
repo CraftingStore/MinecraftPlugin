@@ -8,10 +8,6 @@ public class InventoryItemBuyablePackage extends InventoryItem {
     private String[] messages;
     private String successMessage;
 
-    public InventoryItemBuyablePackage() {
-
-    }
-
     public int getPrice() {
         return price;
     }

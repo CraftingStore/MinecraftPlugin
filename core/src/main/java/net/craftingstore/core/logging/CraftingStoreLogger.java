@@ -9,19 +9,19 @@ public abstract class CraftingStoreLogger {
     public abstract void error(String message);
 
     public void debug(String message) {
-        if (this.debugging) {
-            this.info(message);
+        if (debugging) {
+            info(message);
         }
     }
 
     public void setDebugging(boolean debugging) {
         this.debugging = debugging;
         if (debugging) {
-            this.debug("Debug logging has been enabled!");
+            debug("Debug logging has been enabled!");
         }
     }
 
     public boolean isDebugging() {
-        return this.debugging;
+        return debugging;
     }
 }

@@ -18,12 +18,10 @@ import java.util.stream.Collectors;
 
 public class InventoryBuilder {
 
-    private final CraftingStoreBukkit instance;
     private final InventoryItemBuilder inventoryItemBuilder;
 
     public InventoryBuilder(CraftingStoreBukkit instance) {
-        this.instance = instance;
-        this.inventoryItemBuilder = new InventoryItemBuilder(instance);
+        inventoryItemBuilder = new InventoryItemBuilder(instance);
     }
 
     public Inventory buildInventory(CraftingStoreInventory csInventory) {
@@ -45,7 +43,7 @@ public class InventoryBuilder {
         Inventory inventory = Bukkit.createInventory(holder, csInventory.getSize(), title);
 
         for (InventoryItem inventoryItem : csInventory.getContent()) {
-            ItemStack itemStack = this.inventoryItemBuilder.getItemStack(inventoryItem.getIcon().getMaterial(), inventoryItem.getIcon().getAmount());
+            ItemStack itemStack = inventoryItemBuilder.getItemStack(inventoryItem.getIcon().getMaterial(), inventoryItem.getIcon().getAmount());
             ItemMeta meta = itemStack.getItemMeta();
             if (meta != null) {
                 meta.setDisplayName(ChatColorUtil.translate(stringSubstitutor.replace(inventoryItem.getName())));

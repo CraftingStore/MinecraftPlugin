@@ -23,7 +23,7 @@ public class PendingDonationJoinListener {
 
         craftingStore.getImplementation().runAsyncTask(() -> {
             try {
-                new ProcessPendingPaymentsJob(this.craftingStore, username);
+                new ProcessPendingPaymentsJob(craftingStore, username);
             } catch (CraftingStoreApiException ex) {
                 ex.printStackTrace();
             }

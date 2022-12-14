@@ -9,7 +9,7 @@ import org.bukkit.inventory.Inventory;
 
 public class BackButtonHandler implements InventoryItemHandler<InventoryItemBackButton> {
 
-    private InventoryBuilder builder;
+    private final InventoryBuilder builder;
 
     public BackButtonHandler(InventoryBuilder builder) {
         this.builder = builder;

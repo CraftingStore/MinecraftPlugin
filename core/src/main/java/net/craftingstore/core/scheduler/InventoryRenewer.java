@@ -8,7 +8,7 @@ import java.util.concurrent.ExecutionException;
 
 public class InventoryRenewer implements Runnable {
 
-    private CraftingStore instance;
+    private final CraftingStore instance;
 
     public InventoryRenewer(CraftingStore instance) {
         this.instance = instance;

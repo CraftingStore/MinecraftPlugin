@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 
 public class JavaLogger extends CraftingStoreLogger {
 
-    private Logger logger;
+    private final Logger logger;
 
     public JavaLogger(Logger logger) {
         this.logger = logger;

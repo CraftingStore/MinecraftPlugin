@@ -5,7 +5,7 @@ import net.craftingstore.sponge.config.Config;
 
 public class ConfigModule extends AbstractModule {
 
-    private Config config;
+    private final Config config;
 
     public ConfigModule(Config config) {
         this.config = config;

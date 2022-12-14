@@ -43,11 +43,8 @@ import java.util.UUID;
 import java.util.concurrent.Future;
 
 public class CraftingStoreAPIImpl extends CraftingStoreAPI {
-
-    private final String BASE_URL = "https://api.craftingstore.net/";
-    private final String ALTERNATIVE_BASE_URL = "https://api-fallback.craftingstore.net/";
-    private CraftingStore instance;
-    private Gson gson;
+    private final CraftingStore instance;
+    private final Gson gson;
     private HttpClient httpClient;
 
     public CraftingStoreAPIImpl(CraftingStore instance) {
@@ -55,7 +52,7 @@ public class CraftingStoreAPIImpl extends CraftingStoreAPI {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(ProviderInformation.class, new InformationAdapter());
         gsonBuilder.registerTypeAdapter(InventoryItem.class, new InventoryAdapter());
-        this.gson = gsonBuilder.create();
+        gson = gsonBuilder.create();
         try {
             SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
             sslContext.init(null, null, null);
@@ -82,7 +79,7 @@ public class CraftingStoreAPIImpl extends CraftingStoreAPI {
         });
     }
 
-    public Future<Root<?>> checkKey() throws CraftingStoreApiException {
+    public Future<Root<?>> checkKey() {
         return executor.submit(() -> {
             try {
                 return httpClient.execute(get("v4/validateToken"), new JsonResponseHandler<>(gson, Root.class));
@@ -92,7 +89,7 @@ public class CraftingStoreAPIImpl extends CraftingStoreAPI {
         });
     }
 
-    public Future<Donation[]> getDonationQueue() throws CraftingStoreApiException {
+    public Future<Donation[]> getDonationQueue() {
         return executor.submit(() -> {
             try {
                 ApiDonation[] apiDonations = httpClient.execute(get("v4/queue"), new JsonResponseHandler<>(gson, ApiDonation[].class));
@@ -114,7 +111,7 @@ public class CraftingStoreAPIImpl extends CraftingStoreAPI {
         });
     }
 
-    public void completeDonations(int[] ids) throws CraftingStoreApiException {
+    public void completeDonations(int[] ids) {
         executor.submit(() -> {
             try {
                 HttpPost request = post("v4/queue/markComplete");
@@ -160,12 +157,7 @@ public class CraftingStoreAPIImpl extends CraftingStoreAPI {
         });
     }
 
-    public Future<ApiPackageInformation> getPackageInformation(
-            String inGameName,
-            UUID uuid,
-            String ip,
-            int packageId
-    ) throws CraftingStoreApiException {
+    public Future<ApiPackageInformation> getPackageInformation(String inGameName, UUID uuid, String ip, int packageId) {
         return executor.submit(() -> {
             try {
                 HttpPost request = post("v7/package/ingame/information");
@@ -183,11 +175,7 @@ public class CraftingStoreAPIImpl extends CraftingStoreAPI {
         });
     }
 
-    public Future<Boolean> createPayment(
-        String inGameName,
-        int price,
-        int[] packages
-    ) throws CraftingStoreApiException {
+    public Future<Boolean> createPayment(String inGameName, int price, int[] packages) {
         return executor.submit(() -> {
             try {
                 HttpPost request = post("v7/payments");
@@ -213,7 +201,7 @@ public class CraftingStoreAPIImpl extends CraftingStoreAPI {
     }
 
     private HttpGet get(String endpoint) {
-        HttpGet request = new HttpGet(this.getEndpoint(endpoint));
+        HttpGet request = new HttpGet(getEndpoint(endpoint));
         request.setConfig(RequestConfig.custom()
                 .setSocketTimeout(10000)
                 .setConnectTimeout(10000)
@@ -224,7 +212,7 @@ public class CraftingStoreAPIImpl extends CraftingStoreAPI {
     }
 
     private HttpPost post(String endpoint) {
-        HttpPost request = new HttpPost(this.getEndpoint(endpoint));
+        HttpPost request = new HttpPost(getEndpoint(endpoint));
         request.setConfig(RequestConfig.custom()
                 .setSocketTimeout(10000)
                 .setConnectTimeout(10000)
@@ -235,16 +223,16 @@ public class CraftingStoreAPIImpl extends CraftingStoreAPI {
     }
 
     private void addHeaders(HttpUriRequest request) {
-        this.instance.getLogger().debug(request.getMethod() + " -> " + request.getURI());
-        request.addHeader("token", this.token);
-        request.addHeader("version", this.instance.getImplementation().getConfiguration().getVersion());
-        request.addHeader("platform", this.instance.getImplementation().getConfiguration().getPlatform());
+        instance.getLogger().debug(request.getMethod() + " -> " + request.getURI());
+        request.addHeader("token", token);
+        request.addHeader("version", instance.getImplementation().getConfiguration().getVersion());
+        request.addHeader("platform", instance.getImplementation().getConfiguration().getPlatform());
     }
 
     private String getEndpoint(String endpoint) {
-        if (this.instance.getImplementation().getConfiguration().isUsingAlternativeApi()) {
-            return this.ALTERNATIVE_BASE_URL + endpoint;
+        if (instance.getImplementation().getConfiguration().isUsingAlternativeApi()) {
+            return "https://api-fallback.craftingstore.net/" + endpoint;
         }
-        return this.BASE_URL + endpoint;
+        return "https://api.craftingstore.net/" + endpoint;
     }
 }

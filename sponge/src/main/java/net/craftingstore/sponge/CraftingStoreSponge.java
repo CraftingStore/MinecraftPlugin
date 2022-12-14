@@ -40,7 +40,7 @@ public class CraftingStoreSponge {
 
     private Config config;
 
-    private LiteralText prefix = Text.builder("[").color(TextColors.GRAY)
+    private final LiteralText prefix = Text.builder("[").color(TextColors.GRAY)
             .append(Text.builder("CraftingStore").color(TextColors.RED).build())
             .append(Text.builder("] ").color(TextColors.WHITE).build()).build();
 
@@ -49,7 +49,7 @@ public class CraftingStoreSponge {
         config = new Config(defaultConfig.toFile(), "config.yml");
         injector = injector.createChildInjector(new ConfigModule(config));
 
-        this.craftingStore = new CraftingStore(injector.getInstance(CraftingStoreSpongeImpl.class));
+        craftingStore = new CraftingStore(injector.getInstance(CraftingStoreSpongeImpl.class));
         injector = injector.createChildInjector(new CraftingStoreModule(craftingStore));
 
         CommandSpec craftingStoreCommand = CommandSpec.builder()
@@ -67,7 +67,7 @@ public class CraftingStoreSponge {
                 .executor(injector.getInstance(BuyCommand.class))
                 .build();
         game.getCommandManager().register(this, craftingStoreCommand, "craftingstore", "cs");
-        if (this.craftingStore.getImplementation().getConfiguration().isBuyCommandEnabled()) {
+        if (craftingStore.getImplementation().getConfiguration().isBuyCommandEnabled()) {
             game.getCommandManager().register(this, buyCommand, "buy");
         }
 
@@ -77,10 +77,10 @@ public class CraftingStoreSponge {
 
     @Listener
     public void onServerStopped(GameStoppedServerEvent event) {
-        if (this.craftingStore == null) {
+        if (craftingStore == null) {
             return;
         }
-        this.craftingStore.setEnabled(false);
+        craftingStore.setEnabled(false);
     }
 
     public Config getConfigWrapper() {

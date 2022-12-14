@@ -23,16 +23,16 @@ public class DonationRunner {
     }
 
     public void runDonations() {
-        this.craftingStore.getLogger().debug("Scheduling new execute donations job");
-        this.executor.submit(() -> {
-            this.craftingStore.getLogger().debug("Executing donation queue.");
+        craftingStore.getLogger().debug("Scheduling new execute donations job");
+        executor.submit(() -> {
+            craftingStore.getLogger().debug("Executing donation queue.");
             try {
                 Donation[] donationQueue = this.craftingStore.getApi().getDonationQueue().get();
                 Donation[][] chunked = ArrayUtil.splitArray(donationQueue, ExecuteDonationsJob.CHUNK_SIZE);
                 for (int i = 0; i < chunked.length; i++) {
                     Donation[] chunk = chunked[i];
-                    this.craftingStore.getLogger().debug(String.format("Creating ExecuteDonationsJob for chunk %d/%d", i + 1, chunked.length));
-                    new ExecuteDonationsJob(this.craftingStore, chunk);
+                    craftingStore.getLogger().debug(String.format("Creating ExecuteDonationsJob for chunk %d/%d", i + 1, chunked.length));
+                    new ExecuteDonationsJob(craftingStore, chunk);
                 }
             } catch (CraftingStoreApiException | InterruptedException | ExecutionException e) {
                 if (craftingStore.getLogger().isDebugging()) {

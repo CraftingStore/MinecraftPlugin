@@ -6,8 +6,8 @@ import org.bukkit.inventory.InventoryHolder;
 
 public class CraftingStoreInventoryHolder implements InventoryHolder {
 
-    private CraftingStoreInventory csInventory;
-    private CraftingStoreInventoryHolder parentInventory;
+    private final CraftingStoreInventory csInventory;
+    private final CraftingStoreInventoryHolder parentInventory;
 
     public CraftingStoreInventoryHolder(CraftingStoreInventory csInventory, CraftingStoreInventoryHolder parentInventory) {
         this.csInventory = csInventory;

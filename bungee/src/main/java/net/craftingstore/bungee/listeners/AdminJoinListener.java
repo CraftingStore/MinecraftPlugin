@@ -11,7 +11,7 @@ import net.md_5.bungee.event.EventHandler;
 
 public class AdminJoinListener implements Listener {
 
-    private CraftingStoreBungee instance;
+    private final CraftingStoreBungee instance;
 
     public AdminJoinListener(CraftingStoreBungee instance) {
         this.instance = instance;

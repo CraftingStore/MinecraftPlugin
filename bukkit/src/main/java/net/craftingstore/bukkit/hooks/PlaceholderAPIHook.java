@@ -13,11 +13,11 @@ import java.util.regex.Pattern;
 
 public class PlaceholderAPIHook extends PlaceholderExpansion {
 
-    private CraftingStore instance;
+    private final CraftingStore instance;
 
     public PlaceholderAPIHook(CraftingStore instance) {
         this.instance = instance;
-        this.register(); // Documentation is missing so we are using this method.
+        register(); // Documentation is missing so we are using this method.
     }
 
     @Override
@@ -44,8 +44,7 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
             for (ApiTopDonator donator : topDonators) {
                 builder.append(donator.getUsername()).append(": ").append(donator.getTotal()).append(", ");
             }
-            builder.substring(0, builder.length() - 2); // Remove the last ', ' from the string
-            return builder.toString();
+            return builder.substring(0, builder.length() - 2); // Remove the last ', ' from the string
         } else if (s.startsWith("donator_")) {
             Pattern pattern = Pattern.compile("donator_([1-5])");
             Matcher matcher = pattern.matcher(s);
@@ -70,8 +69,7 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
             for (ApiPayment payment : payments) {
                 builder.append(payment.getUsername()).append(": ").append(payment.getPackageName()).append(", ");
             }
-            builder.substring(0, builder.length() - 2); // Remove the last ', ' from the string
-            return builder.toString();
+            return builder.substring(0, builder.length() - 2); // Remove the last ', ' from the string
         } else if (s.startsWith("payment_")) {
             Pattern pattern = Pattern.compile("payment_([1-5])");
             Matcher matcher = pattern.matcher(s);
@@ -99,6 +97,6 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
 
     @Override
     public String getVersion() {
-        return this.instance.getImplementation().getConfiguration().getVersion();
+        return instance.getImplementation().getConfiguration().getVersion();
     }
 }

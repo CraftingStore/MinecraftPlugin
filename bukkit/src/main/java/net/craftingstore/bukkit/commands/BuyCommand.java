@@ -16,7 +16,7 @@ import java.util.concurrent.ExecutionException;
 
 public class BuyCommand implements CommandExecutor {
 
-    private CraftingStoreBukkit instance;
+    private final CraftingStoreBukkit instance;
 
     public BuyCommand(CraftingStoreBukkit instance) {
         this.instance = instance;
@@ -34,7 +34,7 @@ public class BuyCommand implements CommandExecutor {
         Player p = (Player) sender;
         Bukkit.getScheduler().runTaskAsynchronously(instance, () -> {
             try {
-                InventoryBuilder builder = new InventoryBuilder(this.instance);
+                InventoryBuilder builder = new InventoryBuilder(instance);
                 ApiInventory gui = instance.getCraftingStore().getApi().getGUI().get();
                 Inventory inventory = builder.buildInventory(
                         new CraftingStoreInventory(gui.getTitle(), gui.getContent(), gui.getSize())

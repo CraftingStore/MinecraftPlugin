@@ -9,8 +9,8 @@ import net.kyori.adventure.text.format.NamedTextColor;
 
 public class CraftingStoreModule extends AbstractModule {
 
-    private CraftingStore craftingStore;
-    private TextComponent prefix = Component.text()
+    private final CraftingStore craftingStore;
+    private final TextComponent prefix = Component.text()
             .append(Component.text("[", NamedTextColor.GRAY))
             .append(Component.text("CraftingStore", NamedTextColor.RED))
             .append(Component.text("] ", NamedTextColor.GRAY))

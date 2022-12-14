@@ -10,17 +10,17 @@ import java.util.UUID;
 public class DonationReceivedEvent extends Event implements Cancellable {
 
     @Deprecated
-    private String command;
+    private final String command;
     @Deprecated
-    private String username;
+    private final String username;
     @Deprecated
-    private UUID uuid;
+    private final UUID uuid;
     @Deprecated
-    private String packageName;
+    private final String packageName;
     @Deprecated
-    private int packagePrice;
+    private final int packagePrice;
     @Deprecated
-    private int couponDiscount;
+    private final int couponDiscount;
 
     private Donation donation;
 
@@ -39,17 +39,17 @@ public class DonationReceivedEvent extends Event implements Cancellable {
 
     public DonationReceivedEvent(Donation donation) {
         super(true);
-        this.command = donation.getCommand();
-        this.username = donation.getPlayer().getUsername();
-        this.uuid = donation.getPlayer().getUUID();
-        this.packageName = donation.getPackage().getName();
-        this.packagePrice = donation.getPackage().getPrice();
-        this.couponDiscount = donation.getDiscount();
+        command = donation.getCommand();
+        username = donation.getPlayer().getUsername();
+        uuid = donation.getPlayer().getUUID();
+        packageName = donation.getPackage().getName();
+        packagePrice = donation.getPackage().getPrice();
+        couponDiscount = donation.getDiscount();
         this.donation = donation;
     }
 
     public Donation getDonation() {
-        return this.donation;
+        return donation;
     }
 
     @Deprecated
@@ -87,7 +87,7 @@ public class DonationReceivedEvent extends Event implements Cancellable {
     }
 
     public void setCancelled(boolean cancelled) {
-        this.cancelled = cancelled;
+        cancelled = cancelled;
     }
 
     private static final HandlerList handlers = new HandlerList();

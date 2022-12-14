@@ -16,6 +16,7 @@ import org.bukkit.inventory.Inventory;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 public class BuyInventoryBuilder {
@@ -29,11 +30,11 @@ public class BuyInventoryBuilder {
     }
 
     public Inventory build(Player p, InventoryItemBuyablePackage item, CraftingStoreInventoryHolder holder) throws CraftingStoreApiException, ExecutionException, InterruptedException {
-        ApiInventory buyMenu = this.instance.getCraftingStore().getApi().getGUI().get().getBuyMenu();
+        ApiInventory buyMenu = instance.getCraftingStore().getApi().getGUI().get().getBuyMenu();
         CraftingStoreInventory craftingStoreInventory = new CraftingStoreInventory(buyMenu.getTitle(), buyMenu.getContent(), buyMenu.getSize());
 
-        String ip = p.getAddress().getAddress().getHostAddress();
-        ApiPackageInformation packageInformation = this.instance.getCraftingStore().getApi().getPackageInformation(
+        String ip = Objects.requireNonNull(p.getAddress()).getAddress().getHostAddress();
+        ApiPackageInformation packageInformation = instance.getCraftingStore().getApi().getPackageInformation(
                 p.getName(),
                 p.getUniqueId(),
                 ip,
@@ -41,19 +42,19 @@ public class BuyInventoryBuilder {
         ).get();
         if (!packageInformation.isAllowedToBuy()) {
             p.sendMessage(ChatColorUtil.translate(packageInformation.getMessage()));
-            this.closeInventory(p);
+            closeInventory(p);
             return null;
         }
         if (packageInformation.getPrice() != item.getPrice()) {
-            p.sendMessage(this.instance.getPrefix() + "There was a problem with the payment data. Please try again later.");
-            this.closeInventory(p);
+            p.sendMessage(instance.getPrefix() + "There was a problem with the payment data. Please try again later.");
+            closeInventory(p);
             return null;
         }
 
-        Map placeholders = new HashMap<>();
+        HashMap placeholders = new HashMap<>();
         placeholders.put("package_name", item.getName());
         placeholders.put("package_price_ingame", packageInformation.getPrice());
-        return this.inventoryBuilder.buildInventory(
+        return inventoryBuilder.buildInventory(
                 craftingStoreInventory,
                 new BuyMenuInventoryHolder(craftingStoreInventory, holder, item),
                 placeholders
@@ -72,7 +73,7 @@ public class BuyInventoryBuilder {
                 content,
                 9
         );
-        return this.inventoryBuilder.buildInventory(
+        return inventoryBuilder.buildInventory(
                 craftingStoreInventory,
                 new CraftingStoreInventoryHolder(craftingStoreInventory, null)
         );

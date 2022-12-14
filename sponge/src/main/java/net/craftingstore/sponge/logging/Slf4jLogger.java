@@ -13,11 +13,11 @@ public class Slf4jLogger extends CraftingStoreLogger {
 
     @Override
     public void info(String message) {
-        this.logger.info(message);
+        logger.info(message);
     }
 
     @Override
     public void error(String message) {
-        this.logger.error(message);
+        logger.error(message);
     }
 }

@@ -9,10 +9,7 @@ import net.craftingstore.sponge.config.Config;
 import net.craftingstore.sponge.events.DonationReceivedEvent;
 import net.craftingstore.sponge.logging.Slf4jLogger;
 import org.spongepowered.api.Game;
-import org.spongepowered.api.Platform;
-import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.plugin.PluginContainer;
 
 import java.util.concurrent.TimeUnit;
 
@@ -35,7 +32,7 @@ public class CraftingStoreSpongeImpl implements CraftingStorePlugin {
     @Inject
     private void setLogger(Slf4jLogger logger) {
         this.logger = logger;
-        this.logger.setDebugging(this.config.getConfig().getNode("debug").getBoolean());
+        logger.setDebugging(config.getConfig().getNode("debug").getBoolean());
     }
 
     public boolean executeDonation(Donation donation) {
@@ -59,7 +56,7 @@ public class CraftingStoreSpongeImpl implements CraftingStorePlugin {
     }
 
     public CraftingStoreLogger getLogger() {
-        return this.logger;
+        return logger;
     }
 
     public void registerRunnable(Runnable runnable, int delay, int interval) {
@@ -84,6 +81,6 @@ public class CraftingStoreSpongeImpl implements CraftingStorePlugin {
 
     @Override
     public PluginConfiguration getConfiguration() {
-        return this.configuration;
+        return configuration;
     }
 }

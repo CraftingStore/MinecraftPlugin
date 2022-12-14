@@ -10,7 +10,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class AdminJoinListener implements Listener {
 
-    private CraftingStoreBukkit instance;
+    private final CraftingStoreBukkit instance;
 
     public AdminJoinListener(CraftingStoreBukkit instance) {
         this.instance = instance;

@@ -13,15 +13,15 @@ import java.util.concurrent.TimeUnit;
 
 public class CraftingStoreBungeeImpl implements CraftingStorePlugin {
 
-    private CraftingStoreBungee bungeePlugin;
-    private JavaLogger logger;
-    private BungeePluginConfiguration configuration;
+    private final CraftingStoreBungee bungeePlugin;
+    private final JavaLogger logger;
+    private final BungeePluginConfiguration configuration;
 
     CraftingStoreBungeeImpl(CraftingStoreBungee bungeePlugin) {
         this.bungeePlugin = bungeePlugin;
-        this.configuration = new BungeePluginConfiguration(bungeePlugin);
-        this.logger = new JavaLogger(bungeePlugin.getLogger());
-        this.logger.setDebugging(bungeePlugin.getConfig().getBoolean("debug", false));
+        configuration = new BungeePluginConfiguration(bungeePlugin);
+        logger = new JavaLogger(bungeePlugin.getLogger());
+        logger.setDebugging(bungeePlugin.getConfig().getBoolean("debug", false));
     }
 
     public boolean executeDonation(final Donation donation) {
@@ -44,7 +44,7 @@ public class CraftingStoreBungeeImpl implements CraftingStorePlugin {
     }
 
     public CraftingStoreLogger getLogger() {
-        return this.logger;
+        return logger;
     }
 
     public void registerRunnable(Runnable runnable, int delay, int interval) {
@@ -61,6 +61,6 @@ public class CraftingStoreBungeeImpl implements CraftingStorePlugin {
 
     @Override
     public PluginConfiguration getConfiguration() {
-        return this.configuration;
+        return configuration;
     }
 }

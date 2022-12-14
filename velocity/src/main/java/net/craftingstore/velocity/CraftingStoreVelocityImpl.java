@@ -34,7 +34,7 @@ public class CraftingStoreVelocityImpl implements CraftingStorePlugin {
     @Inject
     private void setLogger(Slf4jLogger logger) {
         this.logger = logger;
-        this.logger.setDebugging((Boolean) this.config.getConfig().getOrDefault("debug", false));
+        logger.setDebugging((Boolean) config.getConfig().getOrDefault("debug", false));
     }
 
     @Override
@@ -86,6 +86,6 @@ public class CraftingStoreVelocityImpl implements CraftingStorePlugin {
 
     @Override
     public PluginConfiguration getConfiguration() {
-        return this.configuration;
+        return configuration;
     }
 }

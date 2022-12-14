@@ -12,7 +12,7 @@ public abstract class CraftingStoreProvider {
     public CraftingStoreProvider(CraftingStore craftingStore, ProviderStatus status) {
         this.craftingStore = craftingStore;
         this.status = status;
-        this.information = status.getInformation();
+        information = status.getInformation();
     }
 
     public abstract boolean isConnected();
@@ -24,8 +24,8 @@ public abstract class CraftingStoreProvider {
         if (!craftingStore.isEnabled()) {
             return;
         }
-        this.status.setRetries(this.status.getRetries() + 1);
-        this.status.setLastFailed(System.currentTimeMillis());
-        this.craftingStore.getProviderSelector().selectProvider();
+        status.setRetries(status.getRetries() + 1);
+        status.setLastFailed(System.currentTimeMillis());
+        craftingStore.getProviderSelector().selectProvider();
     }
 }

@@ -4,7 +4,7 @@ import net.craftingstore.core.CraftingStore;
 
 public class ProviderChecker implements Runnable {
 
-    private CraftingStore instance;
+    private final CraftingStore instance;
 
     public ProviderChecker(CraftingStore instance) {
         this.instance = instance;

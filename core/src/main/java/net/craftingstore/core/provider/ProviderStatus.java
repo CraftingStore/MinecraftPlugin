@@ -3,7 +3,7 @@ package net.craftingstore.core.provider;
 import net.craftingstore.core.models.api.provider.ProviderInformation;
 
 public class ProviderStatus {
-    private ProviderInformation information;
+    private final ProviderInformation information;
     private long lastFailed;
     private int retries;
 

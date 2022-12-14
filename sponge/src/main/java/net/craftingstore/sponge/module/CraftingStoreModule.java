@@ -5,7 +5,7 @@ import net.craftingstore.core.CraftingStore;
 
 public class CraftingStoreModule extends AbstractModule {
 
-    private CraftingStore craftingStore;
+    private final CraftingStore craftingStore;
 
     public CraftingStoreModule(CraftingStore craftingStore) {
         this.craftingStore = craftingStore;

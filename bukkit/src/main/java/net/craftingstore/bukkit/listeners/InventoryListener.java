@@ -19,22 +19,18 @@ public class InventoryListener implements Listener {
 
     private final HashMap<Class<? extends InventoryItem>, InventoryItemHandler> handlers = new HashMap<>();
 
-    private final CraftingStoreBukkit instance;
-    private final InventoryBuilder inventoryBuilder;
-
     public InventoryListener(CraftingStoreBukkit instance) {
-        this.instance = instance;
-        this.inventoryBuilder = new InventoryBuilder(instance);
-        BuyInventoryBuilder buyInventoryBuilder = new BuyInventoryBuilder(instance, this.inventoryBuilder);
-        this.handlers.put(InventoryItemBackButton.class, new BackButtonHandler(this.inventoryBuilder));
-        this.handlers.put(InventoryItemCategory.class, new CategoryItemHandler(this.inventoryBuilder));
-        this.handlers.put(InventoryItemCloseButton.class, new CloseButtonHandler());
-        this.handlers.put(InventoryItemMessage.class, new MessageButtonHandler());
-        this.handlers.put(InventoryItemBuyablePackage.class, new BuyablePackageHandler(
+        InventoryBuilder inventoryBuilder = new InventoryBuilder(instance);
+        BuyInventoryBuilder buyInventoryBuilder = new BuyInventoryBuilder(instance, inventoryBuilder);
+        handlers.put(InventoryItemBackButton.class, new BackButtonHandler(inventoryBuilder));
+        handlers.put(InventoryItemCategory.class, new CategoryItemHandler(inventoryBuilder));
+        handlers.put(InventoryItemCloseButton.class, new CloseButtonHandler());
+        handlers.put(InventoryItemMessage.class, new MessageButtonHandler());
+        handlers.put(InventoryItemBuyablePackage.class, new BuyablePackageHandler(
                 instance,
                 buyInventoryBuilder
         ));
-        this.handlers.put(InventoryItemBuyButton.class, new BuyButtonHandler(instance, buyInventoryBuilder));
+        handlers.put(InventoryItemBuyButton.class, new BuyButtonHandler(instance, buyInventoryBuilder));
     }
 
     @EventHandler
@@ -43,9 +39,7 @@ public class InventoryListener implements Listener {
         if (e.getRawSlot() < 0) {
             return;
         }
-        if (e.getInventory() == null
-                || e.getInventory().getHolder() == null
-                || !(e.getInventory().getHolder() instanceof CraftingStoreInventoryHolder)) {
+        if (e.getInventory().getHolder() == null || !(e.getInventory().getHolder() instanceof CraftingStoreInventoryHolder)) {
             return;
         }
         e.setCancelled(true);

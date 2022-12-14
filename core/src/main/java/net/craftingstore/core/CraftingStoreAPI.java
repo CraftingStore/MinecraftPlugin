@@ -43,14 +43,11 @@ public abstract class CraftingStoreAPI {
     ) throws CraftingStoreApiException;
 
     public String getToken() {
-        return this.token;
+        return token;
     }
 
     protected void setToken(String token) {
         this.token = token;
     }
 
-    public void shutdown() {
-        executor.shutdown();
-    }
 }

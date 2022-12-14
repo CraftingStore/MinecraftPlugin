@@ -4,7 +4,7 @@ import net.craftingstore.core.PluginConfiguration;
 
 public class BukkitPluginConfiguration implements PluginConfiguration {
 
-    private CraftingStoreBukkit plugin;
+    private final CraftingStoreBukkit plugin;
 
     BukkitPluginConfiguration(CraftingStoreBukkit plugin) {
         this.plugin = plugin;

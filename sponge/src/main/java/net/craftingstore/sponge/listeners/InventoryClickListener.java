@@ -28,7 +28,7 @@ import java.util.HashMap;
 
 public class InventoryClickListener {
 
-    private HashMap<Class<? extends InventoryItem>, InventoryItemHandler> handlers = new HashMap<>();
+    private final HashMap<Class<? extends InventoryItem>, InventoryItemHandler> handlers = new HashMap<>();
 
     @Inject
     private Game game;
@@ -65,6 +65,7 @@ public class InventoryClickListener {
 
         CraftingStoreInventoryProperty csProperty = properties.iterator().next();
         InventoryAttachment attachment = csProperty.getValue();
+        assert attachment != null;
         CraftingStoreInventory csInventory = attachment.getCsInventory();
         InventoryItem item = csInventory.getByIndex(index);
         if (item == null) {

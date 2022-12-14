@@ -5,9 +5,6 @@ import net.craftingstore.core.models.api.inventory.InventoryItemIcon;
 import net.craftingstore.core.models.api.inventory.InventoryItemType;
 
 public class InventoryItemBuyDetails extends InventoryItem {
-
-    public InventoryItemBuyDetails() {}
-
     public InventoryItemBuyDetails(
             String name,
             String[] description,

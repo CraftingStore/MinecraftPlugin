@@ -11,15 +11,15 @@ import org.bukkit.Server;
 
 public class CraftingStoreBukkitImpl implements CraftingStorePlugin {
 
-    private CraftingStoreBukkit bukkitPlugin;
-    private JavaLogger logger;
-    private PluginConfiguration pluginConfiguration;
+    private final CraftingStoreBukkit bukkitPlugin;
+    private final JavaLogger logger;
+    private final PluginConfiguration pluginConfiguration;
 
     CraftingStoreBukkitImpl(CraftingStoreBukkit bukkitPlugin) {
         this.bukkitPlugin = bukkitPlugin;
-        this.pluginConfiguration = new BukkitPluginConfiguration(bukkitPlugin);
-        this.logger = new JavaLogger(bukkitPlugin.getLogger());
-        this.logger.setDebugging(bukkitPlugin.getConfig().getBoolean("debug", false));
+        pluginConfiguration = new BukkitPluginConfiguration(bukkitPlugin);
+        logger = new JavaLogger(bukkitPlugin.getLogger());
+        logger.setDebugging(bukkitPlugin.getConfig().getBoolean("debug", false));
     }
 
     public boolean executeDonation(Donation donation) {
@@ -41,11 +41,11 @@ public class CraftingStoreBukkitImpl implements CraftingStorePlugin {
     }
 
     public CraftingStoreLogger getLogger() {
-        return this.logger;
+        return logger;
     }
 
     public void registerRunnable(Runnable runnable, int delay, int interval) {
-        bukkitPlugin.getServer().getScheduler().runTaskTimerAsynchronously(bukkitPlugin, runnable, delay * 20, interval * 20);
+        bukkitPlugin.getServer().getScheduler().runTaskTimerAsynchronously(bukkitPlugin, runnable, delay * 20L, interval * 20L);
     }
 
     public void runAsyncTask(Runnable runnable) {
@@ -58,6 +58,6 @@ public class CraftingStoreBukkitImpl implements CraftingStorePlugin {
 
     @Override
     public PluginConfiguration getConfiguration() {
-        return this.pluginConfiguration;
+        return pluginConfiguration;
     }
 }

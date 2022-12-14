@@ -4,7 +4,7 @@ import net.craftingstore.core.PluginConfiguration;
 
 public class BungeePluginConfiguration implements PluginConfiguration {
 
-    private CraftingStoreBungee plugin;
+    private final CraftingStoreBungee plugin;
 
     BungeePluginConfiguration(CraftingStoreBungee plugin) {
         this.plugin = plugin;

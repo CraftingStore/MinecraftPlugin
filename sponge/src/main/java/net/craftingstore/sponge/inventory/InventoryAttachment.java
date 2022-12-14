@@ -4,8 +4,8 @@ import net.craftingstore.core.models.api.inventory.CraftingStoreInventory;
 
 public class InventoryAttachment {
 
-    private CraftingStoreInventory csInventory;
-    private InventoryAttachment parent;
+    private final CraftingStoreInventory csInventory;
+    private final InventoryAttachment parent;
 
 
     public InventoryAttachment(CraftingStoreInventory csInventory, InventoryAttachment parent) {

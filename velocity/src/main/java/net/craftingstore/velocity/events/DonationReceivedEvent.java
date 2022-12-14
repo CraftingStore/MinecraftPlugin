@@ -12,16 +12,16 @@ public class DonationReceivedEvent implements ResultedEvent<DonationResult> {
     }
 
     public Donation getDonation() {
-        return this.donation;
+        return donation;
     }
 
     @Override
     public DonationResult getResult() {
-        return this.result;
+        return result;
     }
 
     @Override
     public void setResult(DonationResult result) {
-        this.result = result;
+        result = result;
     }
 }

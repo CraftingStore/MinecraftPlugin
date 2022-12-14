@@ -48,7 +48,7 @@ public class InventoryBuilder {
                 .property(new CraftingStoreInventoryProperty(attachment))
                 .property(InventoryTitle.of(formattedTitle))
                 .property(InventoryDimension.of(width, height))
-                .build(this.spongePlugin);
+                .build(spongePlugin);
 
         GridInventory grid = inventory.query(QueryOperationTypes.INVENTORY_TYPE.of(GridInventory.class));
         for (InventoryItem inventoryItem : csInventory.getContent()) {

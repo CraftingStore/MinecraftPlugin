@@ -19,7 +19,7 @@ public class CraftingStoreCachedAPI extends CraftingStoreAPIImpl {
     }
 
     @Override
-    public Future<ApiInventory> getGUI() throws CraftingStoreApiException {
+    public Future<ApiInventory> getGUI() {
         return executor.submit(() -> {
             String key = "plugin/inventory";
             if (!cache.containsKey(key)) {
@@ -30,7 +30,7 @@ public class CraftingStoreCachedAPI extends CraftingStoreAPIImpl {
     }
 
     @Override
-    public Future<ApiTopDonator[]> getTopDonators() throws CraftingStoreApiException {
+    public Future<ApiTopDonator[]> getTopDonators() {
         return executor.submit(() -> {
             String key = "buyers/top";
             if (cache.containsKey(key)) {
@@ -41,7 +41,7 @@ public class CraftingStoreCachedAPI extends CraftingStoreAPIImpl {
     }
 
     @Override
-    public Future<ApiPayment[]> getPayments() throws CraftingStoreApiException {
+    public Future<ApiPayment[]> getPayments() {
         return executor.submit(() -> {
             String key = "buyers/recent";
             if (cache.containsKey(key)) {

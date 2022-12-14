@@ -6,8 +6,8 @@ import net.craftingstore.core.provider.SocketProvider;
 public enum ProviderType {
     SOCKET(SocketProviderInformation.class, SocketProvider.class);
 
-    private Class c;
-    private Class<? extends CraftingStoreProvider> implementation;
+    private final Class c;
+    private final Class<? extends CraftingStoreProvider> implementation;
 
     ProviderType(Class c, Class<? extends CraftingStoreProvider> implementation) {
         this.c = c;

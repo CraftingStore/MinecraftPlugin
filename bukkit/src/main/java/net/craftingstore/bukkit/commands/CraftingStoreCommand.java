@@ -11,7 +11,7 @@ import java.util.concurrent.ExecutionException;
 
 public class CraftingStoreCommand implements CommandExecutor {
 
-    private CraftingStoreBukkit instance;
+    private final CraftingStoreBukkit instance;
 
     public CraftingStoreCommand(CraftingStoreBukkit instance) {
         this.instance = instance;
@@ -45,11 +45,11 @@ public class CraftingStoreCommand implements CommandExecutor {
             return true;
         }
         if ((args.length == 1 || args.length == 2) && args[0].equalsIgnoreCase("debug")) {
-            boolean isDebugging = this.instance.getCraftingStore().getLogger().isDebugging();
+            boolean isDebugging = instance.getCraftingStore().getLogger().isDebugging();
             if (args.length == 1) {
                 sender.sendMessage(String.format(
                         "%sDebug mode is currently %s.",
-                        this.instance.getPrefix(),
+                        instance.getPrefix(),
                         isDebugging ? "enabled" : "disabled"
                 ));
                 return true;
@@ -63,12 +63,12 @@ public class CraftingStoreCommand implements CommandExecutor {
                 sender.sendMessage(instance.getPrefix() + "Unknown debug value.");
                 return true;
             }
-            this.instance.getCraftingStore().getLogger().setDebugging(isDebugging);
+            instance.getCraftingStore().getLogger().setDebugging(isDebugging);
             instance.getConfig().set("debug", isDebugging);
             instance.getConfigWrapper().saveConfig();
             sender.sendMessage(String.format(
                     "%sDebug mode has been %s.",
-                    this.instance.getPrefix(),
+                    instance.getPrefix(),
                     isDebugging ? "enabled" : "disabled"
             ));
             return true;

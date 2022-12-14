@@ -8,7 +8,7 @@ import java.util.concurrent.ExecutionException;
 
 public class APICacheRenewer implements Runnable {
 
-    private CraftingStore instance;
+    private final CraftingStore instance;
 
     public APICacheRenewer(CraftingStore instance) {
         this.instance = instance;
@@ -24,12 +24,12 @@ public class APICacheRenewer implements Runnable {
             return;
         }
         CraftingStoreCachedAPI api = (CraftingStoreCachedAPI) instance.getApi();
-        this.instance.getLogger().debug("Refreshing API cache.");
+        instance.getLogger().debug("Refreshing API cache.");
         try {
             api.refreshPaymentsCache();
             api.refreshTopDonatorsCache();
         } catch (CraftingStoreApiException | ExecutionException | InterruptedException e) {
-            if (this.instance.getLogger().isDebugging()) {
+            if (instance.getLogger().isDebugging()) {
                 e.printStackTrace();
             } else {
                 instance.getLogger().error("Failed to renew API cache. If this issue persists, please contact support at https://craftingstore.net.");

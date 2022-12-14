@@ -30,13 +30,13 @@ public class DonationChecker implements Runnable {
             }
         }
         lastRun = System.currentTimeMillis();
-        this.instance.getLogger().debug("Checking for donations.");
+        instance.getLogger().debug("Checking for donations.");
         try {
             Donation[] donationQueue = instance.getApi().getDonationQueue().get();
             Donation[][] chunked = ArrayUtil.splitArray(donationQueue, ExecuteDonationsJob.CHUNK_SIZE);
             for (int i = 0; i < chunked.length; i++) {
                 Donation[] chunk = chunked[i];
-                this.instance.getLogger().debug(String.format("Creating ExecuteDonationsJob for chunk %d/%d", i + 1, chunked.length));
+                instance.getLogger().debug(String.format("Creating ExecuteDonationsJob for chunk %d/%d", i + 1, chunked.length));
                 new ExecuteDonationsJob(instance, chunk);
             }
         } catch (CraftingStoreApiException | InterruptedException | ExecutionException e) {

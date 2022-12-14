@@ -4,7 +4,7 @@ import com.velocitypowered.api.event.ResultedEvent;
 
 public class DonationResult implements ResultedEvent.Result {
 
-    private boolean allowed;
+    private final boolean allowed;
 
     public DonationResult(boolean allowed) {
         this.allowed = allowed;
@@ -12,6 +12,6 @@ public class DonationResult implements ResultedEvent.Result {
 
     @Override
     public boolean isAllowed() {
-        return this.allowed;
+        return allowed;
     }
 }

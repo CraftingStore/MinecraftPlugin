@@ -46,7 +46,7 @@ public class BuyCommand implements CommandExecutor {
                     try {
                         ApiInventory gui = craftingStore.getApi().getGUI().get();
                         CraftingStoreInventory craftingStoreInventory = new CraftingStoreInventory(gui.getTitle(), gui.getContent(), gui.getSize());
-                        Inventory inventory = this.inventoryBuilder.buildInventory(craftingStoreInventory);
+                        Inventory inventory = inventoryBuilder.buildInventory(craftingStoreInventory);
                         game.getScheduler().createTaskBuilder()
                                 .execute(() -> {
                                     if (p.isOnline()) {

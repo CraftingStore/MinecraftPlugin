@@ -10,7 +10,7 @@ import java.util.concurrent.ExecutionException;
 
 public class CraftingStoreCommand extends Command {
 
-    private CraftingStoreBungee instance;
+    private final CraftingStoreBungee instance;
 
     public CraftingStoreCommand(CraftingStoreBungee instance) {
         super("csb", instance.getCraftingStore().ADMIN_PERMISSION);
@@ -45,11 +45,11 @@ public class CraftingStoreCommand extends Command {
             return;
         }
         if ((args.length == 1 || args.length == 2) && args[0].equalsIgnoreCase("debug")) {
-            boolean isDebugging = this.instance.getCraftingStore().getLogger().isDebugging();
+            boolean isDebugging = instance.getCraftingStore().getLogger().isDebugging();
             if (args.length == 1) {
                 sender.sendMessage(new TextComponent(String.format(
                         "%sDebug mode is currently %s.",
-                        this.instance.getPrefix(),
+                        instance.getPrefix(),
                         isDebugging ? "enabled" : "disabled"
                 )));
                 return;
@@ -63,12 +63,12 @@ public class CraftingStoreCommand extends Command {
                 sender.sendMessage(new TextComponent(instance.getPrefix() + "Unknown debug value."));
                 return;
             }
-            this.instance.getCraftingStore().getLogger().setDebugging(isDebugging);
+            instance.getCraftingStore().getLogger().setDebugging(isDebugging);
             instance.getConfig().set("debug", isDebugging);
             instance.getConfigWrapper().saveConfig();
             sender.sendMessage(new TextComponent(String.format(
                     "%sDebug mode has been %s.",
-                    this.instance.getPrefix(),
+                    instance.getPrefix(),
                     isDebugging ? "enabled" : "disabled"
             )));
             return;

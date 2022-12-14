@@ -2,12 +2,12 @@ package net.craftingstore.core.models.donation;
 
 public class Donation {
 
-    private int commandId;
-    private int paymentId;
-    private String command;
-    private DonationPlayer player;
-    private DonationPackage donationPackage;
-    private int discount;
+    private final int commandId;
+    private final int paymentId;
+    private final String command;
+    private final DonationPlayer player;
+    private final DonationPackage donationPackage;
+    private final int discount;
 
     public Donation(int commandId, int paymentId, String command, DonationPlayer player, DonationPackage donationPackage, int discount) {
         this.commandId = commandId;

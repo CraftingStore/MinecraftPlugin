@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * The MIT License (MIT)
@@ -881,10 +882,10 @@ public enum XMaterial {
     ZOMBIE_VILLAGER_SPAWN_EGG(0, "MONSTER_EGG"),
     ZOMBIE_WALL_HEAD(0, "SKULL", "SKULL_ITEM"),
     ;
-    String[] m;
-    int data;
+    final String[] m;
+    final int data;
 
-    private static HashMap<String, XMaterial> cachedSearch = new HashMap<>();
+    private static final HashMap<String, XMaterial> cachedSearch = new HashMap<>();
 
     XMaterial(int data, String... m) {
         this.m = m;
@@ -921,15 +922,15 @@ public enum XMaterial {
 
     public boolean isSameMaterial(ItemStack comp) {
         if (isNewVersion()) {
-            return comp.getType() == this.parseMaterial();
+            return comp.getType() == parseMaterial();
         }
-        if (comp.getType() == this.parseMaterial() &&
-                (int) comp.getData().getData() == this.data) {
+        if (comp.getType() == parseMaterial() &&
+                (int) Objects.requireNonNull(comp.getData()).getData() == data) {
             return true;
         }
         XMaterial xmat = fromMaterial(comp.getType());
         if (isDamageable(xmat)) {
-            return this.parseMaterial() == comp.getType();
+            return parseMaterial() == comp.getType();
         }
         return false;
     }
@@ -1004,7 +1005,7 @@ public enum XMaterial {
     }
 
     public Material parseMaterial() {
-        Material mat = Material.matchMaterial(this.toString());
+        Material mat = Material.matchMaterial(toString());
         if (mat != null) {
             return mat;
         }

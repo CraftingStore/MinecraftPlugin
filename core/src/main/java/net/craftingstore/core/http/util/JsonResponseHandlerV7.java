@@ -14,8 +14,8 @@ import java.io.IOException;
 
 public class JsonResponseHandlerV7<T> implements ResponseHandler<T> {
 
-    private Gson gson;
-    private Class<T> aClass;
+    private final Gson gson;
+    private final Class<T> aClass;
 
     public JsonResponseHandlerV7(Gson gson, Class<T> aClass) {
         this.gson = gson;

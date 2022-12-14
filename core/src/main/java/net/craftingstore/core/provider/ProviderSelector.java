@@ -13,16 +13,12 @@ import java.util.stream.Collectors;
 
 public class ProviderSelector {
 
-    private CraftingStore instance;
+    private final CraftingStore instance;
     private ProviderStatus[] providers;
     private CraftingStoreProvider currentProvider;
 
     public ProviderSelector(CraftingStore instance) {
         this.instance = instance;
-    }
-
-    public void setProviders(ProviderStatus[] providers) {
-        this.providers = providers;
     }
 
     public void setProviders(ProviderInformation[] providers) {

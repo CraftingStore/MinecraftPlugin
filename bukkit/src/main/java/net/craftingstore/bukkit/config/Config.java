@@ -6,14 +6,15 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 import java.util.logging.Level;
 
 public class Config {
 
-    private Plugin instance;
+    private final Plugin instance;
     private FileConfiguration config = null;
     private File configFile = null;
-    private String filename;
+    private final String filename;
 
     /**
      * Create a new instance of Config, specifying a file name and Plugin.
@@ -30,7 +31,7 @@ public class Config {
         File file = new File(instance.getDataFolder() + File.pathSeparator + filename);
         if (!file.exists()) {
             if (instance.getResource(filename) != null) {
-                Reader defaultConfigFile = new InputStreamReader(instance.getResource(filename), StandardCharsets.UTF_8);
+                Reader defaultConfigFile = new InputStreamReader(Objects.requireNonNull(instance.getResource(filename)), StandardCharsets.UTF_8);
                 YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defaultConfigFile);
                 config.setDefaults(defConfig);
                 config.options().copyDefaults(true);

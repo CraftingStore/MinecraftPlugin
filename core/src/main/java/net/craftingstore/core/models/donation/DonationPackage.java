@@ -4,8 +4,8 @@ import java.math.BigDecimal;
 
 public class DonationPackage {
 
-    private String name;
-    private int priceInCents;
+    private final String name;
+    private final int priceInCents;
 
     public DonationPackage(String name, int priceInCents) {
         this.name = name;
@@ -13,19 +13,12 @@ public class DonationPackage {
     }
 
     public String getName() {
-        return this.name;
+        return name;
     }
 
     @Deprecated
     public int getPrice() {
-        return (int) Math.round(this.priceInCents / 100d);
+        return (int) Math.round(priceInCents / 100d);
     }
 
-    public BigDecimal getPriceDecimal() {
-        return BigDecimal.valueOf(this.priceInCents / 100d);
-    }
-
-    public int getPriceInCents() {
-        return this.priceInCents;
-    }
 }

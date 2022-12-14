@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public class InventoryItemBuilder {
 
-    private CraftingStoreBukkit instance;
+    private final CraftingStoreBukkit instance;
 
     public InventoryItemBuilder(CraftingStoreBukkit instance) {
         this.instance = instance;

@@ -10,7 +10,7 @@ import org.bukkit.inventory.Inventory;
 
 public class CategoryItemHandler implements InventoryItemHandler<InventoryItemCategory> {
 
-    private InventoryBuilder builder;
+    private final InventoryBuilder builder;
 
     public CategoryItemHandler(InventoryBuilder builder) {
         this.builder = builder;

@@ -14,26 +14,28 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Objects;
+
 public class CraftingStoreBukkit extends JavaPlugin {
 
     private CraftingStore craftingStore;
     private Config config;
-    private String prefix = ChatColor.GRAY + "[" + ChatColor.RED + "CraftingStore" + ChatColor.GRAY + "] " + ChatColor.WHITE;
+    private final String prefix = ChatColor.GRAY + "[" + ChatColor.RED + "CraftingStore" + ChatColor.GRAY + "] " + ChatColor.WHITE;
     private VaultHook vaultHook;
 
     @Override
     public void onEnable() {
         config = new Config("config.yml", this);
-        this.craftingStore = new CraftingStore(new CraftingStoreBukkitImpl(this));
+        craftingStore = new CraftingStore(new CraftingStoreBukkitImpl(this));
 
-        this.getCommand("craftingstore").setExecutor(new CraftingStoreCommand(this));
-        if (this.craftingStore.getImplementation().getConfiguration().isBuyCommandEnabled()) {
-            this.getCommand("csbuy").setExecutor(new BuyCommand(this));
+        Objects.requireNonNull(getCommand("craftingstore")).setExecutor(new CraftingStoreCommand(this));
+        if (craftingStore.getImplementation().getConfiguration().isBuyCommandEnabled()) {
+            Objects.requireNonNull(getCommand("csbuy")).setExecutor(new BuyCommand(this));
         }
 
-        this.getServer().getPluginManager().registerEvents(new InventoryListener(this), this);
-        this.getServer().getPluginManager().registerEvents(new AdminJoinListener(this), this);
-        this.getServer().getPluginManager().registerEvents(new PendingDonationJoinListener(this), this);
+        getServer().getPluginManager().registerEvents(new InventoryListener(this), this);
+        getServer().getPluginManager().registerEvents(new AdminJoinListener(this), this);
+        getServer().getPluginManager().registerEvents(new PendingDonationJoinListener(this), this);
 
         // PlaceholderAPI hook
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
@@ -42,12 +44,12 @@ public class CraftingStoreBukkit extends JavaPlugin {
         }
         // Vault hook
         if (Bukkit.getPluginManager().isPluginEnabled("Vault")) {
-            this.vaultHook = new VaultHook(this);
-            if (this.vaultHook.register()) {
+            vaultHook = new VaultHook(this);
+            if (vaultHook.register()) {
                 craftingStore.getLogger().info("Hooked with Vault");
             } else {
                 craftingStore.getLogger().info("There was a problem hooking with Vault");
-                this.vaultHook = null;
+                vaultHook = null;
             }
         }
     }
@@ -64,11 +66,11 @@ public class CraftingStoreBukkit extends JavaPlugin {
 
     @Override
     public FileConfiguration getConfig() {
-        return this.config.getConfig();
+        return config.getConfig();
     }
 
     public Config getConfigWrapper() {
-        return this.config;
+        return config;
     }
 
     public String getPrefix() {

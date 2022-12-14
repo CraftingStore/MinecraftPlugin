@@ -13,12 +13,12 @@ public class CraftingStoreBungee extends Plugin {
 
     private Config config;
     private CraftingStore craftingStore;
-    private String prefix = ChatColor.GRAY + "[" + ChatColor.RED + "CraftingStore" + ChatColor.GRAY + "] " + ChatColor.WHITE;
+    private final String prefix = ChatColor.GRAY + "[" + ChatColor.RED + "CraftingStore" + ChatColor.GRAY + "] " + ChatColor.WHITE;
 
     @Override
     public void onEnable() {
         config = new Config(this, "config.yml");
-        this.craftingStore = new CraftingStore(new CraftingStoreBungeeImpl(this));
+        craftingStore = new CraftingStore(new CraftingStoreBungeeImpl(this));
         getProxy().getPluginManager().registerCommand(this, new CraftingStoreCommand(this));
         getProxy().getPluginManager().registerListener(this, new AdminJoinListener(this));
         getProxy().getPluginManager().registerListener(this, new PendingDonationJoinListener(this));

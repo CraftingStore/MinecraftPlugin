@@ -6,6 +6,7 @@ import ninja.leaping.configurate.yaml.YAMLConfigurationLoader;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Objects;
 
 public class Config extends File {
 
@@ -27,7 +28,7 @@ public class Config extends File {
         if (!exists()) {
             try {
                 if (getClass().getClassLoader().getResource(name) != null) {
-                    Files.copy(getClass().getClassLoader().getResourceAsStream(name), toPath());
+                    Files.copy(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(name)), toPath());
                 } else {
                     createNewFile();
                 }
@@ -46,7 +47,7 @@ public class Config extends File {
     }
 
     public ConfigurationNode getConfig() {
-        return this.config;
+        return config;
     }
 
     /**
