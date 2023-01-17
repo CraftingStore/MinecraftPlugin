@@ -20,7 +20,7 @@ public class ProcessPendingPaymentsJob {
         instance.getLogger().debug("Executing ProcessPendingPaymentsJob.");
 
         Donation[] donations = instance.getPendingDonations().values().stream()
-                .filter(donation -> donation.getPlayer().getUsername().equals(this.username))
+                .filter(donation -> donation.getPlayer().getUsername().equalsIgnoreCase(this.username))
                 .toArray(Donation[]::new);
         if (donations.length == 0) {
             return;
