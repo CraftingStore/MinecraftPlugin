@@ -101,4 +101,9 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
     public String getVersion() {
         return this.instance.getImplementation().getConfiguration().getVersion();
     }
+
+    @Override
+    public boolean persist() {
+        return true;
+    }
 }
