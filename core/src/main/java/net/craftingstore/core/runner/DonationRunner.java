@@ -43,4 +43,8 @@ public class DonationRunner {
             }
         });
     }
+
+    public ExecutorService getExecutor() {
+        return executor;
+    }
 }

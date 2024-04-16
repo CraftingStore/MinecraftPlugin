@@ -141,4 +141,8 @@ public class CraftingStore {
     public Map<Integer, Donation> getPendingDonations() {
         return pendingDonations;
     }
+
+    public DonationRunner getDonationRunner() {
+        return donationRunner;
+    }
 }
