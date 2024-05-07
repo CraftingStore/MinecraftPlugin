@@ -23,11 +23,12 @@ public class DonationRunner {
     }
 
     public void runDonations() {
-        this.craftingStore.getLogger().debug("Scheduling new execute donations job");
+        this.craftingStore.getLogger().debug("Scheduling new donation runner job.");
         this.executor.submit(() -> {
-            this.craftingStore.getLogger().debug("Executing donation queue.");
+            this.craftingStore.getLogger().debug("Requesting donation queue.");
             try {
                 Donation[] donationQueue = this.craftingStore.getApi().getDonationQueue().get();
+                this.craftingStore.getLogger().debug(String.format("Found %d donations in queue.", donationQueue.length));
                 Donation[][] chunked = ArrayUtil.splitArray(donationQueue, ExecuteDonationsJob.CHUNK_SIZE);
                 for (int i = 0; i < chunked.length; i++) {
                     Donation[] chunk = chunked[i];
