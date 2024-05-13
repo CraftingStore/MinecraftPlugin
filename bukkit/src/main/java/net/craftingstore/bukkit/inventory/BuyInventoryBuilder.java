@@ -10,7 +10,6 @@ import net.craftingstore.core.models.api.inventory.InventoryItem;
 import net.craftingstore.core.models.api.inventory.InventoryItemIcon;
 import net.craftingstore.core.models.api.inventory.InventoryItemType;
 import net.craftingstore.core.models.api.inventory.types.InventoryItemBuyablePackage;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
@@ -79,7 +78,7 @@ public class BuyInventoryBuilder {
     }
 
     private void closeInventory(Player p) {
-        Bukkit.getScheduler().runTask(instance, () -> {
+        this.instance.runSyncTask(() -> {
             if (p.isOnline()) {
                 p.closeInventory();
             }

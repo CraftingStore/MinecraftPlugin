@@ -5,7 +5,6 @@ import net.craftingstore.bukkit.inventory.InventoryBuilder;
 import net.craftingstore.core.exceptions.CraftingStoreApiException;
 import net.craftingstore.core.models.api.ApiInventory;
 import net.craftingstore.core.models.api.inventory.CraftingStoreInventory;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -27,19 +26,19 @@ public class BuyCommand implements CommandExecutor {
         if (!(sender instanceof Player)) {
             return false;
         }
-        if (!instance.getCraftingStore().isEnabled()) {
+        if (!this.instance.getCraftingStore().isEnabled()) {
             sender.sendMessage(instance.getPrefix() + "The plugin has not been set-up correctly. Please contact an administrator.");
             return false;
         }
         Player p = (Player) sender;
-        Bukkit.getScheduler().runTaskAsynchronously(instance, () -> {
+        this.instance.getCraftingStore().getImplementation().runAsyncTask(() -> {
             try {
                 InventoryBuilder builder = new InventoryBuilder(this.instance);
                 ApiInventory gui = instance.getCraftingStore().getApi().getGUI().get();
                 Inventory inventory = builder.buildInventory(
                         new CraftingStoreInventory(gui.getTitle(), gui.getContent(), gui.getSize())
                 );
-                Bukkit.getScheduler().runTask(instance, () -> {
+                this.instance.runSyncTask(() -> {
                     if (p.isOnline()) {
                         p.openInventory(inventory);
                     }

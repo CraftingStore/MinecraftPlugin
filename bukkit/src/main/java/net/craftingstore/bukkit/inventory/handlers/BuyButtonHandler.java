@@ -10,7 +10,6 @@ import net.craftingstore.core.models.api.ApiPackageInformation;
 import net.craftingstore.core.models.api.inventory.types.InventoryItemBuyButton;
 import net.craftingstore.core.models.api.inventory.types.InventoryItemBuyablePackage;
 import net.milkbowl.vault.economy.EconomyResponse;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
@@ -43,7 +42,7 @@ public class BuyButtonHandler implements InventoryItemHandler<InventoryItemBuyBu
         if (action.equals(InventoryItemBuyButton.InventoryItemBuyButtonAction.IN_GAME)) {
             Inventory loading = this.buyInventoryBuilder.buildLoadInventory();
             p.openInventory(loading);
-            Bukkit.getScheduler().runTaskAsynchronously(this.instance, () -> {
+            this.instance.getCraftingStore().getImplementation().runAsyncTask(() -> {
                 try {
                     String ip = p.getAddress().getAddress().getHostAddress();
                     ApiPackageInformation packageInformation = this.instance.getCraftingStore().getApi().getPackageInformation(
@@ -130,7 +129,7 @@ public class BuyButtonHandler implements InventoryItemHandler<InventoryItemBuyBu
     }
 
     private void closeInventory(Player p) {
-        Bukkit.getScheduler().runTask(instance, () -> {
+        this.instance.runSyncTask(() -> {
             if (p.isOnline()) {
                 p.closeInventory();
             }

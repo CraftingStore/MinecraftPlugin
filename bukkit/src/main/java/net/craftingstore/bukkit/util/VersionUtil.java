@@ -4,6 +4,7 @@ public class VersionUtil {
     private static boolean hexAvailable = false;
     private static boolean customModalDataAvailable = false;
     private static boolean guavaAvailable = false;
+    private static boolean foliaSchedulerAvailable = false;
 
     static {
         try {
@@ -21,6 +22,11 @@ public class VersionUtil {
             guavaAvailable = true;
         } catch (NoSuchMethodException | ClassNotFoundException ignored) {
         }
+        try {
+            Class.forName("org.bukkit.Bukkit").getMethod("getAsyncScheduler");
+            foliaSchedulerAvailable = true;
+        } catch (NoSuchMethodException | ClassNotFoundException ignored) {
+        }
     }
 
     public static boolean isHexAvailable() {
@@ -33,5 +39,9 @@ public class VersionUtil {
 
     public static boolean isGuavaAvailable() {
         return guavaAvailable;
+    }
+
+    public static boolean isFoliaSchedulerAvailable() {
+        return foliaSchedulerAvailable;
     }
 }

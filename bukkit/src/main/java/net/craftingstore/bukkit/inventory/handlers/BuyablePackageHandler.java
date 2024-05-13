@@ -4,7 +4,6 @@ import net.craftingstore.bukkit.CraftingStoreBukkit;
 import net.craftingstore.bukkit.inventory.*;
 import net.craftingstore.bukkit.util.ChatColorUtil;
 import net.craftingstore.core.models.api.inventory.types.InventoryItemBuyablePackage;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
@@ -39,11 +38,11 @@ public class BuyablePackageHandler implements InventoryItemHandler<InventoryItem
 
         Inventory loading = this.buyInventoryBuilder.buildLoadInventory();
         p.openInventory(loading);
-        Bukkit.getScheduler().runTaskAsynchronously(this.instance, () -> {
+        this.instance.getCraftingStore().getImplementation().runAsyncTask(() -> {
             try {
                 Inventory inventory = this.buyInventoryBuilder.build(p, item, holder);
                 if (inventory != null) {
-                    Bukkit.getScheduler().runTask(instance, () -> {
+                    this.instance.runSyncTask(() -> {
                         if (p.isOnline()) {
                             p.openInventory(inventory);
                         }

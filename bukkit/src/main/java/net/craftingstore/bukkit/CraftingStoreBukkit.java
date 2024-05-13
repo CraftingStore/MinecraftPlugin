@@ -8,6 +8,7 @@ import net.craftingstore.bukkit.hooks.VaultHook;
 import net.craftingstore.bukkit.listeners.InventoryListener;
 import net.craftingstore.bukkit.listeners.AdminJoinListener;
 import net.craftingstore.bukkit.listeners.PendingDonationJoinListener;
+import net.craftingstore.bukkit.util.VersionUtil;
 import net.craftingstore.core.CraftingStore;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -81,5 +82,13 @@ public class CraftingStoreBukkit extends JavaPlugin {
 
     public boolean isHookedWithVault() {
         return vaultHook != null;
+    }
+
+    public void runSyncTask(Runnable runnable) {
+        if (VersionUtil.isFoliaSchedulerAvailable()) {
+            this.getServer().getGlobalRegionScheduler().run(this, (task) -> runnable.run());
+        } else {
+            this.getServer().getScheduler().runTask(this, runnable);
+        }
     }
 }

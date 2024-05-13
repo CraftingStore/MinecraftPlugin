@@ -5,6 +5,7 @@ authors: [Tim_kwakman, thijs_a]
 prefix: CraftingStore
 softdepend: [PlaceholderAPI, Vault]
 api-version: "1.13"
+folia-supported: true
 commands:
   craftingstore:
     description: CraftingStore command
