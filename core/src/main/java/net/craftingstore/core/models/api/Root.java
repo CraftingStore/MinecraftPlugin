@@ -11,6 +11,14 @@ public class Root<T> {
         return result;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
+    public int getError() {
+        return error;
+    }
+
     public boolean isSuccess() {
         return success;
     }
