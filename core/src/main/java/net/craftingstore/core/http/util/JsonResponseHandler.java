@@ -42,7 +42,7 @@ public class JsonResponseHandler<T> implements ResponseHandler<T> {
 
         Root<T> result = gson.fromJson(value, new GenericOf<>(Root.class, aClass));
 
-        if (!result.isSuccess()) {
+        if (!result.isSuccess() && result.getResult() == null) {
             throw new IOException("CraftingStore API error: " + value);
         }
 
