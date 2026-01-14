@@ -23,6 +23,7 @@ public class CraftingStoreDebugCommand extends CommandBase {
         boolean isDebugging = debugRef.get(commandContext);
         this.plugin.getConfig().get().setDebug(isDebugging);
         this.plugin.getConfig().save();
+        this.plugin.getCraftingStore().getLogger().setDebugging(isDebugging);
         commandContext.sendMessage(this.plugin.getPrefix().insert(String.format(
                 "Debug mode has been %s.",
                 isDebugging ? "enabled" : "disabled"
