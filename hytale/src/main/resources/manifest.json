@@ -1,0 +1,14 @@
+{
+  "Group": "CraftingStore",
+  "Name": "CraftingStore",
+  "Description": "Free Hytale donation system",
+  "Version": "${craftingstore-version}",
+  "Authors": [
+    {
+      "Name": "thijs_a"
+    }
+  ],
+  "Website": "https://craftingstore.net",
+  "Main": "net.craftingstore.hytale.CraftingStoreHytale",
+  "ServerVersion": "*"
+}
