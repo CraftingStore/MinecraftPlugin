@@ -16,6 +16,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.14.1</version>
                 <configuration>
                     <source>8</source>
                     <target>8</target>
@@ -31,22 +32,10 @@
     </build>
 
     <repositories>
-        <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>
         <!-- PlaceHolderAPI start -->
         <repository>
-            <id>PlaceholderAPI</id>
-            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
-        </repository>
-        <repository>
-            <id>razyr-dev</id>
-            <url>https://rayzr.dev/repo/</url>
-        </repository>
-        <repository>
-            <id>codemc</id>
-            <url>https://repo.codemc.org/repository/maven-public</url>
+            <id>placeholderapi</id>
+            <url>https://repo.extendedclip.com/releases/</url>
         </repository>
         <!-- PlaceholderRAPI end -->
         <repository>
@@ -74,13 +63,13 @@
         <dependency>
             <groupId>net.md-5</groupId>
             <artifactId>bungeecord-chat</artifactId>
-            <version>1.20-R0.2</version>
+            <version>1.21-R0.4</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
-            <version>2.10.7</version>
+            <version>2.11.7</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

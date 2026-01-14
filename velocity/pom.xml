@@ -33,8 +33,8 @@
 
     <repositories>
         <repository>
-            <id>velocity</id>
-            <url>https://repo.velocitypowered.com/snapshots/</url>
+            <id>papermc</id>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
         </repository>
         <repository>
             <id>sponge</id>
