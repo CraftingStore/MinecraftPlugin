@@ -130,5 +130,10 @@
             <artifactId>velocity</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>net.craftingstore</groupId>
+            <artifactId>hytale</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>

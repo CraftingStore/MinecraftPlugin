@@ -16,3 +16,5 @@ buildNumber.properties
 *.iml
 out
 gen
+
+hytale/lib/HytaleServer.jar
