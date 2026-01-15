@@ -1,7 +1,6 @@
 package net.craftingstore.bukkit.commands;
 
 import net.craftingstore.bukkit.CraftingStoreBukkit;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -31,7 +30,7 @@ public class CraftingStoreCommand implements CommandExecutor {
         if (args.length == 2 && args[0].equalsIgnoreCase("key")) {
             instance.getConfig().set("api-key", args[1]);
             instance.getConfigWrapper().saveConfig();
-            instance.getServer().getScheduler().runTaskAsynchronously(instance, () -> {
+            instance.getCraftingStore().getImplementation().runAsyncTask(() -> {
                 try {
                     if (instance.getCraftingStore().reload().get()) {
                         sender.sendMessage(instance.getPrefix() + "The new API key has been set in the config, and the plugin has been reloaded.");
