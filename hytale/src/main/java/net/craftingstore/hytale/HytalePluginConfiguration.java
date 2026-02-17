@@ -27,7 +27,7 @@ public class HytalePluginConfiguration implements PluginConfiguration {
 
     @Override
     public String getPlatform() {
-        return ManifestUtil.getVersion().toString();
+        return ManifestUtil.getVersion();
     }
 
     @Override

@@ -30,6 +30,13 @@
         </resources>
     </build>
 
+    <repositories>
+        <repository>
+            <id>hytale-release</id>
+            <url>https://maven.hytale.com/release</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>net.craftingstore</groupId>
@@ -38,10 +45,8 @@
         </dependency>
         <dependency>
             <groupId>com.hypixel.hytale</groupId>
-            <artifactId>server</artifactId>
-            <version>unknown</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/HytaleServer.jar</systemPath>
+            <artifactId>Server</artifactId>
+            <version>2026.02.17-255364b8e</version>
         </dependency>
     </dependencies>
 
