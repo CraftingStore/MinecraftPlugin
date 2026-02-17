@@ -47,6 +47,7 @@
             <groupId>com.hypixel.hytale</groupId>
             <artifactId>Server</artifactId>
             <version>2026.02.17-255364b8e</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
