@@ -75,7 +75,7 @@
         <dependency>
             <groupId>com.github.cryptomorin</groupId>
             <artifactId>XSeries</artifactId>
-            <version>9.4.0</version>
+            <version>13.7.0</version>
         </dependency>
         <dependency>
             <groupId>com.github.MilkBowl</groupId>
